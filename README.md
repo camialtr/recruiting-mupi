@@ -1,19 +1,16 @@
-<div align="center">
-  <img src="logo.png" alt="Mupi Systems Logo" width="200"/>
-</div>
+<img src="logo.png" alt="Mupi Systems Logo" width="200"/>
 
 # 🚀 Teste Técnico - Desenvolvedor Jr. Full Stack
-### *Foco Frontend/UI-UX*
 
---## 🚀 Como Rodar a Aplicação (Template para seu README)
+---
 
-> **Dica:** No seu README.md, inclua uma seção similar a esta:
+## 🎯 Objetivos
 
-### 📦 Instalação e Execução 🎯 Objetivo
-
-Criar uma aplicação **Django** com duas páginas principais:
-- 📄 **Landpage** com formulário de contato
-- 🔐 **Área administrativa** para visualização das mensagens recebidas
+- Desenvolver uma **landpage atraente** com formulário de contato funcional
+- Criar uma **área administrativa protegida** para gerenciamento de mensagens
+- Demonstrar habilidades em **UI/UX design** com foco em estética e usabilidade
+- Aplicar boas práticas de desenvolvimento **Django** e **frontend moderno**
+- Implementar interatividade usando **HTMX** e **Alpine.js**
 
 ---
 
@@ -50,11 +47,11 @@ Inclua um arquivo `README.md` com:
 | Requisito | Descrição |
 |-----------|-----------|
 | **Versão** | Django 3.2+ |
-| **Templates** | `landpage.html` - Página inicial com formulário<br>`admin_messages.html` - Área de visualização de mensagens |
+| **Templates Obrigatórios** | `landpage.html` - Página inicial com formulário<br>`login.html` - Tela de login personalizada<br>`messages_list.html` - Listagem de mensagens<br>`message_detail.html` - Visualização individual de mensagem<br>`message_edit.html` - Formulário de edição de mensagem (ou modal)<br>`message_delete_confirm.html` - Confirmação de exclusão (ou modal)<br>`logout_confirm.html` - Confirmação de logout (ou modal) |
 | **Model** | Mensagem com campos: `nome`, `email`, `mensagem`, `data_envio`, `lido` (boolean) |
 | **Autenticação** | Sistema de autenticação para área administrativa |
+| **CRUD de Mensagens** | Admin deve poder visualizar, editar e apagar mensagens |
 | **API** | Endpoint para receber mensagens do formulário |
-| **Migrações** | Migrações funcionais |
 
 ### 🎨 Frontend
 
@@ -81,36 +78,53 @@ Inclua um arquivo `README.md` com:
 
 ## 🎨 Critérios de Avaliação
 
-### 🔴 Prioridade Alta
-
-#### UI/UX Design (30%)
+### UI/UX Design
 - Estética visual atraente
 - Experiência de usuário intuitiva
 - Consistência visual
 - Responsividade
 
-#### Qualidade de Código (25%)
+### Qualidade de Código
 - Organização do projeto
 - Clareza e legibilidade
 - Boas práticas Django
 - Separação de responsabilidades
 
-#### Funcionalidade (20%)
+### Funcionalidade
 - Todos os requisitos mínimos atendidos
 - Funcionamento correto das features
 - Tratamento de erros
 
-### 🟡 Prioridade Média
-
-#### Versionamento (15%)
+### Versionamento
 - Commits descritivos e organizados
 - Estrutura de branches (se aplicável)
 - Mensagens de commit claras
 
-#### Uso das Tecnologias (10%)
+### Uso das Tecnologias
 - Aplicação apropriada de HTMX e Alpine.js
 - Eficiência no uso do Tailwind
 - Decisões técnicas justificadas
+
+---
+
+## ✨ Diferenciais
+
+Os seguintes elementos serão considerados **pontos extras** na avaliação:
+
+### Design e UX
+- 🎨 **Fontes personalizadas** - Uso de tipografia além das fontes padrão do sistema
+- 🌗 **Contraste bem trabalhado** - Bom uso de cores, contraste adequado para acessibilidade
+- 🎭 **Identidade visual consistente** - Paleta de cores coesa, elementos visuais harmônicos
+- ⚡ **Animações e transições suaves** - Microinterações que melhoram a experiência
+- 📱 **Design mobile-first** - Experiência otimizada para dispositivos móveis
+
+### Funcionalidades Avançadas com HTMX e Alpine.js
+- 🔔 **Modais para confirmações** - Implementar logout, edição e exclusão de mensagens via modal usando HTMX/Alpine.js
+- ✏️ **Edição inline** - Editar mensagens diretamente na listagem sem recarregar a página
+- 🗑️ **Exclusão com confirmação dinâmica** - Modal de confirmação antes de apagar, com feedback visual
+- 🔄 **Marcar como lida sem reload** - Alternar status de mensagem usando HTMX
+- 🔍 **Busca e filtros avançados** - Sistema de busca por texto, filtros por data ou status com HTMX
+- 📊 **Dashboard com estatísticas** - Quantidade de mensagens lidas/não lidas, gráficos dinâmicos
 
 ---
 
@@ -134,12 +148,69 @@ Inclua um arquivo `README.md` com:
 
 ### 🔐 Área Administrativa
 
-#### Características
+#### Funcionamento
+
+A área administrativa é uma **seção protegida** que requer autenticação. O fluxo funciona da seguinte forma:
+
+1. **Criação de Usuário Administrador**
+   - Durante a configuração inicial, você deve criar um superusuário usando `python manage.py createsuperuser`
+   - Este usuário terá acesso à área administrativa
+
+2. **Sistema de Login**
+   - Implemente uma **página de login personalizada** (não usar o admin padrão do Django)
+   - Design deve seguir a identidade visual do projeto
+   - Apenas usuários autenticados podem acessar a área de visualização de mensagens
+   - Use o sistema de autenticação nativo do Django (`django.contrib.auth`)
+
+3. **Proteção de Rotas**
+   - Use decorators como `@login_required` para proteger as views administrativas
+   - Redirecione usuários não autenticados para a página de login
+
+#### Telas Obrigatórias
+
+| Tela | Descrição |
+|------|-----------|
+| **Landpage** | Página pública com formulário de contato funcional |
+| **Login** | Tela personalizada para autenticação do admin |
+| **Listagem de Mensagens** | Exibe todas as mensagens com indicador de lidas/não lidas |
+| **Visualização Individual** | Detalhes completos de uma mensagem específica |
+| **Edição de Mensagem** | Formulário para editar dados de uma mensagem (ou modal) |
+| **Confirmação de Exclusão** | Página de confirmação antes de apagar mensagem (ou modal) |
+| **Confirmação de Logout** | Página de confirmação antes de deslogar (ou modal) |
+
+#### Funcionalidades de Gerenciamento
+
+O admin deve ser capaz de:
+
+- ✅ **Visualizar** todas as mensagens em uma lista
+- ✅ **Abrir** mensagens individuais para ver detalhes completos
+- ✅ **Editar** mensagens (corrigir dados, adicionar notas)
+- ✅ **Apagar** mensagens
+- ✅ **Marcar como lida/não lida**
+- ✅ **Fazer logout** com confirmação
+
+#### Características da Interface
 
 - Design **clean** e funcional
-- Listagem de mensagens
-- Indicador de mensagens lidas/não lidas
-- Logout funcional
+- **Indicador visual** de mensagens lidas/não lidas (ex: badge, cor diferente, ícone)
+- **Ações rápidas** na listagem (apagar, marcar como lida)
+- **Filtros opcionais**: por status (lida/não lida), por data
+- **Responsividade** em todas as telas administrativas
+
+#### Exemplo de Fluxo Completo
+```
+Visitante → Preenche formulário na landpage → Mensagem salva no banco
+
+Admin → Acessa /login → Preenche credenciais → Redireciona para lista de mensagens
+
+Admin → Visualiza lista → Clica em mensagem → Vê detalhes completos
+
+Admin → Clica em "Editar" → Abre tela/modal de edição → Salva alterações → Retorna
+
+Admin → Clica em "Apagar" → Confirma exclusão → Mensagem deletada → Retorna à lista
+
+Admin → Clica em logout → Confirma logout → Deslogado
+```
 
 ---
 
@@ -160,8 +231,16 @@ seu-projeto/
 │   └── templates/
 │       ├── base.html
 │       ├── landpage.html
-│       └── admin_messages.html
+│       ├── login.html
+│       ├── logout_confirm.html
+│       ├── messages_list.html
+│       ├── message_detail.html
+│       ├── message_edit.html
+│       └── message_delete_confirm.html
 ├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
 ├── media/
 └── examples/
     └── (referências visuais)
