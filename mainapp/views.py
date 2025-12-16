@@ -89,6 +89,7 @@ def dashboard_stats(request):
 	is_dev = request.user.is_superuser
 	active_users = []
 	audit_logs = []
+	messages_qs = Message.objects.all()
 	if is_dev:
 		active_users = User.objects.all()
 		audit_logs = AuditLog.objects.all()[:50]
@@ -100,6 +101,9 @@ def dashboard_stats(request):
 		'is_dev': is_dev,
 		'active_users': active_users,
 		'audit_logs': audit_logs,
+		'messages': messages_qs,
+		'search_query': '',
+		'status_filter': '',
 	}
 	
 	return render(request, 'dashboard.html', context)
