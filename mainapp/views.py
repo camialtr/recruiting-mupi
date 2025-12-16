@@ -15,6 +15,10 @@ class LoginViewCustom(LoginView):
 	template_name = 'login.html'
 
 
+def redirect_to_admin(request):
+	return redirect('admin')
+
+
 @login_required
 def dashboard(request):
 	search_query = request.GET.get('search', '')
@@ -81,37 +85,33 @@ def landpage(request):
 
 
 @login_required
-def messages_list(request):
-	msgs = Message.objects.all()
-	return render(request, 'messages_list.html', {'messages_list': msgs})
-
-
-@login_required
 def message_detail(request, pk: int):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	
 	msg = get_object_or_404(Message, pk=pk)
 	was_unread = not msg.read
 	if was_unread:
 		msg.mark_as_read()
 	
-	if request.headers.get('HX-Request'):
-		response = render(request, 'message_detail.html', {'message_obj': msg})
-		if was_unread:
-			response['HX-Trigger'] = 'refresh-stats'
-		return response
-	return render(request, 'message_detail.html', {'message_obj': msg})
+	response = render(request, 'message_detail.html', {'message_obj': msg})
+	if was_unread:
+		response['HX-Trigger'] = 'refresh-stats'
+	return response
 
 
 @login_required
 def message_edit(request, pk: int):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	
 	msg = get_object_or_404(Message, pk=pk)
 	if request.method == 'POST':
 		form = MessageUpdateForm(request.POST, instance=msg)
 		if form.is_valid():
 			form.save()
 			messages.success(request, 'Mensagem atualizada.')
-			if request.headers.get('HX-Request'):
-				return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages'})
-			return redirect('message_detail', pk=msg.pk)
+			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages'})
 	else:
 		form = MessageUpdateForm(instance=msg)
 	return render(request, 'message_edit.html', {'form': form, 'message_obj': msg})
@@ -119,27 +119,29 @@ def message_edit(request, pk: int):
 
 @login_required
 def message_delete_confirm(request, pk: int):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	
 	msg = get_object_or_404(Message, pk=pk)
 	if request.method == 'POST':
 		msg.delete()
 		messages.success(request, 'Mensagem excluída.')
-		if request.headers.get('HX-Request'):
-			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages'})
-		return redirect('messages_list')
+		return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages'})
 	return render(request, 'message_delete_confirm.html', {'message_obj': msg})
 
 
 @login_required
 def toggle_message_read(request, pk: int):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	
 	msg = get_object_or_404(Message, pk=pk)
 	msg.read = not msg.read
 	msg.save(update_fields=['read'])
 	
-	if request.headers.get('HX-Request'):
-		status_text = "Sim" if msg.read else "Não"
-		html = f'<span id="read-text-{msg.pk}" class="read-status">{status_text}</span>'
-		return HttpResponse(html, headers={'HX-Trigger': 'refresh-stats'})
-	return redirect('admin')
+	status_text = "Sim" if msg.read else "Não"
+	html = f'<span id="read-text-{msg.pk}" class="read-status">{status_text}</span>'
+	return HttpResponse(html, headers={'HX-Trigger': 'refresh-stats'})
 
 
 @login_required
