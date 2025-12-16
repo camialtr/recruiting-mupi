@@ -267,6 +267,34 @@
       </tbody>
     </table>
   </section>
+
+  <section class="audit-section"
+           hx-trigger="refresh-audit from:document"
+           hx-get="{% url 'admin' %}?section=audit"
+           hx-select=".audit-section"
+           hx-swap="outerHTML">
+    <h2>Logs de Auditoria</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Data/Hora</th>
+          <th>Usuário</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in audit_logs %}
+        <tr>
+          <td>{{ log.formatted_date }}</td>
+          <td>{{ log.user.username|default:"Sistema" }}</td>
+          <td>{{ log.description }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">Nenhum registro de auditoria.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
   {% endif %}
 
     <div id="modal-container" 

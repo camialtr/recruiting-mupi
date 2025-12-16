@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -34,4 +35,38 @@ class Message(models.Model):
 
     def short_message(self):
         return (self.message[:75] + '...') if len(self.message) > 75 else self.message
+
+
+class AuditLog(models.Model):
+    """Registro de auditoria para ações administrativas"""
+    ACTION_TYPES = (
+        ('view', 'Visualização'),
+        ('unview', 'Remoção de visualização'),
+        ('edit', 'Edição'),
+        ('delete', 'Exclusão'),
+        ('create_user', 'Criação de usuário'),
+        ('change_password', 'Alteração de senha'),
+        ('delete_user', 'Exclusão de usuário'),
+    )
+    
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Usuário')
+    action = models.CharField(max_length=20, choices=ACTION_TYPES, verbose_name='Ação')
+    description = models.TextField(verbose_name='Descrição')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data/Hora')
+    
+    class Meta:
+        verbose_name = 'Log de Auditoria'
+        verbose_name_plural = 'Logs de Auditoria'
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f'{self.user.username if self.user else "Sistema"}: {self.description}'
+    
+    def formatted_date(self):
+        return self.created_at.strftime('%d/%m/%Y %H:%M')
+    
+    @classmethod
+    def log(cls, user, action, description):
+        """Método helper para criar logs facilmente"""
+        return cls.objects.create(user=user, action=action, description=description)
     

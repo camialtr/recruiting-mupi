@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import MessageForm, MessageUpdateForm, CreateUserForm, ChangeUserPasswordForm
-from .models import Message
+from .models import Message, AuditLog
 
 
 def dev_required(view_func):
@@ -53,8 +53,10 @@ def dashboard(request):
 	
 	# Lista de usuários ativos (apenas para devs)
 	active_users = []
+	audit_logs = []
 	if is_dev:
 		active_users = User.objects.all()
+		audit_logs = AuditLog.objects.all()[:50]
 
 	context = {
 		'total_messages': total_messages,
@@ -65,12 +67,13 @@ def dashboard(request):
 		'status_filter': status_filter,
 		'is_dev': is_dev,
 		'active_users': active_users,
+		'audit_logs': audit_logs,
 	}
 	
 	# Se é HTMX, verifica se quer seção específica
 	if request.headers.get('HX-Request'):
 		section = request.GET.get('section')
-		if section == 'users':
+		if section == 'users' or section == 'audit':
 			return render(request, 'dashboard.html', context)
 		return render(request, 'messages_table.html', context)
 	
@@ -85,8 +88,10 @@ def dashboard_stats(request):
 	
 	is_dev = request.user.is_superuser
 	active_users = []
+	audit_logs = []
 	if is_dev:
 		active_users = User.objects.all()
+		audit_logs = AuditLog.objects.all()[:50]
 
 	context = {
 		'total_messages': total_messages,
@@ -94,6 +99,7 @@ def dashboard_stats(request):
 		'read_messages': read_messages,
 		'is_dev': is_dev,
 		'active_users': active_users,
+		'audit_logs': audit_logs,
 	}
 	
 	return render(request, 'dashboard.html', context)
@@ -139,8 +145,9 @@ def message_edit(request, pk: int):
 		form = MessageUpdateForm(request.POST, instance=msg)
 		if form.is_valid():
 			form.save()
+			AuditLog.log(request.user, 'edit', f'Editou a mensagem de {msg.name}.')
 			messages.success(request, 'Mensagem atualizada.')
-			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages'})
+			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages, refresh-audit'})
 	else:
 		form = MessageUpdateForm(instance=msg)
 	return render(request, 'message_edit.html', {'form': form, 'message_obj': msg})
@@ -154,9 +161,11 @@ def message_delete_confirm(request, pk: int):
 	
 	msg = get_object_or_404(Message, pk=pk)
 	if request.method == 'POST':
+		msg_name = msg.name
 		msg.delete()
+		AuditLog.log(request.user, 'delete', f'Excluiu a mensagem de {msg_name}.')
 		messages.success(request, 'Mensagem excluída.')
-		return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages'})
+		return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages, refresh-audit'})
 	return render(request, 'message_delete_confirm.html', {'message_obj': msg})
 
 
@@ -169,9 +178,14 @@ def toggle_message_read(request, pk: int):
 	msg.read = not msg.read
 	msg.save(update_fields=['read'])
 	
+	if msg.read:
+		AuditLog.log(request.user, 'view', f'Marcou como lida a mensagem de {msg.name}.')
+	else:
+		AuditLog.log(request.user, 'unview', f'Marcou como não lida a mensagem de {msg.name}.')
+	
 	status_text = "Sim" if msg.read else "Não"
 	html = f'<span id="read-text-{msg.pk}" class="read-status">{status_text}</span>'
-	return HttpResponse(html, headers={'HX-Trigger': 'refresh-stats'})
+	return HttpResponse(html, headers={'HX-Trigger': 'refresh-stats, refresh-audit'})
 
 
 @login_required
@@ -197,9 +211,10 @@ def user_create(request):
 	if request.method == 'POST':
 		form = CreateUserForm(request.POST)
 		if form.is_valid():
-			form.save()
+			new_user = form.save()
+			AuditLog.log(request.user, 'create_user', f'Criou o usuário {new_user.username}.')
 			messages.success(request, 'Usuário criado com sucesso.')
-			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users'})
+			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users, refresh-audit'})
 	else:
 		form = CreateUserForm()
 	return render(request, 'user_create.html', {'form': form})
@@ -217,8 +232,9 @@ def user_change_password(request, pk: int):
 		form = ChangeUserPasswordForm(target_user, request.POST)
 		if form.is_valid():
 			form.save()
+			AuditLog.log(request.user, 'change_password', f'Alterou a senha de {target_user.username}.')
 			messages.success(request, f'Senha do usuário {target_user.username} alterada.')
-			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close'})
+			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-audit'})
 	else:
 		form = ChangeUserPasswordForm(target_user)
 	return render(request, 'user_change_password.html', {'form': form, 'target_user': target_user})
@@ -239,6 +255,7 @@ def user_delete(request, pk: int):
 	if request.method == 'POST':
 		username = target_user.username
 		target_user.delete()
-		return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users'})
+		AuditLog.log(request.user, 'delete_user', f'Excluiu o usuário {username}.')
+		return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users, refresh-audit'})
 	
 	return render(request, 'user_delete_confirm.html', {'target_user': target_user})
