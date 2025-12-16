@@ -1,5 +1,5 @@
 <section class="messages-table"
-         hx-trigger="refresh-messages from:body"
+         hx-trigger="refresh-messages from:document"
          hx-get="{% url 'admin' %}"
          hx-select=".messages-table"
          hx-swap="outerHTML">
@@ -25,9 +25,10 @@
           <button type="button"
                   class="toggle-read"
                   hx-post="{% url 'toggle_message_read' msg.pk %}"
-                  hx-target="this"
-                  hx-swap="outerHTML">
-            <span class="read-status">{{ msg.read|yesno:"Sim,Não" }}</span>
+                  hx-target="#read-text-{{ msg.pk }}"
+                  hx-swap="outerHTML"
+                  hx-select="unset">
+            <span id="read-text-{{ msg.pk }}" class="read-status">{{ msg.read|yesno:"Sim,Não" }}</span>
           </button>
         </td>
         <td>{{ msg.formatted_date }}</td>
@@ -37,19 +38,19 @@
                   hx-target="#modal-content"
                   hx-swap="innerHTML"
                   hx-select="unset"
-                  @click="modalOpen = true">Ver</button>
+                  onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Ver</button>
           <button type="button" 
                   hx-get="{% url 'message_edit' msg.pk %}"
                   hx-target="#modal-content"
                   hx-swap="innerHTML"
                   hx-select="unset"
-                  @click="modalOpen = true">Editar</button>
+                  onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Editar</button>
           <button type="button" 
                   hx-get="{% url 'message_delete_confirm' msg.pk %}"
                   hx-target="#modal-content"
                   hx-swap="innerHTML"
                   hx-select="unset"
-                  @click="modalOpen = true">Excluir</button>
+                  onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Excluir</button>
         </td>
       </tr>
       {% empty %}

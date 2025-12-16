@@ -1,3 +1,19 @@
+{% if is_htmx %}
+<div class="modal-header">
+  <h2>Confirmar Logout</h2>
+  <button class="modal-close" @click="$dispatch('modal-close')">&times;</button>
+</div>
+
+<p>Deseja sair da área administrativa?</p>
+
+<form hx-post="{% url 'logout_confirm' %}">
+  {% csrf_token %}
+  <div class="modal-actions">
+    <button type="button" @click="$dispatch('modal-close')">Cancelar</button>
+    <button type="submit">Sair</button>
+  </div>
+</form>
+{% else %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,3 +31,4 @@
   </form>
 </body>
 </html>
+{% endif %}

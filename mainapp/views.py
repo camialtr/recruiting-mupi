@@ -53,6 +53,21 @@ def dashboard(request):
 	return render(request, 'dashboard.html', context)
 
 
+@login_required
+def dashboard_stats(request):
+	total_messages = Message.objects.count()
+	unread_messages = Message.objects.filter(read=False).count()
+	read_messages = Message.objects.filter(read=True).count()
+
+	context = {
+		'total_messages': total_messages,
+		'unread_messages': unread_messages,
+		'read_messages': read_messages,
+	}
+	
+	return render(request, 'dashboard.html', context)
+
+
 def landpage(request):
 	if request.method == 'POST':
 		form = MessageForm(request.POST)
@@ -74,11 +89,15 @@ def messages_list(request):
 @login_required
 def message_detail(request, pk: int):
 	msg = get_object_or_404(Message, pk=pk)
-	if not msg.read:
+	was_unread = not msg.read
+	if was_unread:
 		msg.mark_as_read()
 	
 	if request.headers.get('HX-Request'):
-		return render(request, 'message_detail.html', {'message_obj': msg})
+		response = render(request, 'message_detail.html', {'message_obj': msg})
+		if was_unread:
+			response['HX-Trigger'] = 'refresh-stats'
+		return response
 	return render(request, 'message_detail.html', {'message_obj': msg})
 
 
@@ -117,10 +136,9 @@ def toggle_message_read(request, pk: int):
 	msg.save(update_fields=['read'])
 	
 	if request.headers.get('HX-Request'):
-		return HttpResponse(
-			f'<span class="read-status">{"Sim" if msg.read else "Não"}</span>',
-			headers={'HX-Trigger': 'refresh-stats'}
-		)
+		status_text = "Sim" if msg.read else "Não"
+		html = f'<span id="read-text-{msg.pk}" class="read-status">{status_text}</span>'
+		return HttpResponse(html, headers={'HX-Trigger': 'refresh-stats'})
 	return redirect('admin')
 
 
@@ -133,5 +151,5 @@ def logout_confirm(request):
 			return HttpResponse(status=204, headers={'HX-Redirect': '/'})
 		return redirect('landpage')
 	
-	template = 'logout.html' if request.headers.get('HX-Request') else 'logout_confirm.html'
-	return render(request, template)
+	is_htmx = request.headers.get('HX-Request')
+	return render(request, 'logout_confirm.html', {'is_htmx': is_htmx})
