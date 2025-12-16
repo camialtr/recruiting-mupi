@@ -10,12 +10,11 @@
   <header>
     <h1>Fale Conosco</h1>
     <nav>
-      <a href="/admin/">Admin</a>
       {% if user.is_authenticated %}
-        <a href="{% url 'messages_list' %}">Mensagens</a>
+        <a href="{% url 'admin' %}">Dashboard</a>
         <a href="{% url 'logout_confirm' %}">Sair</a>
       {% else %}
-        <a href="{% url 'login' %}">Entrar</a>
+        <a href="{% url 'login' %}">Área Administrativa</a>
       {% endif %}
     </nav>
   </header>

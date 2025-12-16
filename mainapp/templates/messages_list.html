@@ -5,13 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mensagens</title>
   <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .modal-close {
+      cursor: pointer;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>Mensagens</h1>
     <nav>
+      <a href="{% url 'admin' %}">Dashboard</a>
       <a href="{% url 'landpage' %}">Home</a>
-      <a href="{% url 'logout_confirm' %}">Sair</a>
+                  <button type="button" 
+                    hx-get="{% url 'logout_confirm' %}"
+                    hx-target="#modal-content"
+                    hx-swap="innerHTML"
+                    hx-on::after-on-load="$dispatch('modal-open')">Sair</button>
     </nav>
   </header>
 
@@ -21,7 +68,7 @@
     </ul>
   {% endif %}
 
-  <table>
+  <table hx-trigger="refresh-messages from:body" hx-get="{% url 'messages_list' %}" hx-select="table" hx-swap="outerHTML">
     <thead>
       <tr>
         <th>ID</th>
@@ -42,8 +89,16 @@
         <td>{{ msg.formatted_date }}</td>
         <td>
           <a href="{% url 'message_detail' msg.pk %}">Ver</a>
-          <a href="{% url 'message_edit' msg.pk %}">Editar</a>
-          <a href="{% url 'message_delete_confirm' msg.pk %}">Excluir</a>
+              <button type="button" 
+                hx-get="{% url 'message_edit' msg.pk %}"
+                hx-target="#modal-content"
+                hx-swap="innerHTML"
+                hx-on::after-on-load="$dispatch('modal-open')">Editar</button>
+              <button type="button" 
+                hx-get="{% url 'message_delete_confirm' msg.pk %}"
+                hx-target="#modal-content"
+                hx-swap="innerHTML"
+                hx-on::after-on-load="$dispatch('modal-open')">Excluir</button>
         </td>
       </tr>
       {% empty %}
@@ -51,5 +106,18 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <div id="modal-container" 
+       x-data="{ open: false }" 
+       x-show="open" 
+       @modal-open.window="open = true" 
+       @modal-close.window="open = false"
+       @keydown.escape.window="open = false"
+       style="display: none;">
+    <div class="modal-overlay" @click.self="open = false">
+      <div class="modal-content" id="modal-content">
+      </div>
+    </div>
+  </div>
 </body>
 </html>

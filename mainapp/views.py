@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.db.models import Count, Q
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
@@ -11,6 +13,44 @@ from .models import Message
 
 class LoginViewCustom(LoginView):
 	template_name = 'login.html'
+
+
+@login_required
+def dashboard(request):
+	search_query = request.GET.get('search', '')
+	status_filter = request.GET.get('status', '')
+	
+	messages_qs = Message.objects.all()
+	
+	if search_query:
+		messages_qs = messages_qs.filter(
+			Q(name__icontains=search_query) |
+			Q(email__icontains=search_query) |
+			Q(message__icontains=search_query)
+		)
+	
+	if status_filter == 'read':
+		messages_qs = messages_qs.filter(read=True)
+	elif status_filter == 'unread':
+		messages_qs = messages_qs.filter(read=False)
+	
+	total_messages = Message.objects.count()
+	unread_messages = Message.objects.filter(read=False).count()
+	read_messages = Message.objects.filter(read=True).count()
+
+	context = {
+		'total_messages': total_messages,
+		'unread_messages': unread_messages,
+		'read_messages': read_messages,
+		'messages': messages_qs,
+		'search_query': search_query,
+		'status_filter': status_filter,
+	}
+	
+	if request.headers.get('HX-Request'):
+		return render(request, 'messages_table.html', context)
+	
+	return render(request, 'dashboard.html', context)
 
 
 def landpage(request):
@@ -36,6 +76,9 @@ def message_detail(request, pk: int):
 	msg = get_object_or_404(Message, pk=pk)
 	if not msg.read:
 		msg.mark_as_read()
+	
+	if request.headers.get('HX-Request'):
+		return render(request, 'message_detail.html', {'message_obj': msg})
 	return render(request, 'message_detail.html', {'message_obj': msg})
 
 
@@ -47,6 +90,8 @@ def message_edit(request, pk: int):
 		if form.is_valid():
 			form.save()
 			messages.success(request, 'Mensagem atualizada.')
+			if request.headers.get('HX-Request'):
+				return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages'})
 			return redirect('message_detail', pk=msg.pk)
 	else:
 		form = MessageUpdateForm(instance=msg)
@@ -59,8 +104,24 @@ def message_delete_confirm(request, pk: int):
 	if request.method == 'POST':
 		msg.delete()
 		messages.success(request, 'Mensagem excluída.')
+		if request.headers.get('HX-Request'):
+			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages'})
 		return redirect('messages_list')
 	return render(request, 'message_delete_confirm.html', {'message_obj': msg})
+
+
+@login_required
+def toggle_message_read(request, pk: int):
+	msg = get_object_or_404(Message, pk=pk)
+	msg.read = not msg.read
+	msg.save(update_fields=['read'])
+	
+	if request.headers.get('HX-Request'):
+		return HttpResponse(
+			f'<span class="read-status">{"Sim" if msg.read else "Não"}</span>',
+			headers={'HX-Trigger': 'refresh-stats'}
+		)
+	return redirect('admin')
 
 
 @login_required
@@ -68,5 +129,9 @@ def logout_confirm(request):
 	if request.method == 'POST':
 		logout(request)
 		messages.info(request, 'Você saiu da área administrativa.')
+		if request.headers.get('HX-Request'):
+			return HttpResponse(status=204, headers={'HX-Redirect': '/'})
 		return redirect('landpage')
-	return render(request, 'logout_confirm.html')
+	
+	template = 'logout.html' if request.headers.get('HX-Request') else 'logout_confirm.html'
+	return render(request, template)

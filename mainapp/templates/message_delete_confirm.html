@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Excluir Mensagem #{{ message_obj.id }}</title>
-  <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-  <h1>Excluir Mensagem #{{ message_obj.id }}</h1>
-  <p>Tem certeza que deseja excluir a mensagem de <strong>{{ message_obj.name }}</strong>?</p>
-  <form method="post">
-    {% csrf_token %}
+<div class="modal-header">
+  <h2>Excluir Mensagem #{{ message_obj.id }}</h2>
+  <button class="modal-close" @click="$dispatch('modal-close')">&times;</button>
+</div>
+
+<p>Tem certeza que deseja excluir a mensagem de <strong>{{ message_obj.name }}</strong>?</p>
+
+<form hx-post="{% url 'message_delete_confirm' message_obj.pk %}">
+  {% csrf_token %}
+  <div class="modal-actions">
+    <button type="button" @click="$dispatch('modal-close')">Cancelar</button>
     <button type="submit">Confirmar</button>
-    <a href="{% url 'message_detail' message_obj.pk %}">Cancelar</a>
-  </form>
-</body>
-</html>
+  </div>
+</form>
