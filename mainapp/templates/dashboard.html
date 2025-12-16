@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Área Administrativa</title>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
+  <script>
+    document.addEventListener('htmx:configRequest', function(event) {
+      var csrfEl = document.querySelector('meta[name="csrf-token"]');
+      if (csrfEl) {
+        event.detail.headers['X-CSRFToken'] = csrfEl.getAttribute('content');
+      }
+    });
+    document.addEventListener('htmx:afterSwap', function (evt) {
+      var tgt = (evt.detail && evt.detail.target) ? evt.detail.target : evt.target;
+      if (tgt && tgt.id === 'modal-content') {
+        var root = document.querySelector('body');
+        if (root && root.__x) {
+          // Alpine present: set modalOpen reactive state
+          root.__x.$data.modalOpen = true;
+        } else {
+          // Fallback toggle via attribute
+          root && root.setAttribute('x-data', '{ modalOpen: true }');
+        }
+      }
+    });
+  </script>
+  <style>
+    [x-cloak] { display: none !important; }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .modal-close {
+      cursor: pointer;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
+    }
+    .search-filters {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+    .search-filters form {
+      display: flex;
+      gap: 1rem;
+      align-items: end;
+    }
+    .toggle-read {
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0.25rem 0.5rem;
+      text-decoration: underline;
+      color: #0066cc;
+    }
+    .toggle-read:hover {
+      color: #004499;
+    }
+  </style>
+</head>
+<body x-data="{ modalOpen: false }">
+  <header>
+    <h1>Dashboard Administrativo</h1>
+    <nav>
+      <a href="{% url 'landpage' %}">Voltar ao Site</a>
+                  <button type="button" 
+                    hx-get="{% url 'logout_confirm' %}"
+                    hx-target="#modal-content"
+                    hx-swap="innerHTML"
+                    @click="modalOpen = true">Sair</button>
+    </nav>
+  </header>
+
+  {% if messages %}
+    <ul>
+      {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+
+  <section class="dashboard-stats" hx-trigger="refresh-stats from:body" hx-get="{% url 'admin' %}" hx-select=".dashboard-stats" hx-swap="outerHTML">
+    <h2>Estatísticas</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total de Mensagens</h3>
+        <p class="stat-number">{{ total_messages }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Não Lidas</h3>
+        <p class="stat-number">{{ unread_messages }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Lidas</h3>
+        <p class="stat-number">{{ read_messages }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="search-filters">
+    <form hx-get="{% url 'admin' %}" 
+          hx-target=".messages-table" 
+          hx-swap="outerHTML"
+          hx-trigger="submit, change delay:300ms from:input[name='search']">
+      <div>
+        <label>Buscar:</label>
+        <input type="text" name="search" placeholder="Nome, email ou mensagem..." value="{{ search_query }}">
+      </div>
+      <div>
+        <label>Status:</label>
+        <select name="status">
+          <option value="">Todos</option>
+          <option value="unread" {% if status_filter == 'unread' %}selected{% endif %}>Não Lidas</option>
+          <option value="read" {% if status_filter == 'read' %}selected{% endif %}>Lidas</option>
+        </select>
+      </div>
+      <button type="submit">Filtrar</button>
+    </form>
+  </section>
+
+  {% include 'messages_table.html' %}
+
+    <div id="modal-container" 
+      x-show="modalOpen" x-cloak
+       @modal-close.window="modalOpen = false"
+       @keydown.escape.window="modalOpen = false"
+      >
+    <div class="modal-overlay" @click.self="modalOpen = false">
+      <div class="modal-content" id="modal-content" hx-on:htmx:afterOnLoad="(function(){var b=document.querySelector('body'); if(b && b.__x){ b.__x.$data.modalOpen = true; } else { b && b.setAttribute('x-data', '{ modalOpen: true }'); } })()">
+      </div>
+    </div>
+  </div>
+</body>
+</html>

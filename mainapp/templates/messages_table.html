@@ -1,0 +1,60 @@
+<section class="messages-table"
+         hx-trigger="refresh-messages from:body"
+         hx-get="{% url 'admin' %}"
+         hx-select=".messages-table"
+         hx-swap="outerHTML">
+  <h2>Todas as Mensagens</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Lido</th>
+        <th>Data</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for msg in messages %}
+      <tr>
+        <td>{{ msg.id }}</td>
+        <td>{{ msg.name }}</td>
+        <td>{{ msg.email }}</td>
+        <td>
+          <button type="button"
+                  class="toggle-read"
+                  hx-post="{% url 'toggle_message_read' msg.pk %}"
+                  hx-target="this"
+                  hx-swap="outerHTML">
+            <span class="read-status">{{ msg.read|yesno:"Sim,Não" }}</span>
+          </button>
+        </td>
+        <td>{{ msg.formatted_date }}</td>
+        <td>
+          <button type="button" 
+                  hx-get="{% url 'message_detail' msg.pk %}"
+                  hx-target="#modal-content"
+                  hx-swap="innerHTML"
+                  hx-select="unset"
+                  @click="modalOpen = true">Ver</button>
+          <button type="button" 
+                  hx-get="{% url 'message_edit' msg.pk %}"
+                  hx-target="#modal-content"
+                  hx-swap="innerHTML"
+                  hx-select="unset"
+                  @click="modalOpen = true">Editar</button>
+          <button type="button" 
+                  hx-get="{% url 'message_delete_confirm' msg.pk %}"
+                  hx-target="#modal-content"
+                  hx-swap="innerHTML"
+                  hx-select="unset"
+                  @click="modalOpen = true">Excluir</button>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">Nenhuma mensagem.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>

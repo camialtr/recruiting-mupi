@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Admin{% endblock %}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .modal-close {
+      cursor: pointer;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+  {% block content %}{% endblock %}
+
+  <div id="modal-container" 
+       x-data="{ open: false }" 
+       x-show="open" 
+       @modal-open.window="open = true" 
+       @modal-close.window="open = false"
+       @keydown.escape.window="open = false"
+       style="display: none;">
+    <div class="modal-overlay" @click.self="open = false">
+      <div class="modal-content" id="modal-content">
+        <!-- Modal content loaded via HTMX -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>

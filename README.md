@@ -234,7 +234,7 @@ seu-projeto/
 ├── core/
 │   ├── settings.py
 │   └── urls.py
-├── app_principal/
+├── mainapp/
 │   ├── models.py
 │   ├── views.py
 │   ├── urls.py
