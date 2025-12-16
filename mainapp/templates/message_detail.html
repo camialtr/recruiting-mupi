@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensagem #{{ message_obj.id }}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Mensagem #{{ message_obj.id }}</h1>
+    <nav>
+      <a href="{% url 'messages_list' %}">Voltar</a>
+      <a href="{% url 'message_edit' message_obj.pk %}">Editar</a>
+      <a href="{% url 'message_delete_confirm' message_obj.pk %}">Excluir</a>
+    </nav>
+  </header>
+  <section>
+    <p><strong>Nome:</strong> {{ message_obj.name }}</p>
+    <p><strong>Email:</strong> {{ message_obj.email }}</p>
+    <p><strong>Data:</strong> {{ message_obj.formatted_date }}</p>
+    <p><strong>Lido:</strong> {{ message_obj.read|yesno:"Sim,Não" }}</p>
+    <p><strong>Mensagem:</strong></p>
+    <pre>{{ message_obj.message }}</pre>
+  </section>
+</body>
+</html>

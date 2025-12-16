@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landpage</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Fale Conosco</h1>
+    <nav>
+      <a href="/admin/">Admin</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'messages_list' %}">Mensagens</a>
+        <a href="{% url 'logout_confirm' %}">Sair</a>
+      {% else %}
+        <a href="{% url 'login' %}">Entrar</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% if messages %}
+    <ul>
+      {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+
+  <section>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+</body>
+</html>
