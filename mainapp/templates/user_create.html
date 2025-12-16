@@ -3,7 +3,9 @@
   <button class="modal-close" @click="$dispatch('modal-close')">&times;</button>
 </div>
 
-<form hx-post="{% url 'user_create' %}">
+<form hx-post="{% url 'user_create' %}"
+      hx-target="#modal-content"
+      hx-swap="innerHTML">
   {% csrf_token %}
   <div class="modal-body">
     <p>
