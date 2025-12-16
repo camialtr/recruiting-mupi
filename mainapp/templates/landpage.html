@@ -5,25 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Landpage</title>
   <link rel="stylesheet" href="/static/css/style.css">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
+  <script>
+    document.addEventListener('htmx:configRequest', function(event) {
+      var csrfEl = document.querySelector('meta[name="csrf-token"]');
+      if (csrfEl) {
+        event.detail.headers['X-CSRFToken'] = csrfEl.getAttribute('content');
+      }
+    });
+  </script>
+  <style>
+    [x-cloak] { display: none !important; }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .modal-close {
+      cursor: pointer;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      justify-content: flex-end;
+    }
+  </style>
 </head>
-<body>
+<body x-data="{ modalOpen: false }">
   <header>
     <h1>Fale Conosco</h1>
+    {% if user.is_authenticated %}
     <nav>
-      {% if user.is_authenticated %}
-        <a href="{% url 'admin' %}">Dashboard</a>
-        <a href="{% url 'logout_confirm' %}">Sair</a>
-      {% else %}
-        <a href="{% url 'login' %}">Área Administrativa</a>
-      {% endif %}
+      <a href="{% url 'admin' %}">Dashboard</a>
+      <button type="button"
+              hx-get="{% url 'logout_confirm' %}"
+              hx-target="#modal-content"
+              hx-swap="innerHTML"
+              @click="modalOpen = true">Sair</button>
     </nav>
+    {% endif %}
   </header>
-
-  {% if messages %}
-    <ul>
-      {% for m in messages %}<li>{{ m }}</li>{% endfor %}
-    </ul>
-  {% endif %}
 
   <section>
     <form method="post">
@@ -32,5 +78,15 @@
       <button type="submit">Enviar</button>
     </form>
   </section>
+
+  <div id="modal-container" 
+       x-show="modalOpen" x-cloak
+       @modal-close.window="modalOpen = false"
+       @keydown.escape.window="modalOpen = false">
+    <div class="modal-overlay" @click.self="modalOpen = false">
+      <div class="modal-content" id="modal-content">
+      </div>
+    </div>
+  </div>
 </body>
 </html>

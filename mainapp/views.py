@@ -1,18 +1,24 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView
-from django.db.models import Count, Q
-from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.db.models import Q
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 
-from .forms import MessageForm, MessageUpdateForm
+from .forms import MessageForm, MessageUpdateForm, CreateUserForm, ChangeUserPasswordForm
 from .models import Message
 
 
-class LoginViewCustom(LoginView):
-	template_name = 'login.html'
+def dev_required(view_func):
+    """Decorator que verifica se o usuário é dev (superuser)"""
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            if request.headers.get('HX-Request'):
+                return HttpResponseForbidden('Acesso negado')
+            return redirect('admin')
+        return view_func(request, *args, **kwargs)
+    return wrapper
 
 
 def redirect_to_admin(request):
@@ -41,6 +47,14 @@ def dashboard(request):
 	total_messages = Message.objects.count()
 	unread_messages = Message.objects.filter(read=False).count()
 	read_messages = Message.objects.filter(read=True).count()
+	
+	# Verifica se o usuário é dev (superuser)
+	is_dev = request.user.is_superuser
+	
+	# Lista de usuários ativos (apenas para devs)
+	active_users = []
+	if is_dev:
+		active_users = User.objects.all()
 
 	context = {
 		'total_messages': total_messages,
@@ -49,9 +63,15 @@ def dashboard(request):
 		'messages': messages_qs,
 		'search_query': search_query,
 		'status_filter': status_filter,
+		'is_dev': is_dev,
+		'active_users': active_users,
 	}
 	
+	# Se é HTMX, verifica se quer seção específica
 	if request.headers.get('HX-Request'):
+		section = request.GET.get('section')
+		if section == 'users':
+			return render(request, 'dashboard.html', context)
 		return render(request, 'messages_table.html', context)
 	
 	return render(request, 'dashboard.html', context)
@@ -62,11 +82,18 @@ def dashboard_stats(request):
 	total_messages = Message.objects.count()
 	unread_messages = Message.objects.filter(read=False).count()
 	read_messages = Message.objects.filter(read=True).count()
+	
+	is_dev = request.user.is_superuser
+	active_users = []
+	if is_dev:
+		active_users = User.objects.all()
 
 	context = {
 		'total_messages': total_messages,
 		'unread_messages': unread_messages,
 		'read_messages': read_messages,
+		'is_dev': is_dev,
+		'active_users': active_users,
 	}
 	
 	return render(request, 'dashboard.html', context)
@@ -94,13 +121,15 @@ def message_detail(request, pk: int):
 	if was_unread:
 		msg.mark_as_read()
 	
-	response = render(request, 'message_detail.html', {'message_obj': msg})
+	is_dev = request.user.is_superuser
+	response = render(request, 'message_detail.html', {'message_obj': msg, 'is_dev': is_dev})
 	if was_unread:
 		response['HX-Trigger'] = 'refresh-stats'
 	return response
 
 
 @login_required
+@dev_required
 def message_edit(request, pk: int):
 	if not request.headers.get('HX-Request'):
 		return redirect('admin')
@@ -118,6 +147,7 @@ def message_edit(request, pk: int):
 
 
 @login_required
+@dev_required
 def message_delete_confirm(request, pk: int):
 	if not request.headers.get('HX-Request'):
 		return redirect('admin')
@@ -146,12 +176,69 @@ def toggle_message_read(request, pk: int):
 
 @login_required
 def logout_confirm(request):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	
 	if request.method == 'POST':
 		logout(request)
-		messages.info(request, 'Você saiu da área administrativa.')
-		if request.headers.get('HX-Request'):
-			return HttpResponse(status=204, headers={'HX-Redirect': '/'})
-		return redirect('landpage')
+		return HttpResponse(status=204, headers={'HX-Redirect': '/'})
 	
-	is_htmx = request.headers.get('HX-Request')
-	return render(request, 'logout_confirm.html', {'is_htmx': is_htmx})
+	return render(request, 'logout_confirm.html')
+
+
+# === Views de gerenciamento de usuários (apenas devs) ===
+
+@login_required
+@dev_required
+def user_create(request):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	
+	if request.method == 'POST':
+		form = CreateUserForm(request.POST)
+		if form.is_valid():
+			form.save()
+			messages.success(request, 'Usuário criado com sucesso.')
+			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users'})
+	else:
+		form = CreateUserForm()
+	return render(request, 'user_create.html', {'form': form})
+
+
+@login_required
+@dev_required
+def user_change_password(request, pk: int):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	
+	target_user = get_object_or_404(User, pk=pk)
+	
+	if request.method == 'POST':
+		form = ChangeUserPasswordForm(target_user, request.POST)
+		if form.is_valid():
+			form.save()
+			messages.success(request, f'Senha do usuário {target_user.username} alterada.')
+			return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close'})
+	else:
+		form = ChangeUserPasswordForm(target_user)
+	return render(request, 'user_change_password.html', {'form': form, 'target_user': target_user})
+
+
+@login_required
+@dev_required
+def user_delete(request, pk: int):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	
+	target_user = get_object_or_404(User, pk=pk)
+	
+	# Não pode deletar a si mesmo
+	if target_user == request.user:
+		return HttpResponseForbidden('Você não pode excluir sua própria conta.')
+	
+	if request.method == 'POST':
+		username = target_user.username
+		target_user.delete()
+		return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users'})
+	
+	return render(request, 'user_delete_confirm.html', {'target_user': target_user})

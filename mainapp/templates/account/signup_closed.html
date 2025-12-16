@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro Fechado</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <h1>Cadastro Restrito</h1>
+  <div class="info-message">
+    <p>O cadastro de novos usuários é restrito.</p>
+    <p><strong>Apenas desenvolvedores</strong> podem cadastrar novos usuários através do painel administrativo.</p>
+    <p>Se você precisa de acesso, entre em contato com um desenvolvedor da equipe.</p>
+  </div>
+  <p><a href="{% url 'account_login' %}">Voltar para o Login</a></p>
+</body>
+</html>

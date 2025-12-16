@@ -3,7 +3,6 @@ from . import views
 
 urlpatterns = [
     path('', views.landpage, name='landpage'),
-    path('login/', views.LoginViewCustom.as_view(), name='login'),
     path('logout/', views.logout_confirm, name='logout_confirm'),
 
     path('admin/', views.dashboard, name='admin'),
@@ -13,4 +12,9 @@ urlpatterns = [
     path('messages/<int:pk>/edit/', views.message_edit, name='message_edit'),
     path('messages/<int:pk>/delete/', views.message_delete_confirm, name='message_delete_confirm'),
     path('messages/<int:pk>/toggle-read/', views.toggle_message_read, name='toggle_message_read'),
+    
+    # Gerenciamento de usuários (apenas devs)
+    path('users/create/', views.user_create, name='user_create'),
+    path('users/<int:pk>/change-password/', views.user_change_password, name='user_change_password'),
+    path('users/<int:pk>/delete/', views.user_delete, name='user_delete'),
 ]

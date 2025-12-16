@@ -39,6 +39,7 @@
                   hx-swap="innerHTML"
                   hx-select="unset"
                   onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Ver</button>
+          {% if is_dev %}
           <button type="button" 
                   hx-get="{% url 'message_edit' msg.pk %}"
                   hx-target="#modal-content"
@@ -51,6 +52,7 @@
                   hx-swap="innerHTML"
                   hx-select="unset"
                   onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Excluir</button>
+          {% endif %}
         </td>
       </tr>
       {% empty %}

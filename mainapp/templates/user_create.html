@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <h2>Criar Novo Usuário</h2>
+  <button class="modal-close" @click="$dispatch('modal-close')">&times;</button>
+</div>
+
+<form hx-post="{% url 'user_create' %}">
+  {% csrf_token %}
+  <div class="modal-body">
+    <p>
+      <label for="id_username">Usuário *</label>
+      {{ form.username }}
+      {% if form.username.errors %}<span class="error">{{ form.username.errors.0 }}</span>{% endif %}
+    </p>
+    <p>
+      <label for="id_email">Email</label>
+      {{ form.email }}
+    </p>
+    <p>
+      <label for="id_password">Senha *</label>
+      {{ form.password }}
+      {% if form.password.errors %}<span class="error">{{ form.password.errors.0 }}</span>{% endif %}
+    </p>
+    <p>
+      <label for="id_password_confirm">Confirmar Senha *</label>
+      {{ form.password_confirm }}
+      {% if form.password_confirm.errors %}<span class="error">{{ form.password_confirm.errors.0 }}</span>{% endif %}
+    </p>
+    {% if form.non_field_errors %}
+      <p class="error">{{ form.non_field_errors.0 }}</p>
+    {% endif %}
+    <p class="help-text">O novo usuário será criado como Visualizador.</p>
+  </div>
+  <div class="modal-actions">
+    <button type="button" @click="$dispatch('modal-close')">Cancelar</button>
+    <button type="submit">Criar Usuário</button>
+  </div>
+</form>

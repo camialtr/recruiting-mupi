@@ -114,12 +114,6 @@
     </nav>
   </header>
 
-  {% if messages %}
-    <ul>
-      {% for m in messages %}<li>{{ m }}</li>{% endfor %}
-    </ul>
-  {% endif %}
-
   <section class="dashboard-stats" hx-trigger="refresh-stats from:document" hx-get="{% url 'dashboard_stats' %}" hx-select=".dashboard-stats" hx-swap="outerHTML">
     <h2>Estatísticas</h2>
     <div class="stats-grid">
@@ -200,6 +194,7 @@
                     hx-swap="innerHTML"
                     hx-select="unset"
                     onclick="window.dispatchEvent(new CustomEvent('modal-open')); document.getElementById('read-text-{{ msg.pk }}').textContent = 'Sim';">Ver</button>
+            {% if is_dev %}
             <button type="button" 
                     hx-get="{% url 'message_edit' msg.pk %}"
                     hx-target="#modal-content"
@@ -212,6 +207,7 @@
                     hx-swap="innerHTML"
                     hx-select="unset"
                     onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Excluir</button>
+            {% endif %}
           </td>
         </tr>
         {% empty %}
@@ -220,6 +216,58 @@
       </tbody>
     </table>
   </section>
+
+  {% if is_dev %}
+  <section class="users-section"
+           hx-trigger="refresh-users from:document"
+           hx-get="{% url 'admin' %}?section=users"
+           hx-select=".users-section"
+           hx-swap="outerHTML">
+    <h2>Usuários Ativos</h2>
+    <button type="button" 
+            class="btn-create-user"
+            hx-get="{% url 'user_create' %}"
+            hx-target="#modal-content"
+            hx-swap="innerHTML"
+            hx-select="unset"
+            onclick="window.dispatchEvent(new CustomEvent('modal-open'))">+ Novo Usuário</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Usuário</th>
+          <th>Tipo</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in active_users %}
+        <tr>
+          <td>{{ u.username }}</td>
+          <td>{{ u.is_superuser|yesno:"Dev,Viewer" }}</td>
+          <td>
+            <button type="button" 
+                    hx-get="{% url 'user_change_password' u.pk %}"
+                    hx-target="#modal-content"
+                    hx-swap="innerHTML"
+                    hx-select="unset"
+                    onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Alterar Senha</button>
+            {% if u != request.user %}
+            <button type="button"
+                    hx-get="{% url 'user_delete' u.pk %}"
+                    hx-target="#modal-content"
+                    hx-swap="innerHTML"
+                    hx-select="unset"
+                    onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Excluir</button>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">Nenhum usuário.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
 
     <div id="modal-container" 
       x-show="modalOpen" x-cloak

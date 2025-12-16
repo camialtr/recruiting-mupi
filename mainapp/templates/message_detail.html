@@ -9,10 +9,11 @@
   <p><strong>Data:</strong> {{ message_obj.formatted_date }}</p>
   <p><strong>Lido:</strong> {{ message_obj.read|yesno:"Sim,Não" }}</p>
   <p><strong>Mensagem:</strong></p>
-  <pre style="white-space: pre-wrap; background: #f5f5f5; padding: 1rem; border-radius: 4px;">{{ message_obj.message }}</pre>
+  <div style="white-space: pre-wrap; word-wrap: break-word; word-break: break-word; overflow-wrap: break-word; background: #f5f5f5; padding: 1rem; border-radius: 4px; max-width: 100%; overflow-x: auto;">{{ message_obj.message|linebreaksbr }}</div>
 </div>
 
 <div class="modal-actions">
+  {% if is_dev %}
   <button type="button" 
           hx-get="{% url 'message_edit' message_obj.pk %}"
           hx-target="#modal-content"
@@ -23,5 +24,6 @@
           hx-target="#modal-content"
           hx-swap="innerHTML"
           @click="$dispatch('modal-open')">Excluir</button>
+  {% endif %}
   <button type="button" @click="$dispatch('modal-close')">Fechar</button>
 </div>

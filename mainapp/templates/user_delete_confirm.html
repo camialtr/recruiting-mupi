@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h2>Excluir Usuário</h2>
+  <button class="modal-close" @click="$dispatch('modal-close')">&times;</button>
+</div>
+
+<p>Tem certeza que deseja excluir o usuário <strong>{{ target_user.username }}</strong>?</p>
+<p>Esta ação não pode ser desfeita.</p>
+
+<form hx-post="{% url 'user_delete' target_user.pk %}"
+      hx-target="#modal-content"
+      hx-swap="innerHTML">
+  {% csrf_token %}
+  <div class="modal-actions">
+    <button type="button" @click="$dispatch('modal-close')">Cancelar</button>
+    <button type="submit">Confirmar Exclusão</button>
+  </div>
+</form>
