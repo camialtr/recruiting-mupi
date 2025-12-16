@@ -31,7 +31,8 @@ class Message(models.Model):
         self.save(update_fields=['read'])
 
     def formatted_date(self):
-        return self.sent_at.strftime('%d/%m/%Y %H:%M')
+        local_time = timezone.localtime(self.sent_at)
+        return local_time.strftime('%d/%m/%Y %H:%M')
 
     def short_message(self):
         return (self.message[:75] + '...') if len(self.message) > 75 else self.message
@@ -52,7 +53,7 @@ class AuditLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Usuário')
     action = models.CharField(max_length=20, choices=ACTION_TYPES, verbose_name='Ação')
     description = models.TextField(verbose_name='Descrição')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Data/Hora')
+    created_at = models.DateTimeField(default=timezone.now, verbose_name='Data/Hora')
     
     class Meta:
         verbose_name = 'Log de Auditoria'
@@ -63,7 +64,8 @@ class AuditLog(models.Model):
         return f'{self.user.username if self.user else "Sistema"}: {self.description}'
     
     def formatted_date(self):
-        return self.created_at.strftime('%d/%m/%Y %H:%M')
+        local_time = timezone.localtime(self.created_at)
+        return local_time.strftime('%d/%m/%Y %H:%M')
     
     @classmethod
     def log(cls, user, action, description):
