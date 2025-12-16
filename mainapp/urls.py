@@ -8,7 +8,7 @@ urlpatterns = [
 
     path('admin/', views.dashboard, name='admin'),
     path('admin/stats/', views.dashboard_stats, name='dashboard_stats'),
-    path('messages/', views.messages_list, name='messages_list'),
+    path('messages/', views.redirect_to_admin, name='messages_redirect'),
     path('messages/<int:pk>/', views.message_detail, name='message_detail'),
     path('messages/<int:pk>/edit/', views.message_edit, name='message_edit'),
     path('messages/<int:pk>/delete/', views.message_delete_confirm, name='message_delete_confirm'),
