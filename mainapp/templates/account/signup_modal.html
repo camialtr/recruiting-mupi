@@ -1,16 +1,18 @@
-<div class="modal-header">
-  <h2>Cadastro Restrito</h2>
-  <button class="modal-close" @click="$dispatch('modal-close')">&times;</button>
+<div class="modal-header flex justify-between items-center mb-6">
+  <h2 class="text-xl font-bold text-primary">Cadastro Restrito</h2>
+  <button class="text-secondary hover:text-primary transition-colors" @click="$dispatch('modal-close')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+  </button>
 </div>
 
-<div class="modal-body">
-  <div class="info-message">
-    <p>O cadastro de novos usuários é restrito.</p>
-    <p><strong>Apenas desenvolvedores</strong> podem cadastrar novos usuários através do painel administrativo.</p>
-    <p>Se você precisa de acesso, entre em contato com um desenvolvedor da equipe.</p>
+<div class="modal-body mb-6">
+  <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-900/50 p-4 rounded-md">
+    <p class="text-yellow-800 dark:text-yellow-200 mb-2 font-medium">O cadastro de novos usuários é restrito.</p>
+    <p class="text-sm text-yellow-700 dark:text-yellow-300/80 mb-2"><strong>Apenas desenvolvedores</strong> podem cadastrar novos usuários através do painel administrativo.</p>
+    <p class="text-sm text-yellow-700 dark:text-yellow-300/80">Se você precisa de acesso, entre em contato com um desenvolvedor da equipe.</p>
   </div>
 </div>
 
-<div class="modal-actions">
-  <button type="button" @click="$dispatch('modal-close')">Fechar</button>
+<div class="modal-actions flex justify-end">
+  <button type="button" class="btn btn-primary" @click="$dispatch('modal-close')">Fechar</button>
 </div>

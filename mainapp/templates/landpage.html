@@ -1,92 +1,115 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Landpage</title>
-  <link rel="stylesheet" href="/static/css/style.css">
-  <meta name="csrf-token" content="{{ csrf_token }}">
-  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-  <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
-  <script>
-    document.addEventListener('htmx:configRequest', function(event) {
-      var csrfEl = document.querySelector('meta[name="csrf-token"]');
-      if (csrfEl) {
-        event.detail.headers['X-CSRFToken'] = csrfEl.getAttribute('content');
-      }
-    });
-  </script>
-  <style>
-    [x-cloak] { display: none !important; }
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .modal-close {
-      cursor: pointer;
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      padding: 0.5rem;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-      justify-content: flex-end;
-    }
-  </style>
-</head>
-<body x-data="{ modalOpen: false }">
-  <header>
-    <h1>Fale Conosco</h1>
-    {% if user.is_authenticated %}
-    <nav>
-      <a href="{% url 'admin' %}">Dashboard</a>
-      <button type="button"
-              hx-get="{% url 'logout_confirm' %}"
-              hx-target="#modal-content"
-              hx-swap="innerHTML"
-              @click="modalOpen = true">Sair</button>
-    </nav>
-    {% endif %}
-  </header>
+{% extends 'base.html' %}
 
-  <section>
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Enviar</button>
-    </form>
-  </section>
+{% block title %}Dance Studio - Crie seus mapas{% endblock %}
 
-  <div id="modal-container" 
-       x-show="modalOpen" x-cloak
-       @modal-close.window="modalOpen = false"
-       @keydown.escape.window="modalOpen = false">
-    <div class="modal-overlay" @click.self="modalOpen = false">
-      <div class="modal-content" id="modal-content">
+{% block theme_toggle %}{% endblock %}
+
+{% block content %}
+<header class="sticky top-0 z-40">
+  <!-- Blur/Fade Layer -->
+  <div class="absolute inset-0 backdrop-blur-xl pointer-events-none"
+       style="-webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%);">
+  </div>
+  
+  <div class="container relative z-10 mx-auto px-4 h-24 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 text-sm breadcrumbs text-secondary">
+        <span class="text-primary font-bold text-lg">Dance Studio</span>
       </div>
     </div>
+    
+    <div class="flex items-center gap-4">
+      <button type="button" 
+              onclick="toggleTheme()" 
+              class="p-2 rounded-full bg-surface/80 backdrop-blur-md border border-border hover:bg-surface transition-colors text-secondary hover:text-primary shadow-sm"
+              aria-label="Alternar tema">
+        <!-- Sun Icon (for Dark Mode) -->
+        <svg class="hidden dark:block w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <!-- Moon Icon (for Light Mode) -->
+        <svg class="block dark:hidden w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+
+      <div class="h-4 w-px bg-secondary opacity-50"></div>
+
+      {% if user.is_authenticated %}
+      <nav class="flex items-center gap-4">
+        <a href="{% url 'admin' %}" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Dashboard</a>
+        <div class="h-4 w-px bg-secondary opacity-50"></div>
+        <button type="button"
+                hx-get="{% url 'logout_confirm' %}"
+                hx-target="#modal-content"
+                hx-swap="innerHTML"
+                class="text-sm font-medium text-secondary hover:text-primary transition-colors">
+          Sair
+        </button>
+      </nav>
+      {% else %}
+      <nav>
+        <a href="{% url 'account_login' %}" class="btn btn-primary text-sm">
+          Entrar
+        </a>
+      </nav>
+      {% endif %}
+    </div>
   </div>
-</body>
-</html>
+</header>
+
+<main class="flex-grow">
+  <section class="py-24 md:py-32 container mx-auto px-4 text-center">
+    <h1 class="text-5xl md:text-7xl font-bold tracking-tighter mb-6 bg-gradient-to-b from-gray-900 to-gray-500 dark:from-white dark:to-gray-500 bg-clip-text text-transparent">
+      Dance Studio
+    </h1>
+    <p class="text-xl text-secondary max-w-2xl mx-auto mb-12">
+      A ferramenta online definitiva para criação de mapas de Just Dance. Entre em contato para saber mais.
+    </p>
+    
+    <div class="max-w-md mx-auto card text-left">
+      <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="space-y-2">
+          <label for="id_name" class="block text-sm font-medium text-secondary">Nome</label>
+          {{ form.name }}
+        </div>
+        
+        <div class="space-y-2">
+          <label for="id_email" class="block text-sm font-medium text-secondary">Email</label>
+          {{ form.email }}
+        </div>
+        
+        <div class="space-y-2">
+          <label for="id_message" class="block text-sm font-medium text-secondary">Mensagem</label>
+          {{ form.message }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-full">
+          Enviar Mensagem
+        </button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-border py-8 text-center text-sm text-secondary">
+  <div class="container mx-auto px-4">
+    <p>&copy; {% now "Y" %} Dance Studio. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<script>
+  // Auto-apply Tailwind classes to form fields
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
+    const textareas = document.querySelectorAll('textarea');
+    
+    inputs.forEach(input => input.classList.add('input'));
+    textareas.forEach(textarea => {
+      textarea.classList.add('input', 'min-h-[120px]');
+    });
+  });
+</script>
+{% endblock %}

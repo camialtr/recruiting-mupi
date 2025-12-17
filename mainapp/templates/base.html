@@ -1,68 +1,224 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}Admin{% endblock %}</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <title>{% block title %}Mupi Recruiting{% endblock %}</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            background: 'rgb(var(--color-background) / <alpha-value>)',
+            surface: 'rgb(var(--color-surface) / <alpha-value>)',
+            border: 'rgb(var(--color-border) / <alpha-value>)',
+            primary: 'rgb(var(--color-primary) / <alpha-value>)',
+            secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+            accent: 'rgb(var(--color-accent) / <alpha-value>)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Theme Init -->
+  <script>
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    
+    function toggleTheme() {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light';
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.theme = 'dark';
+      }
+    }
+  </script>
+
+  <!-- HTMX & Alpine -->
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
-  <style>
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+  
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <script>
+    document.addEventListener('htmx:configRequest', function(event) {
+      var csrfEl = document.querySelector('meta[name="csrf-token"]');
+      if (csrfEl) {
+        event.detail.headers['X-CSRFToken'] = csrfEl.getAttribute('content');
+      }
+    });
+    
+    // Alpine/HTMX Integration for Modals
+    document.addEventListener('htmx:afterSwap', function (evt) {
+      var tgt = (evt.detail && evt.detail.target) ? evt.detail.target : evt.target;
+      if (tgt && tgt.id === 'modal-content') {
+        window.dispatchEvent(new CustomEvent('modal-open'));
+      }
+    });
+  </script>
+
+  <style type="text/tailwindcss">
+    :root {
+      /* Zinc Palette (Neutral/Clean) */
+      --color-background: 250 250 250;  /* Zinc-50 */
+      --color-surface: 255 255 255;     /* White */
+      --color-border: 228 228 231;      /* Zinc-200 */
+      --color-primary: 24 24 27;        /* Zinc-900 */
+      --color-secondary: 113 113 122;   /* Zinc-500 */
+      --color-accent: 124 58 237;       /* Violet-600 */
     }
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      max-width: 600px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .dark {
+      /* Zinc Palette (High Contrast/Neutral) */
+      --color-background: 9 9 11;       /* Zinc-950 */
+      --color-surface: 24 24 27;        /* Zinc-900 */
+      --color-border: 39 39 42;         /* Zinc-800 */
+      --color-primary: 250 250 250;     /* Zinc-50 */
+      --color-secondary: 161 161 170;   /* Zinc-400 */
+      --color-accent: 139 92 246;       /* Violet-500 */
     }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
+
+    @layer utilities {
+      .text-balance {
+        text-wrap: balance;
+      }
+      .btn {
+        @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-white;
+      }
+      .btn-primary {
+        @apply bg-primary text-surface hover:bg-opacity-90;
+      }
+      .btn-secondary {
+        @apply bg-surface border border-border text-primary hover:bg-gray-100 dark:hover:bg-gray-800;
+      }
+      .btn-danger {
+        @apply bg-red-900/20 text-red-500 border border-red-900/50 hover:bg-red-900/30;
+      }
+      .input {
+        @apply w-full bg-background border border-border rounded-md px-3 py-2 text-primary placeholder-secondary focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all;
+      }
+      .card {
+        @apply bg-surface border border-border rounded-lg p-6;
+      }
+      .link {
+        @apply text-secondary hover:text-primary transition-colors underline-offset-4 hover:underline;
+      }
+
+
     }
-    .modal-close {
-      cursor: pointer;
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      padding: 0.5rem;
+    
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
     }
-    .modal-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-      justify-content: flex-end;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
     }
+    
+    /* Custom Scrollbar for tables */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    [x-cloak] { display: none !important; }
   </style>
+  {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body class="text-white font-sans antialiased min-h-screen flex flex-col"
+      x-data="{ modalOpen: false }"
+      @modal-open.window="modalOpen = true"
+      @modal-close.window="modalOpen = false"
+      @keydown.escape.window="modalOpen = false">
+
+  <!-- Solid Background Layer -->
+  <div class="fixed inset-0 bg-background pointer-events-none" style="z-index: -50;"></div>
+
+  <!-- Background Effects: Top Spotlight (Timeless) -->
+  <div class="fixed inset-0 pointer-events-none" style="z-index: -10;">
+    <!-- Soft light emerging from the top center -->
+    <div class="absolute inset-0 w-full h-full" style="background: radial-gradient(circle at 50% 0%, rgb(var(--color-accent) / 0.15) 0%, transparent 70%);"></div>
+  </div>
+
+  <!-- Global Theme Toggle (can be overridden by templates that have their own) -->
+  {% block theme_toggle %}
+  <div class="fixed top-4 right-4 z-50">
+    <button type="button" 
+            onclick="toggleTheme()" 
+            class="p-2 rounded-full bg-surface/80 backdrop-blur-md border border-border hover:bg-surface transition-colors text-secondary hover:text-primary shadow-sm"
+            aria-label="Alternar tema">
+      <!-- Sun Icon (for Dark Mode) -->
+      <svg class="hidden dark:block w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+      <!-- Moon Icon (for Light Mode) -->
+      <svg class="block dark:hidden w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+    </button>
+  </div>
+  {% endblock %}
+
   {% block content %}{% endblock %}
 
+  <!-- Global Modal -->
   <div id="modal-container" 
-       x-data="{ open: false }" 
-       x-show="open" 
-       @modal-open.window="open = true" 
-       @modal-close.window="open = false"
-       @keydown.escape.window="open = false"
-       style="display: none;">
-    <div class="modal-overlay" @click.self="open = false">
-      <div class="modal-content" id="modal-content">
-        <!-- Modal content loaded via HTMX -->
+       x-show="modalOpen" 
+       x-cloak
+       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+       x-transition:enter="transition ease-out duration-200"
+       x-transition:enter-start="opacity-0"
+       x-transition:enter-end="opacity-100"
+       x-transition:leave="transition ease-in duration-150"
+       x-transition:leave-start="opacity-100"
+       x-transition:leave-end="opacity-0">
+       
+    <div class="relative w-full max-w-lg bg-surface border border-border rounded-xl shadow-2xl overflow-hidden"
+         @click.away="modalOpen = false"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+         x-transition:leave-end="opacity-0 scale-95 translate-y-4">
+         
+      <div id="modal-content" class="p-6">
+        <!-- Content injected via HTMX -->
       </div>
     </div>
   </div>
-</body>
+
+  <script>
+      // No animations - Timeless Design
+    </script>
+  </body>
 </html>

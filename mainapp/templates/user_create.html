@@ -1,39 +1,59 @@
-<div class="modal-header">
-  <h2>Criar Novo Usuário</h2>
-  <button class="modal-close" @click="$dispatch('modal-close')">&times;</button>
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-xl font-bold text-primary">Criar Novo Usuário</h2>
+  <button class="text-secondary hover:text-primary transition-colors" @click="$dispatch('modal-close')">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+  </button>
 </div>
 
 <form hx-post="{% url 'user_create' %}"
       hx-target="#modal-content"
-      hx-swap="innerHTML">
+      hx-swap="innerHTML"
+      class="space-y-6">
   {% csrf_token %}
-  <div class="modal-body">
-    <p>
-      <label for="id_username">Usuário *</label>
+  <div class="space-y-4">
+    <div class="space-y-2">
+      <label for="id_username" class="block text-sm font-medium text-secondary">Usuário *</label>
       {{ form.username }}
-      {% if form.username.errors %}<span class="error">{{ form.username.errors.0 }}</span>{% endif %}
-    </p>
-    <p>
-      <label for="id_email">Email</label>
+      {% if form.username.errors %}<p class="text-red-500 text-xs mt-1">{{ form.username.errors.0 }}</p>{% endif %}
+    </div>
+    <div class="space-y-2">
+      <label for="id_email" class="block text-sm font-medium text-secondary">Email</label>
       {{ form.email }}
-    </p>
-    <p>
-      <label for="id_password">Senha *</label>
+      {% if form.email.errors %}<p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+    </div>
+    <div class="space-y-2">
+      <label for="id_password" class="block text-sm font-medium text-secondary">Senha *</label>
       {{ form.password }}
-      {% if form.password.errors %}<span class="error">{{ form.password.errors.0 }}</span>{% endif %}
-    </p>
-    <p>
-      <label for="id_password_confirm">Confirmar Senha *</label>
+      {% if form.password.errors %}<p class="text-red-500 text-xs mt-1">{{ form.password.errors.0 }}</p>{% endif %}
+    </div>
+    <div class="space-y-2">
+      <label for="id_password_confirm" class="block text-sm font-medium text-secondary">Confirmar Senha *</label>
       {{ form.password_confirm }}
-      {% if form.password_confirm.errors %}<span class="error">{{ form.password_confirm.errors.0 }}</span>{% endif %}
-    </p>
+      {% if form.password_confirm.errors %}<p class="text-red-500 text-xs mt-1">{{ form.password_confirm.errors.0 }}</p>{% endif %}
+    </div>
     {% if form.non_field_errors %}
-      <p class="error">{{ form.non_field_errors.0 }}</p>
+      <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 p-3 rounded-md">
+        <p class="text-red-600 dark:text-red-200 text-sm">{{ form.non_field_errors.0 }}</p>
+      </div>
     {% endif %}
-    <p class="help-text">O novo usuário será criado como Visualizador.</p>
+    <p class="text-xs text-secondary">O novo usuário será criado como Visualizador.</p>
   </div>
-  <div class="modal-actions">
-    <button type="button" @click="$dispatch('modal-close')">Cancelar</button>
-    <button type="submit">Criar Usuário</button>
+  
+  <div class="flex justify-end gap-3 pt-4 border-t border-border mt-6">
+    <button type="button" 
+            class="btn btn-secondary"
+            @click="$dispatch('modal-close')">Cancelar</button>
+    <button type="submit"
+            class="btn btn-primary">Criar Usuário</button>
   </div>
 </form>
+
+<script>
+  (function() {
+    const modalContent = document.getElementById('modal-content');
+    if (modalContent) {
+      const inputs = modalContent.querySelectorAll('input');
+      inputs.forEach(input => input.classList.add('input'));
+    }
+  })();
+</script>

@@ -1,18 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cadastro</title>
-  <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-  <h1>Cadastro Restrito</h1>
-  <div class="info-message">
-    <p>O cadastro de novos usuários é restrito.</p>
-    <p><strong>Apenas desenvolvedores</strong> podem cadastrar novos usuários através do painel administrativo.</p>
-    <p>Se você precisa de acesso, entre em contato com um desenvolvedor da equipe.</p>
+{% extends 'base.html' %}
+
+{% block title %}Cadastro Restrito - Mupi Recruiting{% endblock %}
+
+{% block content %}
+<div class="flex-grow flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold tracking-tight text-primary mb-2">Cadastro Restrito</h1>
+    </div>
+
+    <div class="card">
+      <div class="space-y-4">
+        <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-900/50 p-4 rounded-md">
+          <p class="text-yellow-800 dark:text-yellow-200 font-medium mb-2">O cadastro de novos usuários é restrito.</p>
+          <p class="text-sm text-yellow-700 dark:text-yellow-300/80"><strong>Apenas desenvolvedores</strong> podem cadastrar novos usuários através do painel administrativo.</p>
+        </div>
+        
+        <p class="text-secondary">Se você precisa de acesso, entre em contato com um desenvolvedor da equipe.</p>
+      </div>
+      
+      <div class="mt-6 pt-6 border-t border-border">
+        <a href="{% url 'account_login' %}" class="btn btn-primary w-full text-center block">
+          Voltar para o Login
+        </a>
+      </div>
+    </div>
   </div>
-  <p><a href="{% url 'account_login' %}">Voltar para o Login</a></p>
-</body>
-</html>
+</div>
+{% endblock %}

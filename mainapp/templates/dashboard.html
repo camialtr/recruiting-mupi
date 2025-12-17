@@ -1,312 +1,233 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Área Administrativa</title>
-  <meta name="csrf-token" content="{{ csrf_token }}">
-  <link rel="stylesheet" href="/static/css/style.css">
-  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-  <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
-  <script>
-    document.addEventListener('htmx:configRequest', function(event) {
-      var csrfEl = document.querySelector('meta[name="csrf-token"]');
-      if (csrfEl) {
-        event.detail.headers['X-CSRFToken'] = csrfEl.getAttribute('content');
-      }
-    });
-    document.addEventListener('htmx:afterSwap', function (evt) {
-      var tgt = (evt.detail && evt.detail.target) ? evt.detail.target : evt.target;
-      if (tgt && tgt.id === 'modal-content') {
-        var root = document.querySelector('body');
-        if (root && root.__x) {
-          // Alpine present: set modalOpen reactive state
-          root.__x.$data.modalOpen = true;
-        } else {
-          // Fallback toggle via attribute
-          root && root.setAttribute('x-data', '{ modalOpen: true }');
-        }
-      }
-      // Reprocessar HTMX nos novos elementos após o swap
-      if (tgt && window.htmx) {
-        window.htmx.process(tgt);
-      }
-      // Reinicializar Alpine.js nos novos elementos após o swap
-      if (window.Alpine && tgt) {
-        window.Alpine.initTree(tgt);
-      }
-    });
-  </script>
-  <style>
-    [x-cloak] { display: none !important; }
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      max-width: 600px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-    .modal-close {
-      cursor: pointer;
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      padding: 0.5rem;
-    }
-    .modal-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-      justify-content: flex-end;
-    }
-    .search-filters {
-      margin: 1rem 0;
-      padding: 1rem;
-      background: #f5f5f5;
-      border-radius: 4px;
-    }
-    .search-filters form {
-      display: flex;
-      gap: 1rem;
-      align-items: end;
-    }
-    .toggle-read {
-      cursor: pointer;
-      border: none;
-      background: none;
-      padding: 0.25rem 0.5rem;
-      text-decoration: underline;
-      color: #0066cc;
-    }
-    .toggle-read:hover {
-      color: #004499;
-    }
-  </style>
-</head>
-<body x-data="{ modalOpen: false }">
-  <header>
-    <h1>Dashboard Administrativo</h1>
-    <nav>
-      <a href="{% url 'landpage' %}">Voltar ao Site</a>
-                  <button type="button" 
-                    hx-get="{% url 'logout_confirm' %}"
-                    hx-target="#modal-content"
-                    hx-swap="innerHTML"
-                    @click="modalOpen = true">Sair</button>
-    </nav>
-  </header>
+{% extends 'base.html' %}
 
-  <section class="dashboard-stats" hx-trigger="refresh-stats from:document" hx-get="{% url 'dashboard_stats' %}" hx-select=".dashboard-stats" hx-swap="outerHTML">
-    <h2>Estatísticas</h2>
-    <div class="stats-grid">
-      <div class="stat-card">
-        <h3>Total de Mensagens</h3>
-        <p class="stat-number">{{ total_messages }}</p>
+{% block title %}Dashboard - Mupi Admin{% endblock %}
+
+{% block theme_toggle %}{% endblock %}
+
+{% block content %}
+<header class="sticky top-0 z-30">
+  <!-- Blur/Fade Layer -->
+  <div class="absolute top-0 left-0 w-full h-24 backdrop-blur-xl pointer-events-none"
+       style="-webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%);">
+  </div>
+
+  <div class="container relative z-10 mx-auto px-4 h-24 flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 text-sm breadcrumbs text-secondary">
+        <span class="hidden md:inline text-primary font-bold text-lg">Dance Studio</span>
+        <svg class="hidden md:inline w-4 h-4 text-secondary opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-primary font-bold text-lg md:font-normal md:text-secondary md:text-sm">Dashboard</span>
       </div>
-      <div class="stat-card">
-        <h3>Não Lidas</h3>
-        <p class="stat-number">{{ unread_messages }}</p>
+    </div>
+    
+    <div class="flex items-center gap-4">
+      <button type="button" 
+              onclick="toggleTheme()" 
+              class="p-2 rounded-full bg-surface/80 backdrop-blur-md border border-border hover:bg-surface transition-colors text-secondary hover:text-primary shadow-sm"
+              aria-label="Alternar tema">
+        <!-- Sun Icon (for Dark Mode) -->
+        <svg class="hidden dark:block w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <!-- Moon Icon (for Light Mode) -->
+        <svg class="block dark:hidden w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+      <div class="h-4 w-px bg-secondary opacity-50"></div>
+      <a href="{% url 'landpage' %}" class="text-sm text-secondary hover:text-primary transition-colors">Ver Site</a>
+      <div class="h-4 w-px bg-secondary opacity-50"></div>
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-accent to-violet-500 flex items-center justify-center text-xs font-bold text-white shadow-sm">
+          {{ request.user.username|slice:":1"|upper }}
+        </div>
+        <span class="text-sm font-medium text-primary hidden md:inline">{{ request.user.username }}</span>
       </div>
-      <div class="stat-card">
-        <h3>Lidas</h3>
-        <p class="stat-number">{{ read_messages }}</p>
-      </div>
+      <div class="h-4 w-px bg-secondary opacity-50"></div>
+      <button type="button" 
+              hx-get="{% url 'logout_confirm' %}"
+              hx-target="#modal-content"
+              hx-swap="innerHTML"
+              class="text-sm text-secondary hover:text-primary transition-colors">Sair</button>
+    </div>
+  </div>
+</header>
+
+<main class="container mx-auto px-4 py-8 space-y-8">
+  
+  <!-- Stats Section -->
+  <section class="dashboard-stats grid grid-cols-1 md:grid-cols-3 gap-4" 
+           hx-trigger="refresh-stats from:document" 
+           hx-get="{% url 'dashboard_stats' %}" 
+           hx-select=".dashboard-stats" 
+           hx-swap="outerHTML">
+    <div class="card p-4">
+      <h3 class="text-secondary text-sm font-medium mb-1">Total de Mensagens</h3>
+      <p class="text-3xl font-bold text-primary">{{ total_messages }}</p>
+    </div>
+    <div class="card p-4 border-l-4 border-l-accent">
+      <h3 class="text-secondary text-sm font-medium mb-1">Não Lidas</h3>
+      <p class="text-3xl font-bold text-primary">{{ unread_messages }}</p>
+    </div>
+    <div class="card p-4">
+      <h3 class="text-secondary text-sm font-medium mb-1">Lidas</h3>
+      <p class="text-3xl font-bold text-primary">{{ read_messages }}</p>
     </div>
   </section>
 
-  <section class="search-filters">
-    <form hx-get="{% url 'admin' %}" 
-          hx-target=".messages-table" 
-          hx-swap="outerHTML"
-          hx-trigger="submit, change delay:300ms from:input[name='search']">
-      <div>
-        <label>Buscar:</label>
-        <input type="text" name="search" placeholder="Nome, email ou mensagem..." value="{{ search_query }}">
-      </div>
-      <div>
-        <label>Status:</label>
-        <select name="status">
+  <!-- Messages Section -->
+  <section class="space-y-4">
+    <!-- Search & Filter -->
+    <div class="flex flex-col sm:flex-row gap-4 items-end sm:items-center justify-between">
+      <h2 class="text-2xl font-bold flex items-center gap-2 text-primary">
+        <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        Mensagens
+      </h2>
+      
+      <form hx-get="{% url 'admin' %}" 
+            hx-target="#messages-table-container" 
+            hx-swap="innerHTML"
+            hx-trigger="submit, keyup changed delay:500ms from:input[name='search'], change from:select"
+            class="flex gap-2 w-full sm:w-auto">
+        <div class="relative flex-grow sm:w-64">
+          <input type="search" 
+                 name="search" 
+                 id="search-input"
+                 placeholder="Buscar..." 
+                 value="{{ search_query }}" 
+                 class="input"
+                 autocomplete="off">
+        </div>
+        
+        <select name="status" class="input w-auto cursor-pointer text-sm">
           <option value="">Todos</option>
           <option value="unread" {% if status_filter == 'unread' %}selected{% endif %}>Não Lidas</option>
           <option value="read" {% if status_filter == 'read' %}selected{% endif %}>Lidas</option>
         </select>
-      </div>
-      <button type="submit">Filtrar</button>
-    </form>
-  </section>
+      </form>
+    </div>
 
-  <section class="messages-table"
-           hx-trigger="refresh-messages from:document"
-           hx-get="{% url 'admin' %}"
-           hx-select=".messages-table"
-           hx-swap="outerHTML">
-    <h2>Todas as Mensagens</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Lido</th>
-          <th>Data</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for msg in messages %}
-        <tr>
-          <td>{{ msg.id }}</td>
-          <td>{{ msg.name }}</td>
-          <td>{{ msg.email }}</td>
-          <td>
-            <button type="button"
-                    class="toggle-read"
-                    hx-post="{% url 'toggle_message_read' msg.pk %}"
-                    hx-target="#read-text-{{ msg.pk }}"
-                    hx-swap="outerHTML"
-                    hx-select="unset">
-              <span id="read-text-{{ msg.pk }}" class="read-status">{{ msg.read|yesno:"Sim,Não" }}</span>
-            </button>
-          </td>
-          <td>{{ msg.formatted_date }}</td>
-          <td>
-            <button type="button" 
-                    hx-get="{% url 'message_detail' msg.pk %}"
-                    hx-target="#modal-content"
-                    hx-swap="innerHTML"
-                    hx-select="unset"
-                    onclick="window.dispatchEvent(new CustomEvent('modal-open')); document.getElementById('read-text-{{ msg.pk }}').textContent = 'Sim';">Ver</button>
-            {% if is_dev %}
-            <button type="button" 
-                    hx-get="{% url 'message_edit' msg.pk %}"
-                    hx-target="#modal-content"
-                    hx-swap="innerHTML"
-                    hx-select="unset"
-                    onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Editar</button>
-            <button type="button" 
-                    hx-get="{% url 'message_delete_confirm' msg.pk %}"
-                    hx-target="#modal-content"
-                    hx-swap="innerHTML"
-                    hx-select="unset"
-                    onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Excluir</button>
-            {% endif %}
-          </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="6">Nenhuma mensagem.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <!-- Messages Table -->
+    <div id="messages-table-container">
+      {% include 'messages_table.html' %}
+    </div>
   </section>
 
   {% if is_dev %}
-  <section class="users-section"
-           hx-trigger="refresh-users from:document"
-           hx-get="{% url 'admin' %}?section=users"
-           hx-select=".users-section"
-           hx-swap="outerHTML">
-    <h2>Usuários Ativos</h2>
-    <button type="button" 
-            class="btn-create-user"
-            hx-get="{% url 'user_create' %}"
-            hx-target="#modal-content"
-            hx-swap="innerHTML"
-            hx-select="unset"
-            onclick="window.dispatchEvent(new CustomEvent('modal-open'))">+ Novo Usuário</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Usuário</th>
-          <th>Tipo</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for u in active_users %}
-        <tr>
-          <td>{{ u.username }}</td>
-          <td>{{ u.is_superuser|yesno:"Dev,Viewer" }}</td>
-          <td>
-            <button type="button" 
-                    hx-get="{% url 'user_change_password' u.pk %}"
-                    hx-target="#modal-content"
-                    hx-swap="innerHTML"
-                    hx-select="unset"
-                    onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Alterar Senha</button>
-            {% if u != request.user %}
-            <button type="button"
-                    hx-get="{% url 'user_delete' u.pk %}"
-                    hx-target="#modal-content"
-                    hx-swap="innerHTML"
-                    hx-select="unset"
-                    onclick="window.dispatchEvent(new CustomEvent('modal-open'))">Excluir</button>
-            {% endif %}
-          </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="3">Nenhum usuário.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
+  <hr class="border-border my-12">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Users Section -->
+    <section class="users-section space-y-4"
+             id="users"
+             hx-trigger="refresh-users from:document"
+             hx-get="{% url 'admin' %}?section=users"
+             hx-select=".users-section"
+             hx-swap="outerHTML">
+      <div class="flex items-center justify-between h-[34px]">
+        <h2 class="text-xl font-bold flex items-center gap-2 text-primary">
+          <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          Usuários Ativos
+        </h2>
+        <button type="button" 
+                class="btn btn-secondary text-xs"
+                hx-get="{% url 'user_create' %}"
+                hx-target="#modal-content"
+                hx-swap="innerHTML">
+          + Novo Usuário
+        </button>
+      </div>
+      
+      <div class="card overflow-hidden p-0 h-[400px] overflow-y-auto custom-scrollbar">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left">
+            <thead class="sticky top-0 z-10 text-xs text-secondary uppercase bg-surface border-b border-border">
+              <tr>
+                <th class="px-6 py-3">Usuário</th>
+                <th class="px-6 py-3">Tipo</th>
+                <th class="px-6 py-3 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border">
+              {% for u in active_users %}
+              <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <td class="px-6 py-4 font-medium text-primary">{{ u.username }}</td>
+                <td class="px-6 py-4">
+                  <span class="px-2 py-1 rounded-full text-xs {% if u.is_superuser %}bg-purple-100 text-purple-700 border border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-900/50{% else %}bg-gray-100 text-secondary border border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700{% endif %}">
+                    {{ u.is_superuser|yesno:"Dev,Viewer" }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 text-right space-x-2">
+                  <button type="button" 
+                          class="px-3 py-1.5 rounded-md border border-border bg-surface text-secondary hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-800 shadow-sm transition-colors text-xs font-medium"
+                          hx-get="{% url 'user_change_password' u.pk %}"
+                          hx-target="#modal-content"
+                          hx-swap="innerHTML">
+                    Alterar senha
+                  </button>
+                  {% if u != request.user %}
+                  <button type="button"
+                          class="px-3 py-1.5 rounded-md border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 shadow-sm transition-colors text-xs font-medium"
+                          hx-get="{% url 'user_delete' u.pk %}"
+                          hx-target="#modal-content"
+                          hx-swap="innerHTML">
+                    Excluir
+                  </button>
+                  {% endif %}
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="3" class="px-6 py-4 text-center text-secondary">Nenhum usuário encontrado.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-  <section class="audit-section"
-           hx-trigger="refresh-audit from:document"
-           hx-get="{% url 'admin' %}?section=audit"
-           hx-select=".audit-section"
-           hx-swap="outerHTML">
-    <h2>Logs de Auditoria</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Data/Hora</th>
-          <th>Usuário</th>
-          <th>Ação</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for log in audit_logs %}
-        <tr>
-          <td>{{ log.formatted_date }}</td>
-          <td>{{ log.user.username|default:"Sistema" }}</td>
-          <td>{{ log.description }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="3">Nenhum registro de auditoria.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
+    <!-- Audit Log Section -->
+    <section class="audit-section space-y-4"
+             id="audit"
+             hx-trigger="refresh-audit from:document"
+             hx-get="{% url 'admin' %}?section=audit"
+             hx-select=".audit-section"
+             hx-swap="outerHTML">
+      <div class="flex items-center justify-between h-[34px]">
+        <h2 class="text-xl font-bold flex items-center gap-2 text-primary">
+          <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+          Logs de Auditoria
+        </h2>
+      </div>
+      
+      <div class="card overflow-hidden p-0 h-[400px] overflow-y-auto custom-scrollbar">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-left">
+            <thead class="sticky top-0 z-10 text-xs text-secondary uppercase bg-surface border-b border-border">
+            <tr>
+              <th class="px-6 py-3">Data</th>
+              <th class="px-6 py-3">Usuário</th>
+              <th class="px-6 py-3">Ação</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-border">
+              {% for log in audit_logs %}
+              <tr class="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <td class="px-6 py-4 text-secondary whitespace-nowrap">{{ log.formatted_date }}</td>
+                <td class="px-6 py-4 font-medium text-primary">{{ log.user.username|default:"Sistema" }}</td>
+                <td class="px-6 py-4 text-secondary">{{ log.description }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="3" class="px-6 py-4 text-center text-secondary">Nenhum registro.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
   {% endif %}
 
-    <div id="modal-container" 
-      x-show="modalOpen" x-cloak
-       @modal-open.window="modalOpen = true"
-       @modal-close.window="modalOpen = false"
-       @keydown.escape.window="modalOpen = false"
-      >
-    <div class="modal-overlay" @click.self="modalOpen = false">
-      <div class="modal-content" id="modal-content" hx-on:htmx:afterOnLoad="(function(){var b=document.querySelector('body'); if(b && b.__x){ b.__x.$data.modalOpen = true; } else { b && b.setAttribute('x-data', '{ modalOpen: true }'); } })()">
-      </div>
-    </div>
-  </div>
-</body>
-</html>
+</main>
+{% endblock %}
