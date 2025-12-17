@@ -263,3 +263,15 @@ def user_delete(request, pk: int):
 		return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users, refresh-audit'})
 	
 	return render(request, 'user_delete_confirm.html', {'target_user': target_user})
+
+
+def password_reset_modal(request):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	return render(request, 'account/password_reset_modal.html')
+
+
+def signup_modal(request):
+	if not request.headers.get('HX-Request'):
+		return redirect('admin')
+	return render(request, 'account/signup_modal.html')

@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h2>Cadastro Restrito</h2>
+  <button class="modal-close" @click="$dispatch('modal-close')">&times;</button>
+</div>
+
+<div class="modal-body">
+  <div class="info-message">
+    <p>O cadastro de novos usuários é restrito.</p>
+    <p><strong>Apenas desenvolvedores</strong> podem cadastrar novos usuários através do painel administrativo.</p>
+    <p>Se você precisa de acesso, entre em contato com um desenvolvedor da equipe.</p>
+  </div>
+</div>
+
+<div class="modal-actions">
+  <button type="button" @click="$dispatch('modal-close')">Fechar</button>
+</div>

@@ -17,4 +17,8 @@ urlpatterns = [
     path('users/create/', views.user_create, name='user_create'),
     path('users/<int:pk>/change-password/', views.user_change_password, name='user_change_password'),
     path('users/<int:pk>/delete/', views.user_delete, name='user_delete'),
+
+    # Override allauth urls to restrict access (only HTMX allowed)
+    path('accounts/password/reset/', views.password_reset_modal, name='account_reset_password'),
+    path('accounts/signup/', views.signup_modal, name='account_signup'),
 ]
