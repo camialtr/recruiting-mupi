@@ -1,5 +1,6 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="pt-br" class="dark">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,196 +13,20 @@
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            background: 'rgb(var(--color-background) / <alpha-value>)',
-            surface: 'rgb(var(--color-surface) / <alpha-value>)',
-            border: 'rgb(var(--color-border) / <alpha-value>)',
-            primary: 'rgb(var(--color-primary) / <alpha-value>)',
-            secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
-            accent: 'rgb(var(--color-accent) / <alpha-value>)',
-          }
-        }
-      }
-    }
-  </script>
+  <script src="{% static 'js/tailwind-config.js' %}"></script>
 
   <!-- Theme Init -->
-  <script>
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    
-    function toggleTheme() {
-      if (document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark');
-        localStorage.theme = 'light';
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.theme = 'dark';
-      }
-    }
-  </script>
+  <script src="{% static 'js/theme.js' %}"></script>
 
   <!-- HTMX & Alpine -->
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
   
   <meta name="csrf-token" content="{{ csrf_token }}">
-  <script>
-    document.addEventListener('htmx:configRequest', function(event) {
-      var csrfEl = document.querySelector('meta[name="csrf-token"]');
-      if (csrfEl) {
-        event.detail.headers['X-CSRFToken'] = csrfEl.getAttribute('content');
-      }
-    });
-    
-    // Alpine/HTMX Integration for Modals
-    document.addEventListener('htmx:afterSwap', function (evt) {
-      var tgt = (evt.detail && evt.detail.target) ? evt.detail.target : evt.target;
-      if (tgt && tgt.id === 'modal-content') {
-        window.dispatchEvent(new CustomEvent('modal-open'));
-      }
-    });
-  </script>
+  <script src="{% static 'js/htmx-setup.js' %}"></script>
 
-  <style>
-    /* Critical CSS to prevent FOUC */
-    :root {
-      /* Zinc Palette (Neutral/Clean) */
-      --color-background: 250 250 250;  /* Zinc-50 */
-      --color-surface: 255 255 255;     /* White */
-      --color-border: 228 228 231;      /* Zinc-200 */
-      --color-primary: 24 24 27;        /* Zinc-900 */
-      --color-secondary: 113 113 122;   /* Zinc-500 */
-      --color-accent: 124 58 237;       /* Violet-600 */
-    }
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
-    .dark {
-      /* Zinc Palette (High Contrast/Neutral) */
-      --color-background: 9 9 11;       /* Zinc-950 */
-      --color-surface: 24 24 27;        /* Zinc-900 */
-      --color-border: 39 39 42;         /* Zinc-800 */
-      --color-primary: 250 250 250;     /* Zinc-50 */
-      --color-secondary: 161 161 170;   /* Zinc-400 */
-      --color-accent: 139 92 246;       /* Violet-500 */
-    }
-
-    /* Native CSS implementation of common utility classes to load immediately */
-    .input, 
-    body input:where(:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"])), 
-    body textarea, 
-    body select {
-      width: 100%;
-      background-color: rgb(var(--color-background));
-      border: 1px solid rgb(var(--color-border));
-      border-radius: 0.375rem; /* rounded-md */
-      padding: 0.5rem 0.75rem; /* px-3 py-2 */
-      color: rgb(var(--color-primary));
-      transition-property: all;
-      transition-duration: 300ms;
-    }
-    
-    .input:focus,
-    body input:where(:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"])):focus, 
-    body textarea:focus, 
-    body select:focus {
-      outline: none;
-      border-color: rgb(var(--color-accent));
-      box-shadow: 0 0 0 2px rgb(var(--color-accent) / 0.5);
-    }
-    
-    .input::placeholder,
-    body input:where(:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"]))::placeholder, 
-    body textarea::placeholder, 
-    body select::placeholder {
-      color: rgb(var(--color-secondary));
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.5rem 1rem; /* px-4 py-2 */
-      font-size: 0.875rem; /* text-sm */
-      font-weight: 500;
-      border-radius: 0.375rem;
-      transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      transition-duration: 150ms;
-    }
-
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-    /* Hide scrollbar for IE, Edge and Firefox */
-    .no-scrollbar {
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
-    }
-    
-    /* Custom Scrollbar for tables */
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.05);
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 3px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Dark mode scrollbar */
-    .dark .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.05);
-    }
-    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-    }
-    .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.3);
-    }
-    
-    [x-cloak] { display: none !important; }
-  </style>
-
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .text-balance {
-        text-wrap: balance;
-      }
-      .btn-primary {
-        @apply bg-accent border border-transparent text-white hover:bg-accent/90 hover:text-white hover:ring-2 hover:ring-accent/50 active:scale-95 active:ring-4 active:ring-accent/20 transition-all duration-300;
-      }
-      .btn-secondary {
-        @apply bg-surface border border-border text-primary hover:bg-accent/5 hover:border-accent hover:text-accent hover:ring-2 hover:ring-accent/50 active:scale-95 active:ring-4 active:ring-accent/20 transition-all duration-300;
-      }
-      .btn-danger {
-        @apply bg-red-500/10 border border-red-500/50 text-red-500 hover:bg-red-500 hover:text-white hover:ring-2 hover:ring-red-500/50 active:scale-95 active:ring-4 active:ring-red-500/20 transition-all duration-300;
-      }
-      .card {
-        @apply bg-surface border border-border rounded-lg p-6 hover:border-accent/30 transition-colors duration-300;
-      }
-      .link {
-        @apply text-secondary hover:text-primary transition-colors underline-offset-4 hover:underline;
-      }
-    }
-  </style>
   {% block extra_head %}{% endblock %}
 </head>
 <body class="text-white font-sans antialiased min-h-screen flex flex-col"
