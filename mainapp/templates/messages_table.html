@@ -10,6 +10,7 @@
           <th class="px-6 py-3 w-16">ID</th>
           <th class="px-6 py-3">Nome</th>
           <th class="px-6 py-3">Email</th>
+          <th class="px-6 py-3">Mensagem</th>
           <th class="px-6 py-3 w-32 text-center">Lido</th>
           <th class="px-6 py-3 w-40">Data</th>
           <th class="px-6 py-3 text-right">Ações</th>
@@ -21,6 +22,7 @@
           <td class="px-6 py-4 text-secondary font-mono text-xs">#{{ msg.id }}</td>
           <td class="px-6 py-4 font-medium text-primary">{{ msg.name }}</td>
           <td class="px-6 py-4 text-secondary">{{ msg.email }}</td>
+          <td class="px-6 py-4 text-secondary max-w-[200px] truncate" title="{{ msg.message }}">{{ msg.short_message }}</td>
           <td class="px-6 py-4 text-center">
             <button type="button"
                     class="toggle-read inline-flex items-center justify-center transition-opacity hover:opacity-80 focus:outline-none"

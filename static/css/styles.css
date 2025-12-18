@@ -142,9 +142,6 @@ body select::placeholder {
   padding: 1.5rem; /* p-6 */
   transition: all 300ms;
 }
-.card:hover {
-  /* Generic hover removed as requested */
-}
 
 /* Table Cards Hover Effect (Ice) */
 .card-table:hover {
