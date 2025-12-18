@@ -1,4 +1,20 @@
 /* Critical CSS to prevent FOUC */
+@font-face {
+  font-family: 'Monument Extended';
+  src: url('../fonts/Monument-Extended.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('../fonts/Space-Grotesk.ttf') format('truetype');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* User Defined Palette (Light Mode - Adjusted for Contrast) */
   --color-background: 255 255 255;  /* #FFFFFF */
@@ -6,30 +22,66 @@
   --color-border: 229 229 229;      /* #E5E5E5 (Subtle border/outline) */
   --color-primary: 15 15 15;        /* #0F0F0F (Primary text) */
   --color-secondary: 82 82 82;      /* #525252 (Darkened from #BDBDBD for readability) */
-  --color-accent: 155 255 61;       /* #9BFF3D (Accents) */
-  --color-accent-denied: 255 107 61;  /* #FF3D3D (Neon Red - Denied/Error) */
-  --color-accent-ice: 61 98 255;    /* #3DFFF5 (Neon Cyan - Ice) */
-  --color-accent-darker: 26 26 26;   /* #1A1A1A (Deep Dark - Darker) */
-  --color-accent-grayer: 132 217 52;/* #808080 (Mid Gray - Grayer) */
+  
+  /* Reduced Palette */
+  --color-accent: 155 255 61;       /* #78FF64 (Vibrant Green - Base) */
+  --color-accent-light: 205 255 158; /* Lighter variant */
+  --color-accent-dark: 65 110 25;    /* Darker variant for contrast */
+  
+  --color-accent-ice: 98 84 255;    /* #64B4FF (Vibrant Blue - Base) */
+  --color-accent-ice-light: 176 169 255; /* Lighter variant */
+  --color-accent-ice-dark: 40 30 110;   /* Darker variant */
 }
 
-.dark {
-  /* User Defined Palette (Dark Mode - Deep Dark / High Immersion) */
-  --color-background: 15 17 26;     /* #0F111A (Deep Indigo Dark) */
-  --color-surface: 26 29 45;        /* #1A1D2D (Indigo Slate Surface) */
-  --color-border: 50 54 79;         /* #32364F (Blue Gray Border) */
-  --color-primary: 255 255 255;     /* #FFFFFF */
-  --color-secondary: 148 163 184;   /* #94A3B8 (Cool Slate Text) */
-  --color-accent: 120 255 100;      /* Vibrant Green */
-  --color-accent-denied: 255 100 80; /* Vibrant Coral */
-  --color-accent-ice: 100 180 255;  /* Vibrant Blue */
-  --color-accent-purple: 190 60 255; /* Bright Purple */
-  --color-accent-pink: 255 60 150;   /* Bright Pink */
-  --color-accent-olive: 160 200 60;  /* Vibrant Olive */
-  --color-accent-muted: 140 120 110; /* Strong Muted */
-  --color-accent-darker: 0 0 0;      /* #000000 (Pure Black) */
-  --color-accent-grayer: 120 255 100;/* Matches Muted */
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400; /* Regular base */
 }
+
+::selection {
+  background-color: rgb(var(--color-accent));
+  color: rgb(var(--color-surface));
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: 'Monument Extended', sans-serif;
+  font-weight: 400; /* Monument usually comes heavy, keep it standard to avoid faux bold distortion */
+}
+
+/* Contextual Font Weights */
+p {
+  font-weight: 400;
+}
+
+strong, b {
+  font-weight: 700;
+}
+
+small, .text-xs, .text-sm {
+  font-weight: 400;
+}
+
+/* UI Elements Context */
+.btn {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600; /* SemiBold for buttons */
+}
+
+label, .label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 500; /* Medium for labels */
+}
+
+input, textarea, select, .input {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 400;
+}
+
+th, .table-header {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+}
+
 
 /* Native CSS implementation of common utility classes to load immediately */
 .input, 
@@ -39,8 +91,8 @@ body select {
   width: 100%;
   background-color: rgb(var(--color-background));
   border: 1px solid rgb(var(--color-border));
-  border-radius: 0.375rem; /* rounded-md */
-  padding: 0.5rem 0.75rem; /* px-3 py-2 */
+  border-radius: 1rem; /* rounded-2xl (more curvature for inputs) */
+  padding: 0.75rem 1rem; /* px-4 py-3 (more padding) */
   color: rgb(var(--color-primary));
   transition-property: all;
   transition-duration: 300ms;
@@ -50,7 +102,7 @@ body select {
 body input:where(:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"])):hover, 
 body textarea:hover, 
 body select:hover {
-  border-color: rgb(var(--color-accent-grayer) / 0.5);
+  border-color: rgb(var(--color-accent) / 0.5);
 }
 
 .input:focus,
@@ -58,8 +110,9 @@ body input:where(:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]
 body textarea:focus, 
 body select:focus {
   outline: none;
-  border-color: rgb(var(--color-accent-grayer));
-  box-shadow: 0 0 0 2px rgb(var(--color-accent-grayer) / 0.5);
+  border-color: rgb(var(--color-accent));
+  box-shadow: 0 0 0 2px rgb(var(--color-background)), 0 0 0 4px rgb(var(--color-accent));
+  transform: scale(1.01);
 }
 
 .input::placeholder,
@@ -73,80 +126,89 @@ body select::placeholder {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem 1rem; /* px-4 py-2 */
+  padding: 0.75rem 1.5rem; /* Larger padding for pill shape */
   font-size: 0.875rem; /* text-sm */
-  font-weight: 500;
-  border-radius: 0.375rem;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  font-weight: 600; /* SemiBold */
+  border-radius: 9999px; /* rounded-full (Pill shape) */
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, transform, box-shadow;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition-duration: 200ms;
   cursor: pointer;
+  letter-spacing: 0.025em; /* Slight tracking */
 }
 
 /* Button Variants implemented in standard CSS */
 .btn-primary {
-  background-color: rgb(var(--color-accent));
+  background-color: rgb(var(--color-primary)); /* Inverted style usually works better for modern look: Black bg on white, White bg on black */
   border: 1px solid transparent;
-  color: rgb(15 15 15); /* Always dark text for contrast with bright accent */
-  transition: all 300ms;
+  color: rgb(var(--color-surface)); /* Text color inverse of bg */
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); /* Standard smooth transition */
   font-weight: 600;
+  /* Define initial shadow hidden behind the button to avoid color/fade-in transition.
+     It moves out in sync with transform to appear static. */
+  box-shadow: 0 0 0 -1px rgb(var(--color-surface)), 0 0 0 0 rgb(var(--color-primary));
 }
+
+/* Specific override if we want the neon accent style instead of black/white */
+.btn-primary.accent {
+    background-color: rgb(var(--color-accent));
+    color: rgb(15 15 15);
+}
+
+/* Defaulting .btn-primary to be high contrast "Shotgun" style (often black button on white bg) */
+/* Adjusting based on current palette: Primary is text color (Black/White). */
+
 .btn-primary:hover {
-  background-color: rgb(var(--color-accent) / 0.9);
-  color: rgb(15 15 15);
-  box-shadow: 0 0 0 2px rgb(var(--color-accent) / 0.5);
+  transform: scale(1.02);
+  box-shadow: 0 0 0 2px rgb(var(--color-background)), 0 0 0 4px rgb(var(--color-primary));
+  filter: none;
 }
+
 .btn-primary:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 0 4px rgb(var(--color-accent) / 0.2);
+  transform: scale(0.95); /* Deep press */
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(var(--color-background)), 0 0 0 4px rgb(var(--color-primary));
+  transition-duration: 100ms; /* Fast but perceptible entry */
 }
 
 .btn-secondary {
-  background-color: rgb(var(--color-surface));
+  background-color: transparent;
   border: 1px solid rgb(var(--color-border));
   color: rgb(var(--color-primary));
   transition: all 300ms;
 }
 .btn-secondary:hover {
-  background-color: rgb(var(--color-accent-ice) / 0.05);
-  border-color: rgb(var(--color-accent-ice));
-  color: rgb(var(--color-accent-ice));
-  box-shadow: 0 0 0 2px rgb(var(--color-accent-ice) / 0.5);
+  border-color: rgb(var(--color-primary));
+  background-color: rgb(var(--color-surface));
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 rgb(var(--color-primary));
 }
 .btn-secondary:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 0 4px rgb(var(--color-accent-ice) / 0.2);
-}
-
-.btn-danger {
-  background-color: rgba(239, 68, 68, 0.1); /* red-500/10 */
-  border: 1px solid rgb(var(--color-accent-denied)); /* red-500/50 */
-  color: rgb(var(--color-accent-denied)); /* red-500 */
-  transition: all 300ms;
-}
-.btn-danger:hover {
-  background-color: rgb(var(--color-accent-denied));    
-  color: white;
-  box-shadow: 0 0 0 2px rgb(var(--color-accent-denied) / 0.5);
-}
-.btn-danger:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 0 4px rgb(var(--color-accent-denied) / 0.2);
+  transform: translate(0, 0);
+  box-shadow: 0 0 0 transparent;
 }
 
 /* Card Styles */
 .card {
   background-color: rgb(var(--color-surface));
   border: 1px solid rgb(var(--color-border));
-  border-radius: 0.5rem; /* rounded-lg */
-  padding: 1.5rem; /* p-6 */
+  border-radius: 1.5rem; /* rounded-3xl (Larger corners for cards) */
+  padding: 2rem; /* p-8 */
   transition: all 300ms;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+
+.card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+    border-color: rgb(var(--color-primary) / 0.1);
 }
 
 /* Table Cards Hover Effect (Ice) */
 .card-table:hover {
-  border-color: rgb(var(--color-accent-ice) / 0.2);
+  border-color: rgb(var(--color-accent-ice) / 0.5);
+  box-shadow: 0 0 0 1px rgb(var(--color-accent-ice) / 0.5);
 }
+
 
 /* Link Styles */
 .link {
@@ -189,15 +251,26 @@ body select::placeholder {
     background: rgba(0, 0, 0, 0.3);
 }
 
-/* Dark mode scrollbar */
-.dark .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-}
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-}
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
 [x-cloak] { display: none !important; }
+
+@media (max-width: 768px) {
+  /* Reset hover effects on touch devices first to ensure they are overridden if needed, 
+     but actually simply defining them here is enough. 
+     The key is that :active should come AFTER or have higher specificity. 
+     Since specificity is same, order matters. */
+     
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none;
+    box-shadow: none;
+    filter: none; /* Reset brightness filter from hover */
+  }
+
+  .btn-primary:active,
+  .btn-secondary:active,
+  .simulate-active {
+    transform: scale(0.98);
+    outline: none;
+    box-shadow: 0 0 0 2px rgb(var(--color-background)), 0 0 0 4px rgb(var(--color-primary));
+  }
+}

@@ -1,7 +1,7 @@
 <div class="modal-header flex justify-between items-center mb-6">
   <div class="flex items-center gap-3">
     <h2 class="text-xl font-bold text-primary">Mensagem #{{ message_obj.id }}</h2>
-    <span class="px-2 py-1 rounded-full text-xs font-medium border {% if message_obj.read %}bg-accent-ice/10 text-accent-ice border-accent-ice/20{% else %}bg-accent-denied/10 text-accent-denied border-accent-denied/20{% endif %}">
+    <span class="px-2 py-1 rounded-full text-xs font-medium border {% if message_obj.read %}bg-accent/20 text-accent-dark border-accent-dark/30{% else %}bg-accent-ice/20 text-accent-ice-dark border-accent-ice-dark/30{% endif %}">
       {{ message_obj.read|yesno:"Lida,Não lida" }}
     </span>
   </div>
@@ -28,7 +28,7 @@
 
   <div class="flex flex-col items-start w-full">
     <label class="block text-sm font-medium text-secondary mb-2 text-left">Mensagem</label>
-    <div class="block w-full bg-background border border-border rounded-md p-4 text-primary text-sm whitespace-pre-wrap leading-relaxed min-h-[150px] max-h-[300px] overflow-y-auto custom-scrollbar text-left hover:border-accent/30 transition-colors">{{ message_obj.message }}</div>
+    <div class="block w-full bg-background border border-border rounded-md p-4 text-primary text-sm whitespace-pre-wrap break-words leading-relaxed min-h-[150px] max-h-[300px] overflow-y-auto custom-scrollbar text-left hover:border-accent/30 transition-colors">{{ message_obj.message }}</div>
   </div>
 </div>
 
@@ -42,7 +42,7 @@
     Editar
   </button>
   <button type="button" 
-          class="btn btn-danger"
+          class="btn btn-secondary"
           hx-get="{% url 'message_delete_confirm' message_obj.pk %}"
           hx-target="#modal-content"
           hx-swap="innerHTML">
