@@ -15,17 +15,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="{% static 'js/tailwind-config.js' %}"></script>
 
-  <!-- Theme Init -->
-  <script src="{% static 'js/theme.js' %}"></script>
-
   <!-- HTMX & Alpine -->
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   <script src="https://unpkg.com/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
   
   <meta name="csrf-token" content="{{ csrf_token }}">
-  <script src="{% static 'js/htmx-setup.js' %}"></script>
+  <script src="{% static 'js/htmx-setup.js' %}?v=1"></script>
 
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=11">
 
   {% block extra_head %}{% endblock %}
 </head>
@@ -41,27 +38,10 @@
   <!-- Background Effects: Top Spotlight (Timeless) -->
   <div class="fixed inset-0 pointer-events-none" style="z-index: -10;">
     <!-- Soft light emerging from the top center -->
-    <div class="absolute inset-0 w-full h-full" style="background: radial-gradient(circle at 50% -50%, rgb(var(--color-accent-ice) / 0.05) 0%, transparent 90%);"></div>
+    <div class="absolute inset-0 w-full h-full" style="background: radial-gradient(circle at 50% -50%, rgb(var(--color-accent-ice) / 0.2) 0%, transparent 90%);"></div>
   </div>
 
   <!-- Global Theme Toggle (can be overridden by templates that have their own) -->
-  {% block theme_toggle %}
-  <div class="fixed top-4 right-4 z-50">
-    <button type="button" 
-            onclick="toggleTheme()" 
-            class="p-2 rounded-full bg-surface/80 backdrop-blur-md border border-border hover:bg-surface transition-colors text-secondary hover:text-primary shadow-sm"
-            aria-label="Alternar tema">
-      <!-- Sun Icon (for Dark Mode) -->
-      <svg class="hidden dark:block w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-      </svg>
-      <!-- Moon Icon (for Light Mode) -->
-      <svg class="block dark:hidden w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-      </svg>
-    </button>
-  </div>
-  {% endblock %}
 
   {% block content %}{% endblock %}
 

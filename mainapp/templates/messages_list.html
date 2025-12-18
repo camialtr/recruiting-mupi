@@ -2,8 +2,6 @@
 
 {% block title %}Dashboard - Mupi Admin{% endblock %}
 
-{% block theme_toggle %}{% endblock %}
-
 {% block content %}
 <header class="sticky top-0 z-30">
   <!-- Blur/Fade Layer -->
@@ -23,24 +21,10 @@
     </div>
     
     <div class="flex items-center gap-4">
-      <button type="button" 
-              onclick="toggleTheme()" 
-              class="p-2 rounded-full bg-surface/80 backdrop-blur-md border border-border hover:bg-surface transition-colors text-secondary hover:text-accent shadow-sm"
-              aria-label="Alternar tema">
-        <!-- Sun Icon (for Dark Mode) -->
-        <svg class="hidden dark:block w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        <!-- Moon Icon (for Light Mode) -->
-        <svg class="block dark:hidden w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-      </button>
-      <div class="h-4 w-px bg-secondary opacity-50"></div>
       <a href="{% url 'landpage' %}" class="text-sm text-secondary hover:text-primary transition-colors">Ver Site</a>
       <div class="h-4 w-px bg-secondary opacity-50 hidden md:block"></div>
       <div class="hidden md:flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-xs font-bold text-black shadow-sm">
+        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-xs font-bold text-white shadow-sm">
           {{ request.user.username|slice:":1"|upper }}
         </div>
         <span class="text-sm font-medium text-primary hidden md:inline">{{ request.user.username }}</span>
@@ -82,14 +66,13 @@
     <!-- Search & Filter -->
     <div class="flex flex-col sm:flex-row gap-4 items-end sm:items-center justify-between">
       <h2 class="text-2xl font-bold flex items-center gap-2 text-primary">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
         Mensagens
       </h2>
       
       <form hx-get="{% url 'admin' %}" 
             hx-target="#messages-table-container" 
             hx-swap="innerHTML"
-            hx-trigger="submit, keyup changed delay:500ms from:input[name='search'], change from:select"
+            hx-trigger="submit, keyup changed delay:500ms from:input[name='search'], change"
             class="flex gap-2 w-full sm:w-auto">
         <div class="relative flex-grow sm:w-64">
           <input type="search" 
@@ -101,11 +84,72 @@
                  autocomplete="off">
         </div>
         
-        <select name="status" class="input w-auto cursor-pointer text-sm">
-          <option value="">Todos</option>
-          <option value="unread" {% if status_filter == 'unread' %}selected{% endif %}>Não Lidas</option>
-          <option value="read" {% if status_filter == 'read' %}selected{% endif %}>Lidas</option>
-        </select>
+        <div x-data="{ 
+              open: false, 
+              selected: '{{ status_filter|default:'' }}',
+              label: '{% if status_filter == 'unread' %}Não Lidas{% elif status_filter == 'read' %}Lidas{% else %}Todos{% endif %}' 
+             }" 
+             class="relative w-40"
+             @click.away="open = false">
+             
+            <!-- Hidden Input for Form Submission -->
+            <input type="hidden" name="status" x-model="selected">
+            
+            <!-- Trigger Button -->
+            <button type="button" 
+                    @click="open = !open"
+                    class="input w-full cursor-pointer text-sm flex items-center justify-between gap-2 bg-surface"
+                    :class="{ 'border-accent ring-1 ring-accent/20': open }">
+                <span x-text="label"></span>
+                <svg class="w-4 h-4 text-secondary transition-transform duration-200" 
+                     :class="{ 'rotate-180': open }"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            
+            <!-- Dropdown Menu -->
+            <div x-show="open" 
+                 x-cloak
+                 x-transition:enter="transition ease-out duration-100"
+                 x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-75"
+                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
+                 class="absolute right-0 mt-2 w-full bg-surface border border-border rounded-xl shadow-xl z-50 overflow-hidden">
+                 
+                <div class="p-1">
+                    <button type="button" 
+                            @click="selected = ''; label = 'Todos'; open = false; $nextTick(() => { $dispatch('change'); })"
+                            class="w-full text-left px-3 py-2 text-sm text-secondary rounded-lg hover:bg-accent-light/20 hover:text-primary transition-colors flex items-center justify-between"
+                            :class="{ 'bg-accent/20 font-medium text-primary': selected === '' }">
+                        Todos
+                        <span x-show="selected === ''" class="text-accent">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                    </button>
+                    <button type="button" 
+                            @click="selected = 'unread'; label = 'Não Lidas'; open = false; $nextTick(() => { $dispatch('change'); })"
+                            class="w-full text-left px-3 py-2 text-sm text-secondary rounded-lg hover:bg-accent-light/20 hover:text-primary transition-colors flex items-center justify-between"
+                            :class="{ 'bg-accent/20 font-medium text-primary': selected === 'unread' }">
+                        Não Lidas
+                        <span x-show="selected === 'unread'" class="text-accent">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                    </button>
+                    <button type="button" 
+                            @click="selected = 'read'; label = 'Lidas'; open = false; $nextTick(() => { $dispatch('change'); })"
+                            class="w-full text-left px-3 py-2 text-sm text-secondary rounded-lg hover:bg-accent-light/20 hover:text-primary transition-colors flex items-center justify-between"
+                            :class="{ 'bg-accent/20 font-medium text-primary': selected === 'read' }">
+                        Lidas
+                        <span x-show="selected === 'read'" class="text-accent">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
       </form>
     </div>
 
@@ -128,11 +172,10 @@
              hx-swap="outerHTML">
       <div class="flex items-center justify-between h-[34px]">
         <h2 class="text-xl font-bold flex items-center gap-2 text-primary">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
           Usuários Ativos
         </h2>
         <button type="button" 
-                class="btn btn-secondary text-xs"
+                class="btn btn-primary text-xs"
                 hx-get="{% url 'user_create' %}"
                 hx-target="#modal-content"
                 hx-swap="innerHTML"
@@ -141,8 +184,8 @@
         </button>
       </div>
       
-      <div class="card card-table overflow-hidden p-0 h-[400px] overflow-y-auto custom-scrollbar">
-        <div class="overflow-x-auto">
+      <div class="card card-table overflow-hidden p-0 h-[400px] flex flex-col">
+        <div class="overflow-y-auto custom-scrollbar flex-grow">
           <table class="w-full text-sm text-left">
             <thead class="sticky top-0 z-10 text-xs text-secondary uppercase bg-surface border-b border-border">
               <tr>
@@ -156,7 +199,7 @@
               <tr class="hover:bg-accent-ice/5 transition-colors">
                 <td class="px-6 py-4 font-medium text-primary">{{ u.username }}</td>
                 <td class="px-6 py-4">
-                  <span class="px-2 py-1 rounded-full text-xs font-semibold border {% if u.is_superuser %}bg-accent-denied/10 text-accent-denied border-accent-denied/20{% else %}bg-accent-ice/10 text-accent-ice border-accent-ice/20{% endif %}">
+                  <span class="px-2 py-1 rounded-full text-xs font-semibold border {% if u.is_superuser %}bg-accent/20 text-accent-dark border-accent-dark/30{% else %}bg-accent-ice/20 text-accent-ice-dark border-accent-ice-dark/30{% endif %}">
                     {{ u.is_superuser|yesno:"Dev,Viewer" }}
                   </span>
                 </td>
@@ -171,7 +214,7 @@
                   </button>
                   {% if u != request.user %}
                   <button type="button"
-                          class="btn btn-danger text-xs"
+                          class="btn btn-primary text-xs"
                           hx-get="{% url 'user_delete' u.pk %}"
                           hx-target="#modal-content"
                           hx-swap="innerHTML"
@@ -199,13 +242,12 @@
              hx-swap="outerHTML">
       <div class="flex items-center justify-between h-[34px]">
         <h2 class="text-xl font-bold flex items-center gap-2 text-primary">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
           Logs de Auditoria
         </h2>
       </div>
       
-      <div class="card card-table overflow-hidden p-0 h-[400px] overflow-y-auto custom-scrollbar">
-        <div class="overflow-x-auto">
+      <div class="card card-table overflow-hidden p-0 h-[400px] flex flex-col">
+        <div class="overflow-y-auto custom-scrollbar flex-grow">
           <table class="w-full text-sm text-left">
             <thead class="sticky top-0 z-10 text-xs text-secondary uppercase bg-surface border-b border-border">
             <tr>
