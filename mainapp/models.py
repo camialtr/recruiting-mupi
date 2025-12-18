@@ -35,7 +35,7 @@ class Message(models.Model):
         return local_time.strftime('%d/%m/%Y %H:%M')
 
     def short_message(self):
-        return (self.message[:75] + '...') if len(self.message) > 75 else self.message
+        return (self.message[:50] + '...') if len(self.message) > 75 else self.message
 
 
 class AuditLog(models.Model):
