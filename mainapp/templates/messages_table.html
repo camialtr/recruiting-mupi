@@ -1,11 +1,11 @@
-<section class="messages-table card overflow-hidden p-0"
+<section class="messages-table card card-table overflow-hidden p-0 h-[600px] overflow-y-auto custom-scrollbar"
          hx-trigger="refresh-messages from:document"
          hx-get="{% url 'admin' %}"
          hx-select=".messages-table"
          hx-swap="outerHTML">
   <div class="overflow-x-auto">
     <table class="w-full text-sm text-left">
-      <thead class="text-xs text-secondary uppercase bg-surface border-b border-border">
+      <thead class="sticky top-0 z-10 text-xs text-secondary uppercase bg-surface border-b border-border">
         <tr>
           <th class="px-6 py-3 w-16">ID</th>
           <th class="px-6 py-3">Nome</th>
@@ -17,7 +17,7 @@
       </thead>
       <tbody class="divide-y divide-border">
         {% for msg in messages %}
-        <tr class="hover:bg-accent/5 transition-colors group">
+        <tr class="hover:bg-accent-ice/5 transition-colors group">
           <td class="px-6 py-4 text-secondary font-mono text-xs">#{{ msg.id }}</td>
           <td class="px-6 py-4 font-medium text-primary">{{ msg.name }}</td>
           <td class="px-6 py-4 text-secondary">{{ msg.email }}</td>
@@ -28,7 +28,7 @@
                     hx-target="#read-text-{{ msg.pk }}"
                     hx-swap="outerHTML"
                     hx-select="unset">
-              <span id="read-text-{{ msg.pk }}" class="px-2 py-1 rounded-full text-xs {% if msg.read %}bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900/50{% else %}bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900/50{% endif %}">
+              <span id="read-text-{{ msg.pk }}" class="px-2 py-1 rounded-full text-xs font-semibold border {% if msg.read %}bg-accent-ice/10 text-accent-ice border-accent-ice/20{% else %}bg-accent-denied/10 text-accent-denied border-accent-denied/20{% endif %}">
                 {{ msg.read|yesno:"Sim,Não" }}
               </span>
             </button>

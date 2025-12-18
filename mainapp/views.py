@@ -134,7 +134,7 @@ def message_detail(request, pk: int):
     is_dev = request.user.is_superuser
     response = render(request, 'message_detail.html', {'message_obj': msg, 'is_dev': is_dev})
     if was_unread:
-        response['HX-Trigger'] = 'refresh-stats'
+        response['HX-Trigger'] = 'refresh-stats, refresh-messages'
     return response
 
 
@@ -184,10 +184,10 @@ def toggle_message_read(request, pk: int):
     
     if msg.read:
         AuditLog.log(request.user, 'view', f'Marcou como lida a mensagem de {msg.name}.')
-        css_class = "px-2 py-1 rounded-full text-xs bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-900/50"
+        css_class = "px-2 py-1 rounded-full text-xs font-semibold border bg-accent-ice/10 text-accent-ice border-accent-ice/20"
     else:
         AuditLog.log(request.user, 'unview', f'Marcou como não lida a mensagem de {msg.name}.')
-        css_class = "px-2 py-1 rounded-full text-xs bg-red-100 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-900/50"
+        css_class = "px-2 py-1 rounded-full text-xs font-semibold border bg-accent-denied/10 text-accent-denied border-accent-denied/20"
     
     status_text = "Sim" if msg.read else "Não"
     html = f'<span id="read-text-{msg.pk}" class="{css_class}">{status_text}</span>'
