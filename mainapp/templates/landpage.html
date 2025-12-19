@@ -1,90 +1,572 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Dance Studio - Crie seus mapas{% endblock %}
+{% block title %}Dance Studio - Crie seus mapas de Just Dance{% endblock %}
 
 {% block content %}
-<!-- Dashboard-style Header -->
-<header class="relative z-30 mb-8 pt-8 pb-4" x-data="{ showLogin: false, clicks: 0 }">
+<style>
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes spin-reverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+    }
+    /* SVG Specific Animations ensuring center origin */
+    .svg-spin-slow {
+        transform-origin: 500px 500px;
+        animation: spin 50s linear infinite;
+    }
+    .svg-spin-reverse-slower {
+        transform-origin: 500px 500px;
+        animation: spin-reverse 70s linear infinite;
+    }
+    .svg-spin-slower {
+        transform-origin: 500px 500px;
+        animation: spin 90s linear infinite;
+    }
+    .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animation-delay-100 { animation-delay: 100ms; }
+    .animation-delay-200 { animation-delay: 200ms; }
+    .animation-delay-300 { animation-delay: 300ms; }
+</style>
+
+<main class="flex-grow relative overflow-hidden">
   
-  <div class="container mx-auto px-4">
-    <div class="flex flex-col items-center md:flex-row md:items-center justify-between gap-6">
-      <!-- Brand Identity -->
-      <div class="flex items-center gap-4 select-none" @click="clicks++; if(clicks === 3) showLogin = true">
-        <div class="text-center md:text-left">
-          <h1 class="font-display text-2xl font-bold text-primary leading-tight">Dance Studio</h1>
-          <p class="text-secondary text-sm font-medium">Map Creator</p>
-        </div>
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-background pt-24 text-primary"
+           x-data="{ scroll: 0, loaded: false, heroHeight: 0, badgeClicks: 0, revealLogin: false }" 
+           x-init="heroHeight = $el.offsetHeight; setTimeout(() => { loaded = true; window.scrollTo(0, 1); }, 100)"
+           @scroll.window.passive="scroll = window.pageYOffset"
+           @resize.window.passive="heroHeight = $el.offsetHeight">
+
+      <header class="fixed top-0 left-0 w-full z-50 pointer-events-none flex justify-center pt-8 px-4" x-show="scroll < heroHeight">
+          <div class="pointer-events-auto flex items-center gap-4 bg-surface/50 backdrop-blur-sm p-2 pl-4 pr-4 rounded-full border border-border shadow-sm">
+              <nav class="hidden md:flex items-center gap-4">
+                  <a href="#features" class="text-xs font-medium text-secondary hover:text-primary transition-colors duration-200 inline-block" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'}); return false;">Recursos</a>
+                  <div class="h-4 w-px bg-border"></div>
+                  <a href="#contact" class="text-xs font-medium text-secondary hover:text-primary transition-colors duration-200 inline-block" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); return false;">Contato</a>
+              </nav>
+
+              {% if not user.is_authenticated %}
+                  <div class="hidden md:block h-4 w-px bg-border" x-show="revealLogin" style="display: none;"></div>
+                  <a href="{% url 'account_login' %}" class="text-xs font-medium text-secondary hover:text-primary transition-colors duration-200 inline-block" x-show="revealLogin" style="display: none;">Entrar</a>
+              {% else %}
+                  <div class="hidden md:block h-4 w-px bg-border"></div>
+
+                  <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent-light to-accent-ice-light flex items-center justify-center text-xs font-bold text-accent-ice-dark shadow-sm ring-2 ring-background">
+                          {{ request.user.username|slice:":1"|upper }}
+                      </div>
+                      <span class="hidden sm:block text-sm font-medium text-primary">{{ request.user.username }}</span>
+                  </div>
+
+                  <div class="h-4 w-px bg-border"></div>
+
+                  <a href="{% url 'admin' %}" class="text-xs font-medium text-secondary hover:text-primary transition-colors duration-200 inline-block">Dashboard</a>
+
+                  <div class="h-4 w-px bg-border"></div>
+
+                  <button type="button"
+                          hx-get="{% url 'logout_confirm' %}"
+                          hx-target="#modal-content"
+                          hx-swap="innerHTML"
+                          class="text-xs font-medium text-red-500 hover:text-red-600 transition-colors duration-200 inline-block">Sair</button>
+              {% endif %}
+          </div>
+      </header>
+      
+      <!-- Background Elements - Reimplemented: Monolithic SVG System -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none flex items-center justify-center">
+          
+          <!-- Gradient Atmosphere -->
+          <div class="absolute w-[100vmax] h-[100vmax] bg-accent/5 rounded-full blur-3xl"></div>
+          <div class="absolute w-[90vmax] h-[90vmax] bg-accent-ice/5 rounded-full blur-3xl"></div>
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgb(var(--color-accent-ice)_/_0.16)_0%,transparent_60%)]"></div>
+
+          <!-- The Monolithic SVG System -->
+          <svg class="w-[140vmin] h-[140vmin] overflow-visible opacity-60" viewBox="0 0 1000 1000">
+              <defs>
+                  <!-- Paths for Text Rings -->
+                  <path id="text-ring-inner" d="M 500, 500 m -225, 0 a 225,225 0 1,1 450,0 a 225,225 0 1,1 -450,0" />
+                  <path id="text-ring-mid" d="M 500, 500 m -375, 0 a 375,375 0 1,1 750,0 a 375,375 0 1,1 -750,0" />
+                  <path id="text-ring-outer" d="M 500, 500 m -550, 0 a 550,550 0 1,1 1100,0 a 550,550 0 1,1 -1100,0" />
+              </defs>
+
+              <!-- Center Core -->
+              <circle cx="500" cy="500" r="8" class="fill-primary/20 animate-pulse" />
+
+              <!-- Layer 1: Inner Geometric Ring -->
+              <circle cx="500" cy="500" r="150" class="fill-none stroke-primary/10" stroke-width="1" />
+
+              <!-- Layer 2: Inner Text Ring (Rotating) -->
+              <g class="svg-spin-slow">
+                  <text font-size="24" font-family="monospace" font-weight="normal" letter-spacing="8" fill="currentColor" class="text-primary/20">
+                      <textPath href="#text-ring-inner" startOffset="0%">
+                          JUST DANCE • DANCE STUDIO • HYBRID CAPTURE • JOY-CON • MOBILE APP • MACHINE LEARNING • SCORING SIMULATION • JUST DANCE • DANCE STUDIO • HYBRID CAPTURE • JOY-CON • MOBILE APP • MACHINE LEARNING • SCORING SIMULATION • JUST DANCE • DANCE STUDIO • HYBRID CAPTURE • JOY-CON • MOBILE APP • MACHINE LEARNING • SCORING SIMULATION •
+                      </textPath>
+                  </text>
+              </g>
+
+              <!-- Layer 3: Mid Geometric Ring (Dashed, Rotating Reverse) -->
+              <g class="svg-spin-reverse-slower" style="animation-delay: -15s;">
+                  <circle cx="500" cy="500" r="300" class="fill-none stroke-primary/10" stroke-width="1" stroke-dasharray="20 20" />
+              </g>
+
+              <!-- Layer 4: Mid Text Ring (Rotating Reverse) -->
+              <g class="svg-spin-reverse-slower" style="animation-delay: -15s;">
+                   <text font-size="20" font-family="monospace" font-weight="normal" letter-spacing="8" fill="currentColor" class="text-primary/20">
+                      <textPath href="#text-ring-mid" startOffset="0%">
+                          UNIFIED TIMELINE • UBIART • PICTOGRAMS • CAMERA MOVES • LYRICS • VFX • UNIFIED TIMELINE • UBIART • PICTOGRAMS • CAMERA MOVES • LYRICS • VFX • UNIFIED TIMELINE • UBIART • PICTOGRAMS • CAMERA MOVES • LYRICS • VFX • UNIFIED TIMELINE • UBIART • PICTOGRAMS • CAMERA MOVES • LYRICS • VFX •
+                      </textPath>
+                  </text>
+              </g>
+
+              <!-- Layer 5: Outer Geometric Ring -->
+              <circle cx="500" cy="500" r="450" class="fill-none stroke-primary/5" stroke-width="1" />
+
+              <!-- Layer 6: Outer Text Ring (Rotating) -->
+              <g class="svg-spin-slower" style="animation-delay: -30s;">
+                  <text font-size="16" font-family="monospace" font-weight="normal" letter-spacing="8" fill="currentColor" class="text-primary/10">
+                      <textPath href="#text-ring-outer" startOffset="0%">
+                          JUST DANCE • DANCE STUDIO • CREATE • SYNC • TEST • EXPORT • SHARE • COMMUNITY • THE END OF M.A.R.S • NEXT GEN CREATION • JUST DANCE • DANCE STUDIO • CREATE • SYNC • TEST • EXPORT • SHARE • COMMUNITY • THE END OF M.A.R.S • NEXT GEN CREATION • JUST DANCE • DANCE STUDIO • CREATE • SYNC • TEST • EXPORT • SHARE • COMMUNITY • THE END OF M.A.R.S • NEXT GEN CREATION •
+                      </textPath>
+                  </text>
+              </g>
+          </svg>
+      </div>
+      
+      <!-- Hero Content -->
+      <div class="relative z-10 container mx-auto px-4 text-center">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/60 backdrop-blur-sm border border-border/60 mb-8 animate-fade-in-up cursor-default select-none" @click="badgeClicks = badgeClicks + 1; if (badgeClicks >= 3) revealLogin = true">
+              <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+              <span class="text-xs font-bold uppercase tracking-widest text-secondary">A Nova Era do Just Dance</span>
+          </div>
+          
+          <h1 class="font-display text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-8 leading-[0.9] animate-fade-in-up animation-delay-100">
+              <span class="block text-primary drop-shadow-2xl">Dance</span>
+              <span class="block text-accent-ice-light">Studio</span>
+          </h1>
+          
+          <div class="max-w-2xl mx-auto relative group">
+              <div class="absolute -inset-4 bg-surface/50 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <p class="relative text-lg md:text-xl text-secondary/90 leading-relaxed font-medium animate-fade-in-up animation-delay-200">
+                  A ferramenta definitiva para criação de mapas. Sincronização precisa, suporte a Joycon e integração oficial em uma única plataforma.
+              </p>
+          </div>
+
+          <div class="mt-12 flex items-center justify-center animate-fade-in-up animation-delay-300">
+             <button type="button" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})" class="btn btn-primary">
+                 Saiba Mais
+             </button>
+          </div>
       </div>
 
-      <!-- Actions -->
-      {% if not user.is_authenticated %}
-      <nav x-show="showLogin" 
-           x-cloak 
-           x-transition:enter="transition ease-out duration-300"
-           x-transition:enter-start="opacity-0 translate-y-2"
-           x-transition:enter-end="opacity-100 translate-y-0"
-           class="flex items-center gap-4 bg-surface/50 backdrop-blur-sm p-2 pr-4 pl-4 rounded-full border border-border shadow-sm md:self-auto">
-        <a href="{% url 'account_login' %}" 
-           class="text-xs font-medium text-secondary hover:text-primary hover:scale-105 active:scale-95 transition-all duration-200 ease-out-back inline-block">
-          Entrar
-        </a>
-      </nav>
-      {% else %}
-      <nav class="flex items-center gap-4 bg-surface/50 backdrop-blur-sm p-2 pr-4 rounded-full border border-border shadow-sm md:self-auto">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent-light to-accent-ice-light flex items-center justify-center text-xs font-bold text-accent-ice-dark shadow-sm ring-2 ring-background">
-              {{ request.user.username|slice:":1"|upper }}
-            </div>
-            <span class="text-sm font-medium text-primary">{{ request.user.username }}</span>
-        </div>
-        <div class="h-4 w-px bg-border"></div>
-        <a href="{% url 'admin' %}" class="text-xs font-medium text-secondary hover:text-primary hover:scale-105 active:scale-95 transition-all duration-200 ease-out-back inline-block">Dashboard</a>
-        <div class="h-4 w-px bg-border"></div>
-        <button type="button" 
-                hx-get="{% url 'logout_confirm' %}"
-                hx-target="#modal-content"
-                hx-swap="innerHTML"
-                class="text-xs font-medium text-red-500 hover:text-red-600 hover:scale-105 active:scale-95 transition-all duration-200 ease-out-back inline-block">
-          Sair
-        </button>
-      </nav>
-      {% endif %}
-    </div>
-  </div>
-</header>
+      <!-- Scroll Indicator -->
+      <div class="absolute bottom-10 inset-x-0 flex justify-center animate-bounce cursor-pointer opacity-50 hover:opacity-100 transition-opacity"
+           @click="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+           <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7" />
+           </svg>
+      </div>
+  </section>
 
-<main class="flex-grow">
-  <section class="py-24 md:py-32 container mx-auto px-4 text-center">
-    <h1 class="text-5xl md:text-7xl font-bold tracking-tighter mb-6 bg-gradient-to-b from-primary to-secondary bg-clip-text text-transparent">
-      Dance Studio
-    </h1>
-    <p class="text-xl text-secondary max-w-2xl mx-auto mb-12">
-      A ferramenta online definitiva para criação de mapas de Just Dance. Entre em contato para saber mais.
-    </p>
-    
-    <div class="max-w-md mx-auto card text-left">
-      <form method="post" class="space-y-6">
-        {% csrf_token %}
-        
-        <div class="space-y-2">
-          <label for="id_name" class="block text-sm font-medium text-secondary">Nome</label>
-          {{ form.name }}
+  <section id="features" class="py-24 relative overflow-hidden bg-surface-contrast border-t border-border/50 z-20">
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
+        <div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_100%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border">
+                    <span class="w-2 h-2 rounded-full bg-accent"></span>
+                    Captura de Movimentos
+                </div>
+
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-primary mb-6">
+                    Motion Capture descomplicado
+                </h2>
+
+                <p class="text-lg text-secondary mb-8 leading-relaxed">
+                    Um fluxo completo para capturar, normalizar e validar movimentos antes de entrar na jogo. Menos tentativa e erro, mais consistência.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 sm:auto-rows-fr gap-4">
+                    <div class="card p-6 h-full">
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-dark">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-6a3 3 0 016 0v6M9 17a3 3 0 006 0M7 8h10M7 8a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v1a2 2 0 01-2 2"/></svg>
+                        </div>
+                        <h3 class="font-bold text-primary mb-2">Modos de Captura</h3>
+                        <p class="text-sm text-secondary leading-relaxed">Joy-Con ou app mobile, com calibração e smoothing prontos.</p>
+                    </div>
+
+                    <div class="card p-6 h-full">
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-ice-dark">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-primary mb-2">Preview Confiável</h3>
+                        <p class="text-sm text-secondary leading-relaxed">Visualize drift, timing, intensidade e feedbacks de precisão antes de exportar.</p>
+                    </div>
+
+                    <div class="card p-6 h-full">
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-dark">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3-1.343-3-3S10.343 2 12 2s3 1.343 3 3-1.343 3-3 3zm0 0v14m-7 0h14"/></svg>
+                        </div>
+                        <h3 class="font-bold text-primary mb-2">Machine Learning</h3>
+                        <p class="text-sm text-secondary leading-relaxed">O aprendizado de maquina combina multiplas gravações para aprender os movimementos dos jogadores.</p>
+                    </div>
+
+                    <div class="card p-6 h-full">
+                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-ice-dark">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-primary mb-2">Score Sim</h3>
+                        <p class="text-sm text-secondary leading-relaxed">Validação do scoring dos movimentos capturados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div x-data="{ mode: 'joycon' }" class="card relative overflow-hidden w-full">
+                <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
+                <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_80%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
+
+                <div class="relative">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-primary">Console de Captura</h3>
+                            <p class="text-sm text-secondary">Alterna o perfil e vê o pipeline em tempo real.</p>
+                        </div>
+                        <div class="flex items-center gap-2 bg-surface/50 backdrop-blur-sm p-1 rounded-full border border-border self-start sm:self-auto">
+                            <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors" :class="mode === 'joycon' ? 'bg-primary text-background' : 'text-secondary hover:text-primary'" @click="mode = 'joycon'">Joy-Con</button>
+                            <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors" :class="mode === 'mobile' ? 'bg-primary text-background' : 'text-secondary hover:text-primary'" @click="mode = 'mobile'">Mobile</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Input</span>
+                            <span class="text-xs font-mono text-secondary text-right shrink-0" x-text="mode === 'joycon' ? 'Bluetooth • 60Hz' : 'Wi‑Fi • 30Hz'"></span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-background border border-border rounded-2xl p-4">
+                                <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Jitter</p>
+                                <div class="h-2 bg-surface-contrast rounded-full overflow-hidden">
+                                    <div class="h-full bg-accent rounded-full" :style="mode === 'joycon' ? 'width: 25%' : 'width: 40%'"></div>
+                                </div>
+                                <p class="mt-2 text-xs text-secondary" x-text="mode === 'joycon' ? 'Baixo' : 'Médio'"></p>
+                            </div>
+                            <div class="bg-background border border-border rounded-2xl p-4">
+                                <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Drift</p>
+                                <div class="h-2 bg-surface-contrast rounded-full overflow-hidden">
+                                    <div class="h-full bg-accent-ice rounded-full" :style="mode === 'joycon' ? 'width: 18%' : 'width: 28%'"></div>
+                                </div>
+                                <p class="mt-2 text-xs text-secondary" x-text="mode === 'joycon' ? 'Estável' : 'Controlado'"></p>
+                            </div>
+                        </div>
+
+                        <div class="bg-background border border-border rounded-2xl p-5">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                                <p class="text-sm font-bold text-primary">Pipeline</p>
+                                <span class="text-xs font-mono text-secondary text-right" x-text="mode === 'joycon' ? 'PROFILE: JC-01' : 'PROFILE: MB-02'"></span>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex items-center justify-between gap-4">
+                                    <span class="text-secondary truncate">Calibração</span>
+                                    <span class="text-xs font-semibold text-right shrink-0" :class="mode === 'joycon' ? 'text-accent-dark' : 'text-accent-ice-dark'" x-text="mode === 'joycon' ? 'OK' : 'OK'"></span>
+                                </div>
+                                <div class="flex items-center justify-between gap-4">
+                                    <span class="text-secondary truncate">Algoritmo</span>
+                                    <span class="text-xs font-semibold text-right shrink-0" :class="mode === 'joycon' ? 'text-accent-dark' : 'text-accent-ice-dark'" x-text="mode === 'joycon' ? 'Naive Bayes' : 'Naive Bayes'"></span>
+                                </div>
+                                <div class="flex items-center justify-between gap-4">
+                                    <span class="text-secondary truncate">Quantização</span>
+                                    <span class="text-xs font-semibold text-secondary text-right shrink-0" x-text="mode === 'joycon' ? '1/60s' : '1/30s'"></span>
+                                </div>
+                                <div class="flex items-center justify-between gap-4">
+                                    <span class="text-secondary truncate">Pré‑Scoring</span>
+                                    <span class="text-xs font-semibold text-secondary text-right shrink-0">Simulado</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-3">
+                            <p class="text-xs text-secondary truncate">Pronto para a captura</p>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <span class="w-2 h-2 rounded-full bg-accent"></span>
+                                <span class="text-xs font-semibold text-primary">LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div class="space-y-2">
-          <label for="id_email" class="block text-sm font-medium text-secondary">Email</label>
-          {{ form.email }}
+    </div>
+  </section>
+
+  <section class="py-24 relative z-20 border-t border-border/50 bg-background">
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent-ice)_/_0.12),transparent_55%)]"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative">
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border">
+                <span class="w-2 h-2 rounded-full bg-accent-ice"></span>
+                Editor Completo
+            </div>
+            <h2 class="text-4xl md:text-5xl font-display font-bold text-primary mb-6">
+                Timeline Unificada
+            </h2>
+            <p class="text-lg text-secondary max-w-2xl mx-auto leading-relaxed">
+                Esqueça a troca de janelas. Controle letras, pictogramas, movimentos e posicionamento de câmera em uma única interface.
+            </p>
         </div>
-        
-        <div class="space-y-2">
-          <label for="id_message" class="block text-sm font-medium text-secondary">Mensagem</label>
-          {{ form.message }}
+
+        <div class="card p-0 overflow-hidden mb-16">
+            <div class="flex items-center justify-between gap-6 px-6 py-4 border-b border-border bg-surface">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center text-accent-ice-dark">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-primary">Editor</p>
+                        <p class="text-xs text-secondary">Uma timeline, todos os assets</p>
+                    </div>
+                </div>
+
+                <div class="hidden sm:flex items-center gap-3">
+                    <span class="text-xs font-mono text-secondary">00:01:23:14</span>
+                    <span class="text-xs font-semibold text-accent-dark">PLAYING</span>
+                </div>
+            </div>
+
+            <div class="p-6 space-y-3 relative bg-[radial-gradient(circle_at_1px_1px,rgb(var(--color-border)_/_0.45)_1px,transparent_0)] bg-[length:20px_20px]">
+                <div class="absolute top-0 bottom-0 left-1/3 w-px bg-accent-ice z-10"></div>
+                <div class="absolute top-3 left-1/3 -translate-x-1/2 w-3 h-3 bg-accent-ice transform rotate-45 z-10"></div>
+
+                <div class="h-14 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
+                    <span class="text-xs font-mono text-secondary w-24 shrink-0">VIDEO</span>
+                    <div class="absolute inset-0 left-24 flex gap-2 opacity-20">
+                        <div class="w-36 h-full bg-primary"></div>
+                        <div class="w-36 h-full bg-primary"></div>
+                        <div class="w-36 h-full bg-primary"></div>
+                    </div>
+                </div>
+
+                <div class="h-12 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
+                    <span class="text-xs font-mono text-secondary w-24 shrink-0">LYRICS</span>
+                    <div class="absolute left-[10%] w-[15%] h-8 bg-accent-ice/15 rounded-xl border border-accent-ice/30 flex items-center justify-center text-[10px] text-accent-ice-dark truncate px-2">Baby don't stop</div>
+                    <div class="absolute left-[30%] w-[10%] h-8 bg-accent-ice/15 rounded-xl border border-accent-ice/30 flex items-center justify-center text-[10px] text-accent-ice-dark truncate px-2">Just dance</div>
+                </div>
+
+                <div class="h-12 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
+                    <span class="text-xs font-mono text-secondary w-24 shrink-0">PICTOS</span>
+                    <div class="absolute left-[12%] w-9 h-9 bg-accent/15 rounded-xl border border-accent/30 flex items-center justify-center text-accent-dark">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                    </div>
+                    <div class="absolute left-[32%] w-9 h-9 bg-accent/15 rounded-xl border border-accent/30 flex items-center justify-center text-accent-dark">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </div>
+                </div>
+
+                <div class="h-12 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
+                    <span class="text-xs font-mono text-secondary w-24 shrink-0">TRANSFORM</span>
+                    <svg class="absolute left-24 right-0 h-full w-full text-primary/10" preserveAspectRatio="none">
+                        <path d="M0,20 Q100,5 200,20 T400,20" fill="none" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
         </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="card p-6">
+                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-ice-dark">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
+                </div>
+                <h3 class="font-bold text-primary mb-2">Lyrics Studio</h3>
+                <p class="text-sm text-secondary">Visualização de forma de onda, karaoke e sincronização via JSON.</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-dark">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                </div>
+                <h3 class="font-bold text-primary mb-2">Pictogramas</h3>
+                <p class="text-sm text-secondary">Biblioteca integrada e posicionamento direto na timeline.</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-ice-dark">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
+                </div>
+                <h3 class="font-bold text-primary mb-2">Track Placement</h3>
+                <p class="text-sm text-secondary">Keyframes e controle de câmera em um fluxo consistente.</p>
+            </div>
+
+            <div class="card p-6">
+                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-dark">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="font-bold text-primary mb-2">Timeline Total</h3>
+                <p class="text-sm text-secondary">Encontre descompassos entre áudio e movimento rapidamente.</p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Highlight Section: Export -->
+  <section class="py-24 relative bg-surface-contrast border-t border-border/50">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col lg:flex-row-reverse items-center gap-16">
+            <div class="lg:w-1/2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-6">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                    Exportação Universal
+                </div>
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-primary mb-6">
+                    Compatibilidade Total
+                </h2>
+                <p class="text-lg text-secondary mb-6 leading-relaxed">
+                    Não se preocupe com tecnicalidades. O Dance Studio garante que seu mapa funcione onde você quiser.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-background border border-border p-6 rounded-2xl">
+                        <h4 class="font-bold text-primary mb-2">Legado & Moderno</h4>
+                        <p class="text-sm text-secondary">Suporte nativo a arquivos <code>.ipk</code> (JD 2014+) e pacotes serializados das engines clássicas.</p>
+                    </div>
+                    <div class="bg-background border border-border p-6 rounded-2xl">
+                        <h4 class="font-bold text-primary mb-2">Unity AssetBundles</h4>
+                        <p class="text-sm text-secondary">Exporte diretamente para as versões mais recentes do Just Dance que utilizam Unity.</p>
+                    </div>
+                    <div class="bg-background border border-border p-6 rounded-2xl md:col-span-2 border-l-4 border-l-accent">
+                        <h4 class="font-bold text-primary mb-2">Legacy Fangame Ready</h4>
+                        <p class="text-sm text-secondary">Seus mapas já nascem compatíveis com o futuro fangame de PC do time Legacy.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:w-1/2 relative">
+                 <div class="aspect-video rounded-3xl bg-background border border-border shadow-xl p-8 flex flex-col justify-center items-center gap-4 relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-5 bg-[linear-gradient(45deg,transparent_25%,rgb(var(--color-primary))_25%,rgb(var(--color-primary))_50%,transparent_50%,transparent_75%,rgb(var(--color-primary))_75%,rgb(var(--color-primary))_100%)] bg-[length:20px_20px]"></div>
+                    
+                    <div class="flex gap-4 items-center z-10">
+                        <div class="px-6 py-3 rounded-xl bg-surface border border-border shadow-sm font-mono text-sm">map.ipk</div>
+                        <div class="text-secondary">→</div>
+                        <div class="w-12 h-12 rounded-full bg-primary text-surface flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                            </svg>
+                        </div>
+                        <div class="text-secondary">→</div>
+                        <div class="px-6 py-3 rounded-xl bg-surface border border-border shadow-sm font-mono text-sm">bundle</div>
+                    </div>
+                    <p class="text-xs text-secondary mt-4 font-mono z-10">Converting assets... 100%</p>
+                 </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Toolset Grid (Secondary) -->
+  <section class="py-24 container mx-auto px-4">
+    <div class="text-center mb-16">
+        <h2 class="text-3xl font-display font-bold text-primary mb-4">Outras Ferramentas</h2>
+        <p class="text-secondary max-w-xl mx-auto">Complementos essenciais para finalizar sua produção.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         
-        <button type="submit" class="btn btn-primary w-full">
-          Enviar Mensagem
-        </button>
-      </form>
+        <!-- Video -->
+        <div class="card p-6 hover:border-accent/50 group">
+            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 group-hover:bg-accent/10 group-hover:text-accent-dark transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+            </div>
+            <h3 class="font-bold text-primary mb-2">Vídeo Pro</h3>
+            <p class="text-xs text-secondary leading-relaxed">Conversão VP8/VP9 com presets oficiais da Ubisoft. Preview adaptativo para qualquer hardware.</p>
+        </div>
+
+        <!-- Arte do Menu -->
+        <div class="card p-6 hover:border-accent-ice/50 group">
+            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 group-hover:bg-accent-ice/10 group-hover:text-accent-ice-dark transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z" />
+                </svg>
+            </div>
+            <h3 class="font-bold text-primary mb-2">Menu Designer</h3>
+            <p class="text-xs text-secondary leading-relaxed">Personalização total de cores, assets e arquivos de configuração (songdesc).</p>
+        </div>
+
+    </div>
+  </section>
+
+  <!-- About Team -->
+  <section class="py-16 container mx-auto px-4 text-center border-t border-border">
+    <div class="max-w-2xl mx-auto">
+        <h2 class="text-2xl font-display font-bold text-primary mb-4">Desenvolvido pelo time do Legacy</h2>
+        <p class="text-secondary mb-6">
+            Conheça mais sobre nossa equipe e nosso primeiro projeto, o Just Dance Legacy Online.
+        </p>
+        <a href="https://jdlo.ovosimpatico.com/" target="_blank" class="text-accent-ice hover:text-accent-ice-dark font-medium underline underline-offset-4 transition-colors">
+            Visitar JDLO &rarr;
+        </a>
+    </div>
+  </section>
+
+  <!-- CTA & Form -->
+  <section id="contact" class="py-24 bg-surface-contrast border-y border-border">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-display font-bold text-primary mb-4">Inscreva-se para o Beta</h2>
+        <p class="text-secondary max-w-lg mx-auto mb-12">
+            O Dance Studio é uma ferramenta profissional. Garanta sua vaga na lista de espera para o lançamento da versão beta (acesso pago).
+        </p>
+        
+        <div class="max-w-md mx-auto card text-left bg-background shadow-lg">
+          <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="space-y-2">
+              <label for="id_name" class="block text-sm font-medium text-secondary">Nome</label>
+              {{ form.name }}
+              {% if form.name.errors %}
+                <div class="text-red-500 text-xs">{{ form.name.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="space-y-2">
+              <label for="id_email" class="block text-sm font-medium text-secondary">Email</label>
+              {{ form.email }}
+              {% if form.email.errors %}
+                <div class="text-red-500 text-xs">{{ form.email.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <div class="space-y-2">
+              <label for="id_message" class="block text-sm font-medium text-secondary">Mensagem</label>
+              {{ form.message }}
+              {% if form.message.errors %}
+                <div class="text-red-500 text-xs">{{ form.message.errors }}</div>
+              {% endif %}
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-full py-3 text-base">
+              Entrar na Lista de Espera
+            </button>
+          </form>
+        </div>
     </div>
   </section>
 </main>
@@ -96,15 +578,16 @@
 </footer>
 
 <script>
-  // Auto-apply Tailwind classes to form fields
+  // Auto-apply Tailwind classes to form fields if they don't have them
   document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('input[type="text"], input[type="email"]');
-    const textareas = document.querySelectorAll('textarea');
-    
-    inputs.forEach(input => input.classList.add('input'));
-    textareas.forEach(textarea => {
-      textarea.classList.add('input', 'min-h-[120px]');
+    const inputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea');
+    inputs.forEach(input => {
+      if (!input.classList.contains('input')) {
+        input.classList.add('input');
+        input.classList.add('w-full');
+      }
     });
+
   });
 </script>
 {% endblock %}

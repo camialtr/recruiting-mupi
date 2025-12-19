@@ -18,7 +18,8 @@
 :root {
   /* User Defined Palette (Light Mode - Adjusted for Contrast) */
   --color-background: 255 255 255;  /* #FFFFFF */
-  --color-surface: 255 255 255;     /* #FFFFFF */
+  --color-surface: 255 255 255;     /* #FFFFFF (Restored to original) */
+  --color-surface-contrast: 242 242 242; /* #F2F2F2 (For landing page contrast) */
   --color-border: 229 229 229;      /* #E5E5E5 (Subtle border/outline) */
   --color-primary: 15 15 15;        /* #0F0F0F (Primary text) */
   --color-secondary: 82 82 82;      /* #525252 (Darkened from #BDBDBD for readability) */
