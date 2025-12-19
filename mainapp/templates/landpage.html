@@ -498,7 +498,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
                         <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors group-hover:text-accent-ice-light">
+                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 19.5V6.75A2.25 2.25 0 0 1 6.75 4.5h6.5l6.25 6.25V19.5A2.25 2.25 0 0 1 17.25 21H6.75A2.25 2.25 0 0 1 4.5 19.5Z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.25 4.5v5a1.25 1.25 0 0 0 1.25 1.25h5" /></svg>
                             </div>
                             <h4 class="font-bold text-background">Legado</h4>
@@ -507,7 +507,7 @@
                     </div>
                     <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
                         <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors group-hover:text-accent-ice-light">
+                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 8.25h16.5M6.75 4.5h10.5M6.75 12.75h10.5M6.75 17.25h10.5M3.75 19.5h16.5" /></svg>
                             </div>
                             <h4 class="font-bold text-background">Moderno</h4>
@@ -516,7 +516,7 @@
                     </div>
                     <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl md:col-span-2 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
                         <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors group-hover:text-accent-ice-light">
+                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21.75c-4.5-1.2-7.5-5.3-7.5-9.9V6.6L12 2.25l7.5 4.35v5.25c0 4.6-3 8.7-7.5 9.9Z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 12.75 11.25 14.25 15.75 9.75" /></svg>
                             </div>
                             <h4 class="font-bold text-background">Fangame Ready</h4>
@@ -613,16 +613,93 @@
     </div>
   </section>
 
-  <!-- About Team -->
-  <section class="py-16 container mx-auto px-4 text-center border-t border-border">
-    <div class="max-w-2xl mx-auto">
-        <h2 class="text-2xl font-display font-bold text-primary mb-4">Desenvolvido pelo time do Legacy</h2>
-        <p class="text-secondary mb-6">
-            Conheça mais sobre nossa equipe e nosso primeiro projeto, o Just Dance Legacy Online.
-        </p>
-        <a href="https://jdlo.ovosimpatico.com/" target="_blank" class="text-accent-ice hover:text-accent-ice-dark font-medium underline underline-offset-4 transition-colors">
-            Visitar JDLO &rarr;
-        </a>
+  <section class="py-20 relative overflow-hidden border-t border-border">
+    <div class="absolute inset-0 pointer-events-none">
+      <div class="absolute -top-28 left-1/2 -translate-x-1/2 w-[120vmax] h-[120vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent-ice)_/_0.14),transparent_55%)]"></div>
+      <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(var(--color-background))_0%,transparent_30%,rgb(var(--color-background))_100%)]"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        <div class="text-center lg:text-left">
+          <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-surface/60 text-secondary text-xs font-bold uppercase tracking-wider border border-border">
+            <span class="w-2 h-2 rounded-full bg-accent-ice"></span>
+            Legacy Development Team
+          </div>
+
+          <h2 class="mt-6 text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary break-words">
+            Desenvolvido pelo time do Legacy
+          </h2>
+          <p class="mt-4 text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0">
+            Conheça nosso primeiro projeto: um servidor customizado para reunir músicas de toda a série em uma plataforma única, com multiplayer online e eventos em tempo real.
+          </p>
+
+          <div class="mt-8 flex items-center justify-center lg:justify-start gap-4">
+            <a href="https://jdlo.ovosimpatico.com/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary solid gap-2">
+              Visitar JDLO
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+            </a>
+            <div class="hidden sm:flex items-center gap-2 text-xs text-secondary">
+              <span class="w-1.5 h-1.5 rounded-full bg-border"></span>
+              Multiplataforma • WDF • Rankings
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-0 overflow-hidden relative">
+          <div class="px-6 sm:px-8 py-7 bg-surface border-b border-border relative">
+            <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,rgb(var(--color-accent)_/_0.14),transparent_60%)]"></div>
+            <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_80%_60%,rgb(var(--color-accent-ice)_/_0.14),transparent_60%)]"></div>
+            <div class="relative flex items-start justify-between gap-6">
+              <div class="min-w-0">
+                <p class="text-xs font-semibold text-secondary uppercase tracking-wider">Primeiro Projeto</p>
+                <p class="mt-2 text-base sm:text-lg font-bold text-primary leading-snug break-words">Just Dance Legacy Online</p>
+                <p class="mt-2 text-sm text-secondary">Compatível com a arquitetura oficial, com biblioteca completa, WDF, rankings e desafios.</p>
+              </div>
+              <div class="shrink-0 flex items-center -space-x-2">
+                <div class="w-9 h-9 rounded-full bg-surface-contrast border border-border flex items-center justify-center text-xs font-bold text-primary">LD</div>
+                <div class="w-9 h-9 rounded-full bg-surface-contrast border border-border flex items-center justify-center text-xs font-bold text-primary">JD</div>
+                <div class="w-9 h-9 rounded-full bg-surface-contrast border border-border flex items-center justify-center text-xs font-bold text-primary">LO</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-surface-contrast border border-border rounded-2xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-xs font-semibold text-secondary uppercase tracking-wider">Biblioteca</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V6.75A2.25 2.25 0 0 1 6.25 4.5h6.5L20 10.75V19.5A2.25 2.25 0 0 1 17.75 21H6.25A2.25 2.25 0 0 1 4 19.5Z"/><path d="M13.25 4.5v5A1.25 1.25 0 0 0 14.5 10.75H20"/></svg>
+              </div>
+              <p class="mt-2 text-sm font-bold text-primary">Todas as músicas em um só lugar</p>
+              <p class="mt-2 text-xs text-secondary leading-relaxed">Catálogo completo com faixas de todos os jogos e conteúdo da comunidade.</p>
+            </div>
+            <div class="bg-surface-contrast border border-border rounded-2xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-xs font-semibold text-secondary uppercase tracking-wider">Multiplayer</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8v4l3 3"/><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+              </div>
+              <p class="mt-2 text-sm font-bold text-primary">World Dance Floor</p>
+              <p class="mt-2 text-xs text-secondary leading-relaxed">Eventos em tempo real para dançar com outros jogadores e competir ao vivo.</p>
+            </div>
+            <div class="bg-surface-contrast border border-border rounded-2xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-xs font-semibold text-secondary uppercase tracking-wider">Rankings</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20V10"/><path d="M12 20V4"/><path d="M17 20v-7"/></svg>
+              </div>
+              <p class="mt-2 text-sm font-bold text-primary">Leaderboards globais</p>
+              <p class="mt-2 text-xs text-secondary leading-relaxed">Suba no ranking e compare resultados com amigos e dançarinos do mundo todo.</p>
+            </div>
+            <div class="bg-surface-contrast border border-border rounded-2xl p-5">
+              <div class="flex items-start justify-between gap-4">
+                <p class="text-xs font-semibold text-secondary uppercase tracking-wider">Desafios</p>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17.25 8.25 19.5l.75-4.5L5.25 12l4.5-.75L12 7.5l2.25 3.75 4.5.75-3.75 3 .75 4.5L12 17.25Z"/></svg>
+              </div>
+              <p class="mt-2 text-sm font-bold text-primary">Quests & recompensas</p>
+              <p class="mt-2 text-xs text-secondary leading-relaxed">Missões e metas para manter a experiência sempre ativa, com atualizações constantes.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

@@ -183,6 +183,9 @@ body select::placeholder {
   color: rgb(var(--color-primary));
   transition: all 300ms;
 }
+.btn-secondary.solid {
+  background-color: rgb(var(--color-background));
+}
 .btn-secondary:hover {
   border-color: rgb(var(--color-primary));
   background-color: rgb(var(--color-surface));
