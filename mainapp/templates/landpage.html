@@ -181,14 +181,15 @@
       </div>
   </section>
 
-  <section id="features" class="py-24 relative overflow-hidden bg-surface-contrast border-t border-border/50 z-20">
+  <section id="features" class="pt-24 pb-32 relative isolate overflow-hidden bg-surface-contrast border-t border-border/50">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
         <div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_100%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_55%,rgb(var(--color-accent-ice)_/_0.14)_100%)]"></div>
     </div>
 
     <div class="container mx-auto px-4 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start lg:items-center">
             <div>
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border">
                     <span class="w-2 h-2 rounded-full bg-accent"></span>
@@ -238,7 +239,7 @@
                 </div>
             </div>
 
-            <div x-data="{ mode: 'joycon' }" class="card relative overflow-hidden w-full">
+            <div x-data="{ mode: 'joycon' }" class="card relative overflow-hidden w-full lg:max-w-xl lg:ml-auto lg:self-center">
                 <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
                 <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_80%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
 
@@ -316,7 +317,7 @@
     </div>
   </section>
 
-  <section class="py-24 relative z-20 border-t border-border/50 bg-background">
+  <section class="py-24 relative overflow-hidden bg-background">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent-ice)_/_0.12),transparent_55%)]"></div>
     </div>
