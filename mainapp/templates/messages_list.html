@@ -115,7 +115,7 @@
             hx-target="#messages-table-container" 
             hx-swap="innerHTML"
             hx-trigger="submit, change"
-            class="flex gap-2 w-full sm:w-auto">
+            class="flex gap-2 w-full sm:w-auto" data-toast-validate>
         <div class="relative flex-grow sm:w-64" x-data="{ query: '{{ search_query|default:''|escapejs }}' }">
           <input type="search" 
                  name="search" 

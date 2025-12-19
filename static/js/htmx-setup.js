@@ -41,3 +41,23 @@ document.addEventListener('click', function(e) {
     btn.click();
   }, 200); // 200ms delay to ensure the "smoothness" is felt before navigation/action
 }, true); // Capture phase to intercept before HTMX/Alpine
+
+document.addEventListener('invalid', function(e) {
+  const el = e.target;
+  if (!(el instanceof HTMLElement)) return;
+  const form = el.closest('form[data-toast-validate]');
+  if (!form) return;
+
+  e.preventDefault();
+
+  const now = Date.now();
+  if (form.__toastInvalidAt && (now - form.__toastInvalidAt) < 600) return;
+  form.__toastInvalidAt = now;
+
+  const label = el.id ? document.querySelector(`label[for="${CSS.escape(el.id)}"]`) : null;
+  const labelText = label ? label.textContent.trim().replace(/\s+\*$/, '') : '';
+  const msg = labelText ? `${labelText}: ${el.validationMessage}` : el.validationMessage;
+
+  window.dispatchEvent(new CustomEvent('toast-add', { detail: { level: 'error', message: msg } }));
+  if (typeof el.focus === 'function') el.focus();
+}, true);

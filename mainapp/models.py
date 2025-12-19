@@ -20,7 +20,7 @@ class Message(models.Model):
         ]
 
     def __str__(self):
-        return f'Mensagem de {self.name} <{self.email}>'
+        return f'Mensagem de {self.name}'
 
     def mark_as_read(self):
         self.read = True

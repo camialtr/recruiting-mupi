@@ -33,15 +33,14 @@
 
     <div class="card">
       {% if form.errors %}
-        <div class="bg-accent-ice/20 border border-accent-ice-dark/30 text-accent-ice-dark px-4 py-3 rounded-md mb-6 text-sm">
-          <p class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-            Usuário ou senha inválidos.
-          </p>
-        </div>
+        <script>
+          window.addEventListener('DOMContentLoaded', function() {
+            window.dispatchEvent(new CustomEvent('toast-add', { detail: { level: 'error', message: 'Usuário ou senha inválidos.' } }));
+          });
+        </script>
       {% endif %}
 
-      <form method="post" class="space-y-6">
+      <form method="post" class="space-y-6" data-toast-validate>
         {% csrf_token %}
         
         <div class="space-y-2">

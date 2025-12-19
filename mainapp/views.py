@@ -1,3 +1,5 @@
+import json
+
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -150,8 +152,17 @@ def message_edit(request, pk: int):
         if form.is_valid():
             form.save()
             AuditLog.log(request.user, 'edit', f'Editou a mensagem de {msg.name}.')
-            messages.success(request, 'Mensagem atualizada.')
-            return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages, refresh-audit'})
+            return HttpResponse(
+                status=204,
+                headers={
+                    'HX-Trigger': json.dumps({
+                        'modal-close': True,
+                        'refresh-messages': True,
+                        'refresh-audit': True,
+                        'toast-add': {'level': 'success', 'message': 'Mensagem atualizada.'},
+                    })
+                },
+            )
     else:
         form = MessageUpdateForm(instance=msg)
     return render(request, 'message_edit.html', {'form': form, 'message_obj': msg})
@@ -168,8 +179,17 @@ def message_delete_confirm(request, pk: int):
         msg_name = msg.name
         msg.delete()
         AuditLog.log(request.user, 'delete', f'Excluiu a mensagem de {msg_name}.')
-        messages.success(request, 'Mensagem excluída.')
-        return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-messages, refresh-audit'})
+        return HttpResponse(
+            status=204,
+            headers={
+                'HX-Trigger': json.dumps({
+                    'modal-close': True,
+                    'refresh-messages': True,
+                    'refresh-audit': True,
+                    'toast-add': {'level': 'success', 'message': 'Mensagem excluída.'},
+                })
+            },
+        )
     return render(request, 'message_delete_confirm.html', {'message_obj': msg})
 
 
@@ -219,8 +239,17 @@ def user_create(request):
         if form.is_valid():
             new_user = form.save()
             AuditLog.log(request.user, 'create_user', f'Criou o usuário {new_user.username}.')
-            messages.success(request, 'Usuário criado com sucesso.')
-            return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users, refresh-audit'})
+            return HttpResponse(
+                status=204,
+                headers={
+                    'HX-Trigger': json.dumps({
+                        'modal-close': True,
+                        'refresh-users': True,
+                        'refresh-audit': True,
+                        'toast-add': {'level': 'success', 'message': 'Usuário criado com sucesso.'},
+                    })
+                },
+            )
     else:
         form = CreateUserForm()
     return render(request, 'user_create.html', {'form': form})
@@ -239,8 +268,17 @@ def user_change_password(request, pk: int):
         if form.is_valid():
             form.save()
             AuditLog.log(request.user, 'change_password', f'Alterou a senha de {target_user.username}.')
-            messages.success(request, f'Senha do usuário {target_user.username} alterada.')
-            return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-audit'})
+            success_msg = f'Senha do usuário {target_user.username} alterada.'
+            return HttpResponse(
+                status=204,
+                headers={
+                    'HX-Trigger': json.dumps({
+                        'modal-close': True,
+                        'refresh-audit': True,
+                        'toast-add': {'level': 'success', 'message': success_msg},
+                    })
+                },
+            )
     else:
         form = ChangeUserPasswordForm(target_user)
     return render(request, 'user_change_password.html', {'form': form, 'target_user': target_user})
@@ -262,7 +300,17 @@ def user_delete(request, pk: int):
         username = target_user.username
         target_user.delete()
         AuditLog.log(request.user, 'delete_user', f'Excluiu o usuário {username}.')
-        return HttpResponse(status=204, headers={'HX-Trigger': 'modal-close, refresh-users, refresh-audit'})
+        return HttpResponse(
+            status=204,
+            headers={
+                'HX-Trigger': json.dumps({
+                    'modal-close': True,
+                    'refresh-users': True,
+                    'refresh-audit': True,
+                    'toast-add': {'level': 'success', 'message': f'Usuário {username} excluído.'},
+                })
+            },
+        )
     
     return render(request, 'user_delete_confirm.html', {'target_user': target_user})
 
