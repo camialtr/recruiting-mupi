@@ -96,7 +96,7 @@
           <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgb(var(--color-accent-ice)_/_0.16)_0%,transparent_60%)]"></div>
 
           <!-- The Monolithic SVG System -->
-          <svg class="w-[140vmin] h-[140vmin] overflow-visible opacity-60" viewBox="0 0 1000 1000">
+          <svg class="w-[140vmin] h-[140vmin] opacity-60" viewBox="0 0 1000 1000">
               <defs>
                   <!-- Paths for Text Rings -->
                   <path id="text-ring-inner" d="M 500, 500 m -225, 0 a 225,225 0 1,1 450,0 a 225,225 0 1,1 -450,0" />
@@ -181,7 +181,7 @@
       </div>
   </section>
 
-  <section id="features" class="pt-24 pb-32 relative isolate overflow-hidden bg-surface-contrast border-t border-border/50">
+  <section id="features" class="py-24 relative isolate overflow-hidden bg-surface-contrast border-t border-border/50">
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
         <div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_100%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
@@ -189,108 +189,124 @@
     </div>
 
     <div class="container mx-auto px-4 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start lg:items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-start lg:items-center">
             <div>
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border">
-                    <span class="w-2 h-2 rounded-full bg-accent"></span>
-                    Captura de Movimentos
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border max-w-full">
+                        <span class="w-2 h-2 rounded-full bg-accent"></span>
+                        Captura de Movimentos
+                    </div>
+
+                    <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-primary mb-6 break-words">
+                        Desenvolvimento descomplicado
+                    </h2>
+
+                    <p class="text-lg text-secondary mb-8 leading-relaxed">
+                        Um fluxo completo para capturar, normalizar e validar movimentos antes de inserir no jogo. Menos tentativa e erro, mais consistência.
+                    </p>
                 </div>
 
-                <h2 class="text-4xl md:text-5xl font-display font-bold text-primary mb-6">
-                    Motion Capture descomplicado
-                </h2>
-
-                <p class="text-lg text-secondary mb-8 leading-relaxed">
-                    Um fluxo completo para capturar, normalizar e validar movimentos antes de entrar na jogo. Menos tentativa e erro, mais consistência.
-                </p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 sm:auto-rows-fr gap-4">
-                    <div class="card p-6 h-full">
-                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-dark">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-6a3 3 0 016 0v6M9 17a3 3 0 006 0M7 8h10M7 8a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v1a2 2 0 01-2 2"/></svg>
+                <div class="grid grid-cols-1 sm:grid-cols-2 sm:auto-rows-fr gap-6">
+                    <div class="card !p-6 h-full group">
+                        <div class="w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="2.5" width="6" height="19" rx="2.25" />
+                                <path d="M6.25 6.5h.5A1.75 1.75 0 0 1 8.5 8.25v7.5A1.75 1.75 0 0 1 6.75 17.5h-.5A2.25 2.25 0 0 1 4 15.25v-6.5A2.25 2.25 0 0 1 6.25 6.5Z" />
+                                <path d="M17.25 6.5h.5A2.25 2.25 0 0 1 20 8.75v6.5A2.25 2.25 0 0 1 17.75 17.5h-.5A1.75 1.75 0 0 1 15.5 15.75v-7.5A1.75 1.75 0 0 1 17.25 6.5Z" />
+                                <circle cx="6.75" cy="10" r=".75" />
+                                <circle cx="17.25" cy="10" r=".75" />
+                                <path d="M12 19h.01" />
+                            </svg>
                         </div>
                         <h3 class="font-bold text-primary mb-2">Modos de Captura</h3>
-                        <p class="text-sm text-secondary leading-relaxed">Joy-Con ou app mobile, com calibração e smoothing prontos.</p>
+                        <p class="text-sm text-secondary leading-relaxed">Joy-Con ou app mobile, com ferramentas de calibração e smoothing prontas.</p>
                     </div>
 
-                    <div class="card p-6 h-full">
-                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-ice-dark">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <div class="card !p-6 h-full group">
+                        <div class="w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 12c1.5-4.5 5.25-7.5 9.75-7.5s8.25 3 9.75 7.5c-1.5 4.5-5.25 7.5-9.75 7.5S3.75 16.5 2.25 12Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15a3 3 0 100-6 3 3 0 000 6Z" />
+                            </svg>
                         </div>
-                        <h3 class="font-bold text-primary mb-2">Preview Confiável</h3>
-                        <p class="text-sm text-secondary leading-relaxed">Visualize drift, timing, intensidade e feedbacks de precisão antes de exportar.</p>
+                        <h3 class="font-bold text-primary mb-2">Vizualização Confiável</h3>
+                        <p class="text-sm text-secondary leading-relaxed">Perfile drift, timing, intensidade e obtenha feedbacks da precisão antes de exportar.</p>
                     </div>
 
-                    <div class="card p-6 h-full">
-                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-dark">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3-1.343-3-3S10.343 2 12 2s3 1.343 3 3-1.343 3-3 3zm0 0v14m-7 0h14"/></svg>
+                    <div class="card !p-6 h-full group">
+                        <div class="w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M3 9h2m-2 6h2m14-6h2m-2 6h2M7 7h10v10H7V7Z" />
+                            </svg>
                         </div>
                         <h3 class="font-bold text-primary mb-2">Machine Learning</h3>
                         <p class="text-sm text-secondary leading-relaxed">O aprendizado de maquina combina multiplas gravações para aprender os movimementos dos jogadores.</p>
                     </div>
 
-                    <div class="card p-6 h-full">
-                        <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-ice-dark">
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <div class="card !p-6 h-full group">
+                        <div class="w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2.25 19.5 6.75v6.2c0 4.64-3.18 8.74-7.5 9.83-4.32-1.09-7.5-5.19-7.5-9.83v-6.2L12 2.25Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75 11.25 15 15 9.75" />
+                            </svg>
                         </div>
-                        <h3 class="font-bold text-primary mb-2">Score Sim</h3>
-                        <p class="text-sm text-secondary leading-relaxed">Validação do scoring dos movimentos capturados.</p>
+                        <h3 class="font-bold text-primary mb-2">Simulação de Score</h3>
+                        <p class="text-sm text-secondary leading-relaxed">Validação e simulação dos moves, identica as regras do just dance.</p>
                     </div>
                 </div>
             </div>
 
-            <div x-data="{ mode: 'joycon' }" class="card relative overflow-hidden w-full lg:max-w-xl lg:ml-auto lg:self-center">
+            <div x-data="{ mode: 'joycon' }" class="card !p-6 relative overflow-hidden w-full lg:max-w-xl lg:ml-auto lg:self-center">
                 <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
                 <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_80%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
 
                 <div class="relative">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+                    <div class="flex items-start justify-between gap-6 mb-6">
                         <div>
                             <h3 class="text-xl font-bold text-primary">Console de Captura</h3>
-                            <p class="text-sm text-secondary">Alterna o perfil e vê o pipeline em tempo real.</p>
+                            <p class="text-sm text-secondary">Veja os pipelines em tempo real.</p>
                         </div>
-                        <div class="flex items-center gap-2 bg-surface/50 backdrop-blur-sm p-1 rounded-full border border-border self-start sm:self-auto">
+                        <div class="flex items-center gap-2 bg-surface/50 backdrop-blur-sm p-1 rounded-full border border-border shrink-0">
                             <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors" :class="mode === 'joycon' ? 'bg-primary text-background' : 'text-secondary hover:text-primary'" @click="mode = 'joycon'">Joy-Con</button>
                             <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors" :class="mode === 'mobile' ? 'bg-primary text-background' : 'text-secondary hover:text-primary'" @click="mode = 'mobile'">Mobile</button>
                         </div>
                     </div>
 
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between gap-3">
-                            <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Input</span>
-                            <span class="text-xs font-mono text-secondary text-right shrink-0" x-text="mode === 'joycon' ? 'Bluetooth • 60Hz' : 'Wi‑Fi • 30Hz'"></span>
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Input</span>
+                        <span class="text-xs font-mono text-secondary text-right shrink-0" x-text="mode === 'joycon' ? 'Bluetooth • 60Hz' : 'Wi‑Fi • 30Hz'"></span>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="bg-surface-contrast border border-border rounded-2xl p-4">
+                            <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Jitter</p>
+                            <div class="h-2 bg-surface rounded-full overflow-hidden">
+                                <div class="h-full bg-accent rounded-full" :style="mode === 'joycon' ? 'width: 25%' : 'width: 40%'"></div>
+                            </div>
+                            <p class="mt-2 text-xs text-secondary" x-text="mode === 'joycon' ? 'Baixo' : 'Médio'"></p>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="bg-background border border-border rounded-2xl p-4">
-                                <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Jitter</p>
-                                <div class="h-2 bg-surface-contrast rounded-full overflow-hidden">
-                                    <div class="h-full bg-accent rounded-full" :style="mode === 'joycon' ? 'width: 25%' : 'width: 40%'"></div>
-                                </div>
-                                <p class="mt-2 text-xs text-secondary" x-text="mode === 'joycon' ? 'Baixo' : 'Médio'"></p>
+                        <div class="bg-surface-contrast border border-border rounded-2xl p-4">
+                            <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Drift</p>
+                            <div class="h-2 bg-surface rounded-full overflow-hidden">
+                                <div class="h-full bg-accent-ice rounded-full" :style="mode === 'joycon' ? 'width: 18%' : 'width: 28%'"></div>
                             </div>
-                            <div class="bg-background border border-border rounded-2xl p-4">
-                                <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Drift</p>
-                                <div class="h-2 bg-surface-contrast rounded-full overflow-hidden">
-                                    <div class="h-full bg-accent-ice rounded-full" :style="mode === 'joycon' ? 'width: 18%' : 'width: 28%'"></div>
-                                </div>
-                                <p class="mt-2 text-xs text-secondary" x-text="mode === 'joycon' ? 'Estável' : 'Controlado'"></p>
-                            </div>
+                            <p class="mt-2 text-xs text-secondary" x-text="mode === 'joycon' ? 'Estável' : 'Controlado'"></p>
                         </div>
 
-                        <div class="bg-background border border-border rounded-2xl p-5">
+                        <div class="bg-surface-contrast border border-border rounded-2xl p-5 sm:col-span-2">
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                                 <p class="text-sm font-bold text-primary">Pipeline</p>
                                 <span class="text-xs font-mono text-secondary text-right" x-text="mode === 'joycon' ? 'PROFILE: JC-01' : 'PROFILE: MB-02'"></span>
                             </div>
-                            <div class="space-y-3 text-sm">
+                            <div class="space-y-3 text-sm mb-6">
                                 <div class="flex items-center justify-between gap-4">
                                     <span class="text-secondary truncate">Calibração</span>
-                                    <span class="text-xs font-semibold text-right shrink-0" :class="mode === 'joycon' ? 'text-accent-dark' : 'text-accent-ice-dark'" x-text="mode === 'joycon' ? 'OK' : 'OK'"></span>
+                                    <span class="text-xs font-semibold text-right shrink-0" :class="mode === 'joycon' ? 'text-accent-dark' : 'text-accent-ice-dark'">OK</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-4">
                                     <span class="text-secondary truncate">Algoritmo</span>
-                                    <span class="text-xs font-semibold text-right shrink-0" :class="mode === 'joycon' ? 'text-accent-dark' : 'text-accent-ice-dark'" x-text="mode === 'joycon' ? 'Naive Bayes' : 'Naive Bayes'"></span>
+                                    <span class="text-xs font-semibold text-right shrink-0" :class="mode === 'joycon' ? 'text-accent-dark' : 'text-accent-ice-dark'">Naive Bayes</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-4">
                                     <span class="text-secondary truncate">Quantização</span>
@@ -301,13 +317,13 @@
                                     <span class="text-xs font-semibold text-secondary text-right shrink-0">Simulado</span>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="flex items-center justify-between gap-3">
-                            <p class="text-xs text-secondary truncate">Pronto para a captura</p>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <span class="w-2 h-2 rounded-full bg-accent"></span>
-                                <span class="text-xs font-semibold text-primary">LIVE</span>
+                            <div class="flex items-center justify-between gap-3">
+                                <p class="text-xs text-secondary truncate">Pronto para a captura</p>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="w-2 h-2 rounded-full bg-accent"></span>
+                                    <span class="text-xs font-semibold text-primary">LIVE</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -324,22 +340,22 @@
 
     <div class="container mx-auto px-4 relative">
         <div class="text-center mb-16">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border">
+            <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border max-w-full">
                 <span class="w-2 h-2 rounded-full bg-accent-ice"></span>
                 Editor Completo
             </div>
-            <h2 class="text-4xl md:text-5xl font-display font-bold text-primary mb-6">
+            <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-primary mb-6 break-words">
                 Timeline Unificada
             </h2>
             <p class="text-lg text-secondary max-w-2xl mx-auto leading-relaxed">
-                Esqueça a troca de janelas. Controle letras, pictogramas, movimentos e posicionamento de câmera em uma única interface.
+                Usar multiplos aplicativos ficou no passado. Controle letras, pictogramas, movimentos e audio em uma única interface.
             </p>
         </div>
 
         <div class="card p-0 overflow-hidden mb-16">
             <div class="flex items-center justify-between gap-6 px-6 py-4 border-b border-border bg-surface">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center text-accent-ice-dark">
+                    <div class="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center text-secondary">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
                     </div>
                     <div>
@@ -358,6 +374,28 @@
                 <div class="absolute top-0 bottom-0 left-1/3 w-px bg-accent-ice z-10"></div>
                 <div class="absolute top-3 left-1/3 -translate-x-1/2 w-3 h-3 bg-accent-ice transform rotate-45 z-10"></div>
 
+                <div class="h-12 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
+                    <span class="text-xs font-mono text-secondary w-24 shrink-0">AUDIO</span>
+                    <div class="absolute inset-y-0 left-24 right-4 flex items-center gap-1 opacity-30">
+                        <div class="w-1.5 h-3 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-5 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-2 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-6 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-3 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-8 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-4 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-6 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-2 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-5 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-3 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-7 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-4 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-6 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-2 bg-accent-ice rounded-full"></div>
+                        <div class="w-1.5 h-5 bg-accent-ice rounded-full"></div>
+                    </div>
+                </div>
+
                 <div class="h-14 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
                     <span class="text-xs font-mono text-secondary w-24 shrink-0">VIDEO</span>
                     <div class="absolute inset-0 left-24 flex gap-2 opacity-20">
@@ -368,112 +406,173 @@
                 </div>
 
                 <div class="h-12 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
-                    <span class="text-xs font-mono text-secondary w-24 shrink-0">LYRICS</span>
-                    <div class="absolute left-[10%] w-[15%] h-8 bg-accent-ice/15 rounded-xl border border-accent-ice/30 flex items-center justify-center text-[10px] text-accent-ice-dark truncate px-2">Baby don't stop</div>
-                    <div class="absolute left-[30%] w-[10%] h-8 bg-accent-ice/15 rounded-xl border border-accent-ice/30 flex items-center justify-center text-[10px] text-accent-ice-dark truncate px-2">Just dance</div>
-                </div>
-
-                <div class="h-12 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
                     <span class="text-xs font-mono text-secondary w-24 shrink-0">PICTOS</span>
-                    <div class="absolute left-[12%] w-9 h-9 bg-accent/15 rounded-xl border border-accent/30 flex items-center justify-center text-accent-dark">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
-                    </div>
-                    <div class="absolute left-[32%] w-9 h-9 bg-accent/15 rounded-xl border border-accent/30 flex items-center justify-center text-accent-dark">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <div class="relative flex-1 h-full">
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[10%] sm:left-[12%] w-8 h-8 sm:w-9 sm:h-9 bg-accent/15 rounded-xl border border-accent/30 flex items-center justify-center text-accent-dark">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                        </div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[40%] sm:left-[32%] w-8 h-8 sm:w-9 sm:h-9 bg-accent/15 rounded-xl border border-accent/30 flex items-center justify-center text-accent-dark">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </div>
                     </div>
                 </div>
 
                 <div class="h-12 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
-                    <span class="text-xs font-mono text-secondary w-24 shrink-0">TRANSFORM</span>
+                    <span class="text-xs font-mono text-secondary w-24 shrink-0">LYRICS</span>
+                    <div class="relative flex-1 h-full">
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[8%] sm:left-[10%] w-[42%] sm:w-[15%] h-8 bg-accent-ice/15 rounded-xl border border-accent-ice/30 flex items-center justify-center text-[10px] text-accent-ice-dark truncate px-2">Baby don't stop</div>
+                        <div class="absolute top-1/2 -translate-y-1/2 left-[55%] sm:left-[30%] w-[35%] sm:w-[10%] h-8 bg-accent-ice/15 rounded-xl border border-accent-ice/30 flex items-center justify-center text-[10px] text-accent-ice-dark truncate px-2">Just dance</div>
+                    </div>
+                </div>
+
+                <div class="h-12 bg-surface border border-border rounded-2xl flex items-center px-4 relative overflow-hidden">
+                    <span class="text-xs font-mono text-secondary w-24 shrink-0">MOVES</span>
                     <svg class="absolute left-24 right-0 h-full w-full text-primary/10" preserveAspectRatio="none">
-                        <path d="M0,20 Q100,5 200,20 T400,20" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <path d="M0,20 Q90,6 180,20 T360,20" fill="none" stroke="currentColor" stroke-width="2"/>
                     </svg>
+                    <div class="absolute left-[22%] w-2.5 h-2.5 rounded-full bg-accent/30 border border-accent/40"></div>
+                    <div class="absolute left-[44%] w-2.5 h-2.5 rounded-full bg-accent/30 border border-accent/40"></div>
+                    <div class="absolute left-[66%] w-2.5 h-2.5 rounded-full bg-accent/30 border border-accent/40"></div>
                 </div>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="card p-6">
-                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-ice-dark">
+            <div class="card p-6 group">
+                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
                 </div>
-                <h3 class="font-bold text-primary mb-2">Lyrics Studio</h3>
-                <p class="text-sm text-secondary">Visualização de forma de onda, karaoke e sincronização via JSON.</p>
+                <h3 class="font-bold text-primary mb-2">Lyrics</h3>
+                <p class="text-sm text-secondary">Visualização e edição em tempo real, exportação inteligente.</p>
             </div>
 
-            <div class="card p-6">
-                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-dark">
+            <div class="card p-6 group">
+                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
                 <h3 class="font-bold text-primary mb-2">Pictogramas</h3>
                 <p class="text-sm text-secondary">Biblioteca integrada e posicionamento direto na timeline.</p>
             </div>
 
-            <div class="card p-6">
-                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-ice-dark">
+            <div class="card p-6 group">
+                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
                 </div>
                 <h3 class="font-bold text-primary mb-2">Track Placement</h3>
-                <p class="text-sm text-secondary">Keyframes e controle de câmera em um fluxo consistente.</p>
+                <p class="text-sm text-secondary">Controle inteligente dos objetos na timeline. Profiling com logs, e sincronização com o áudio.</p>
             </div>
 
-            <div class="card p-6">
-                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-accent-dark">
+            <div class="card p-6 group">
+                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
-                <h3 class="font-bold text-primary mb-2">Timeline Total</h3>
-                <p class="text-sm text-secondary">Encontre descompassos entre áudio e movimento rapidamente.</p>
+                <h3 class="font-bold text-primary mb-2">Timeline</h3>
+                <p class="text-sm text-secondary">Tudo integrado em um só lugar. Fidelidade perfeita entre ferramenta e jogo.</p>
             </div>
         </div>
     </div>
   </section>
 
   <!-- Highlight Section: Export -->
-  <section class="py-24 relative bg-surface-contrast border-t border-border/50">
-    <div class="container mx-auto px-4">
-        <div class="flex flex-col lg:flex-row-reverse items-center gap-16">
-            <div class="lg:w-1/2">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-6">
-                    <span class="w-2 h-2 rounded-full bg-primary"></span>
-                    Exportação Universal
+  <section class="py-24 relative overflow-hidden bg-primary border-t border-background/10">
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent-ice)_/_0.14),transparent_55%)]"></div>
+        <div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_100%,rgb(var(--color-accent-ice-light)_/_0.10),transparent_55%)]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_55%,rgb(var(--color-accent-ice)_/_0.16)_100%)]"></div>
+    </div>
+    <div class="container mx-auto px-4 relative">
+        <div class="flex flex-col lg:flex-row-reverse items-stretch lg:items-center gap-16">
+            <div class="w-full lg:w-1/2">
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-background/10 text-background text-xs font-bold uppercase tracking-wider mb-6 border border-background/15 max-w-full">
+                        <span class="w-2 h-2 rounded-full bg-accent-ice"></span>
+                        Exportação Universal
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-background mb-6 break-words">
+                        Compatibilidade
+                    </h2>
+                    <p class="text-base sm:text-lg text-background/75 mb-6 leading-relaxed">
+                        Deixe as tecnicalidades para trás. Nossa ferramenta é projetada para ser compativel com todas as versões do Just Dance.
+                    </p>
                 </div>
-                <h2 class="text-4xl md:text-5xl font-display font-bold text-primary mb-6">
-                    Compatibilidade Total
-                </h2>
-                <p class="text-lg text-secondary mb-6 leading-relaxed">
-                    Não se preocupe com tecnicalidades. O Dance Studio garante que seu mapa funcione onde você quiser.
-                </p>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-background border border-border p-6 rounded-2xl">
-                        <h4 class="font-bold text-primary mb-2">Legado & Moderno</h4>
-                        <p class="text-sm text-secondary">Suporte nativo a arquivos <code>.ipk</code> (JD 2014+) e pacotes serializados das engines clássicas.</p>
+                    <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors group-hover:text-accent-ice-light">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 19.5V6.75A2.25 2.25 0 0 1 6.75 4.5h6.5l6.25 6.25V19.5A2.25 2.25 0 0 1 17.25 21H6.75A2.25 2.25 0 0 1 4.5 19.5Z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.25 4.5v5a1.25 1.25 0 0 0 1.25 1.25h5" /></svg>
+                            </div>
+                            <h4 class="font-bold text-background">Legado</h4>
+                        </div>
+                        <p class="text-sm text-background/70">Suporte nativo a arquivos UAF IPK (JD 2014+) e pacotes serializados das engine.</p>
                     </div>
-                    <div class="bg-background border border-border p-6 rounded-2xl">
-                        <h4 class="font-bold text-primary mb-2">Unity AssetBundles</h4>
-                        <p class="text-sm text-secondary">Exporte diretamente para as versões mais recentes do Just Dance que utilizam Unity.</p>
+                    <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors group-hover:text-accent-ice-light">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 8.25h16.5M6.75 4.5h10.5M6.75 12.75h10.5M6.75 17.25h10.5M3.75 19.5h16.5" /></svg>
+                            </div>
+                            <h4 class="font-bold text-background">Moderno</h4>
+                        </div>
+                        <p class="text-sm text-background/70">Exporte diretamente para as versões mais recentes do Just Dance que utilizam Unity AssetBundles.</p>
                     </div>
-                    <div class="bg-background border border-border p-6 rounded-2xl md:col-span-2 border-l-4 border-l-accent">
-                        <h4 class="font-bold text-primary mb-2">Legacy Fangame Ready</h4>
-                        <p class="text-sm text-secondary">Seus mapas já nascem compatíveis com o futuro fangame de PC do time Legacy.</p>
+                    <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl md:col-span-2 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors group-hover:text-accent-ice-light">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21.75c-4.5-1.2-7.5-5.3-7.5-9.9V6.6L12 2.25l7.5 4.35v5.25c0 4.6-3 8.7-7.5 9.9Z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 12.75 11.25 14.25 15.75 9.75" /></svg>
+                            </div>
+                            <h4 class="font-bold text-background">Fangame Ready</h4>
+                        </div>
+                        <p class="text-sm text-background/70">Seus mapas já nascem compatíveis com o futuro fangame do time Legacy.</p>
                     </div>
                 </div>
             </div>
-            <div class="lg:w-1/2 relative">
-                 <div class="aspect-video rounded-3xl bg-background border border-border shadow-xl p-8 flex flex-col justify-center items-center gap-4 relative overflow-hidden">
-                    <div class="absolute inset-0 opacity-5 bg-[linear-gradient(45deg,transparent_25%,rgb(var(--color-primary))_25%,rgb(var(--color-primary))_50%,transparent_50%,transparent_75%,rgb(var(--color-primary))_75%,rgb(var(--color-primary))_100%)] bg-[length:20px_20px]"></div>
-                    
-                    <div class="flex gap-4 items-center z-10">
-                        <div class="px-6 py-3 rounded-xl bg-surface border border-border shadow-sm font-mono text-sm">map.ipk</div>
-                        <div class="text-secondary">→</div>
-                        <div class="w-12 h-12 rounded-full bg-primary text-surface flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                            </svg>
-                        </div>
-                        <div class="text-secondary">→</div>
-                        <div class="px-6 py-3 rounded-xl bg-surface border border-border shadow-sm font-mono text-sm">bundle</div>
-                    </div>
-                    <p class="text-xs text-secondary mt-4 font-mono z-10">Converting assets... 100%</p>
+            <div class="w-full lg:w-1/2 relative">
+                 <div class="aspect-video rounded-3xl bg-background/10 border border-background/15 shadow-[0_28px_90px_-45px_rgba(0,0,0,0.75)] relative overflow-hidden backdrop-blur-sm">
+                    <svg viewBox="0 0 1280 720" class="absolute inset-0 w-full h-full" role="img" aria-label="Prévia de exportação e compatibilidade">
+                        <defs>
+                            <radialGradient id="glow1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(400 80) rotate(90) scale(520 780)">
+                                <stop stop-color="#6254FF" stop-opacity="0.55"/>
+                                <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+                            </radialGradient>
+                            <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(980 560) rotate(90) scale(560 820)">
+                                <stop stop-color="#B0A9FF" stop-opacity="0.40"/>
+                                <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+                            </radialGradient>
+                            <linearGradient id="bar" x1="470" y1="545" x2="810" y2="545" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#B0A9FF"/>
+                                <stop offset="1" stop-color="#6254FF"/>
+                            </linearGradient>
+                        </defs>
+
+                        <rect width="1280" height="720" fill="#0B0B12"/>
+                        <rect width="1280" height="720" fill="url(#glow1)"/>
+                        <rect width="1280" height="720" fill="url(#glow2)"/>
+                        <rect width="1280" height="720" fill="#000000" opacity="0.35"/>
+
+                        <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace">
+                            <g opacity="0.92">
+                                <rect x="250" y="278" width="220" height="82" rx="18" fill="#FFFFFF" opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.16"/>
+                                <text x="360" y="329" fill="#FFFFFF" font-size="28" text-anchor="middle">map.ipk</text>
+
+                                <text x="520" y="330" fill="#FFFFFF" opacity="0.55" font-size="34" text-anchor="middle">→</text>
+
+                                <circle cx="640" cy="319" r="44" fill="#FFFFFF"/>
+                                <circle cx="640" cy="319" r="44" fill="none" stroke="#FFFFFF" opacity="0.35"/>
+                                <path d="M612 316.5v18.75c0 9.94 8.06 18 18 18h20c9.94 0 18-8.06 18-18V316.5M604 296.5l36-36m0 0 36 36m-36-36V312" stroke="#0B0B12" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+                                <text x="760" y="330" fill="#FFFFFF" opacity="0.55" font-size="34" text-anchor="middle">→</text>
+
+                                <rect x="810" y="278" width="220" height="82" rx="18" fill="#FFFFFF" opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.16"/>
+                                <text x="920" y="329" fill="#FFFFFF" font-size="28" text-anchor="middle">bundle</text>
+                            </g>
+
+                            <g opacity="0.85">
+                                <text x="470" y="505" fill="#FFFFFF" opacity="0.70" font-size="18">Converting assets</text>
+                                <text x="810" y="505" fill="#FFFFFF" opacity="0.70" font-size="18" text-anchor="end">100%</text>
+                                <rect x="470" y="528" width="340" height="18" rx="9" fill="#FFFFFF" opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.16"/>
+                                <rect x="470" y="528" width="340" height="18" rx="9" fill="url(#bar)"/>
+                            </g>
+                        </g>
+                    </svg>
                  </div>
             </div>
         </div>
@@ -483,32 +582,32 @@
   <!-- Toolset Grid (Secondary) -->
   <section class="py-24 container mx-auto px-4">
     <div class="text-center mb-16">
-        <h2 class="text-3xl font-display font-bold text-primary mb-4">Outras Ferramentas</h2>
-        <p class="text-secondary max-w-xl mx-auto">Complementos essenciais para finalizar sua produção.</p>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary mb-4 break-words">Outras Ferramentas</h2>
+        <p class="text-secondary max-w-xl mx-auto">Complementos essenciais para finalizar o desenvolvimento.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         
         <!-- Video -->
-        <div class="card p-6 hover:border-accent/50 group">
-            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 group-hover:bg-accent/10 group-hover:text-accent-dark transition-colors">
+        <div class="card p-6 group">
+            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
                 </svg>
             </div>
-            <h3 class="font-bold text-primary mb-2">Vídeo Pro</h3>
-            <p class="text-xs text-secondary leading-relaxed">Conversão VP8/VP9 com presets oficiais da Ubisoft. Preview adaptativo para qualquer hardware.</p>
+            <h3 class="font-bold text-primary mb-2">Gerenciador de Mídia</h3>
+            <p class="text-xs text-secondary leading-relaxed">Conversão VP8/VP9 com presets oficiais da Ubisoft. Midias adaptativas para qualquer hardware.</p>
         </div>
 
         <!-- Arte do Menu -->
-        <div class="card p-6 hover:border-accent-ice/50 group">
-            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 group-hover:bg-accent-ice/10 group-hover:text-accent-ice-dark transition-colors">
+        <div class="card p-6 group">
+            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z" />
                 </svg>
             </div>
             <h3 class="font-bold text-primary mb-2">Menu Designer</h3>
-            <p class="text-xs text-secondary leading-relaxed">Personalização total de cores, assets e arquivos de configuração (songdesc).</p>
+            <p class="text-xs text-secondary leading-relaxed">Personalização total de cores, assets, arquivos de informação e simulação dos menus legado.</p>
         </div>
 
     </div>
@@ -530,9 +629,9 @@
   <!-- CTA & Form -->
   <section id="contact" class="py-24 bg-surface-contrast border-y border-border">
     <div class="container mx-auto px-4 text-center">
-        <h2 class="text-3xl md:text-4xl font-display font-bold text-primary mb-4">Inscreva-se para o Beta</h2>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary mb-4 break-words">Inscreva-se para o Beta</h2>
         <p class="text-secondary max-w-lg mx-auto mb-12">
-            O Dance Studio é uma ferramenta profissional. Garanta sua vaga na lista de espera para o lançamento da versão beta (acesso pago).
+            O Dance Studio é uma ferramenta em estado de desenvolvimento inicial. Garanta sua vaga na lista de espera, escreva um texto convincente sobre o que você espera e o porquê você deve ser o próximo a testar a versão beta (acesso pago).
         </p>
         
         <div class="max-w-md mx-auto card text-left bg-background shadow-lg">
@@ -574,7 +673,7 @@
 
 <footer class="border-t border-border py-8 text-center text-sm text-secondary">
   <div class="container mx-auto px-4">
-    <p>&copy; {% now "Y" %} Dance Studio. Todos os direitos reservados.</p>
+    <p>Copyright &copy; {% now "Y" %} - Legacy Development Team - Todos os Direitos Reservados</p>
   </div>
 </footer>
 
