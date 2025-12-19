@@ -3,153 +3,155 @@
 {% block title %}Dashboard - Mupi Admin{% endblock %}
 
 {% block content %}
-<header class="sticky top-0 z-30">
-  <!-- Blur/Fade Layer -->
-  <div class="absolute top-0 left-0 w-full h-24 backdrop-blur-xl pointer-events-none"
-       style="-webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%);">
-  </div>
+<header class="relative z-30 mb-8 pt-8 pb-4">
+  
+  <div class="container mx-auto px-4">
+    <!-- Top Row: Branding & Controls -->
+    <div class="flex flex-col items-center md:flex-row md:items-center justify-between gap-6 mb-8">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-4">
+        <div class="text-center md:text-left">
+          <h1 class="font-display text-2xl font-bold text-primary leading-tight">Dance Studio</h1>
+          <p class="text-secondary text-sm font-medium">Dashboard Administrativo</p>
+        </div>
+      </div>
 
-  <div class="container relative z-10 mx-auto px-4 h-24 flex items-center justify-between">
-    <div class="flex items-center gap-4">
-      <div class="flex items-center gap-2 text-sm breadcrumbs text-secondary">
-        <span class="hidden md:inline text-primary font-bold text-lg">Dance Studio</span>
-        <svg class="hidden md:inline w-4 h-4 text-secondary opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-        </svg>
-        <span class="text-primary font-bold text-lg md:font-normal md:text-secondary md:text-sm">Dashboard</span>
+      <!-- User Controls -->
+      <div class="flex items-center gap-4 bg-surface/50 backdrop-blur-sm p-2 pr-4 rounded-full border border-border shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-accent-light to-accent-ice-light flex items-center justify-center text-xs font-bold text-accent-ice-dark shadow-sm ring-2 ring-background">
+            {{ request.user.username|slice:":1"|upper }}
+          </div>
+          <span class="text-sm font-medium text-primary">{{ request.user.username }}</span>
+        </div>
+        
+        <div class="h-4 w-px bg-border"></div>
+        
+        <a href="{% url 'landpage' %}" class="text-xs font-medium text-secondary hover:text-primary hover:scale-105 active:scale-95 transition-all duration-200 ease-out-back inline-block">Voltar a Landing Page</a>
+        <div class="h-4 w-px bg-border"></div>
+        <button type="button" 
+                hx-get="{% url 'logout_confirm' %}"
+                hx-target="#modal-content"
+                hx-swap="innerHTML"
+                class="text-xs font-medium text-red-500 hover:text-red-600 hover:scale-105 active:scale-95 transition-all duration-200 ease-out-back inline-block">Sair</button>
       </div>
     </div>
-    
-    <div class="flex items-center gap-4">
-      <a href="{% url 'landpage' %}" class="text-sm text-secondary hover:text-primary transition-colors">Ver Site</a>
-      <div class="h-4 w-px bg-secondary opacity-50 hidden md:block"></div>
-      <div class="hidden md:flex items-center gap-2">
-        <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-xs font-bold text-white shadow-sm">
-          {{ request.user.username|slice:":1"|upper }}
+
+    <!-- The "Widget" - Integrated Stats Bar -->
+    <div class="dashboard-stats"
+         hx-trigger="refresh-stats from:document" 
+         hx-get="{% url 'dashboard_stats' %}" 
+         hx-select=".dashboard-stats" 
+         hx-swap="outerHTML">
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 bg-surface border border-border rounded-2xl shadow-sm divide-y md:divide-y-0 md:divide-x divide-border overflow-hidden">
+        <!-- Total -->
+        <div class="group p-6 md:hover:bg-accent-ice/5 transition-colors duration-100 cursor-pointer select-none"
+             style="-webkit-tap-highlight-color: transparent;"
+             onclick="window.dispatchEvent(new CustomEvent('set-status', { detail: { status: '', label: 'Todos' } }))">
+            <div class="flex items-center justify-between transition-transform duration-100 group-active:scale-95">
+                <div>
+                    <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-1">Total</p>
+                    <p class="text-3xl font-bold text-primary">{{ total_messages }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-accent-ice-dark group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                    </svg>
+                </div>
+            </div>
         </div>
-        <span class="text-sm font-medium text-primary hidden md:inline">{{ request.user.username }}</span>
+
+        <!-- Unread -->
+        <div class="group p-6 md:hover:bg-accent-ice/5 transition-colors duration-100 cursor-pointer select-none"
+             style="-webkit-tap-highlight-color: transparent;"
+             onclick="window.dispatchEvent(new CustomEvent('set-status', { detail: { status: 'unread', label: 'Não Lidas' } }))">
+            <div class="flex items-center justify-between transition-transform duration-100 group-active:scale-95">
+                <div>
+                    <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-1">Não Lidas</p>
+                    <p class="text-3xl font-bold text-primary">{{ unread_messages }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-accent-ice-dark group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Read -->
+        <div class="group p-6 md:hover:bg-accent/5 transition-colors duration-100 cursor-pointer select-none"
+             style="-webkit-tap-highlight-color: transparent;"
+             onclick="window.dispatchEvent(new CustomEvent('set-status', { detail: { status: 'read', label: 'Lidas' } }))">
+            <div class="flex items-center justify-between transition-transform duration-100 group-active:scale-95">
+                <div>
+                    <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-1">Lidas</p>
+                    <p class="text-3xl font-bold text-primary">{{ read_messages }}</p>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-accent-dark group-hover:scale-110 transition-transform duration-300">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
       </div>
-      <div class="h-4 w-px bg-secondary opacity-50 block"></div>
-      <button type="button" 
-              hx-get="{% url 'logout_confirm' %}"
-              hx-target="#modal-content"
-              hx-swap="innerHTML"
-              class="text-sm text-secondary hover:text-red-500 transition-colors">Sair</button>
     </div>
   </div>
 </header>
 
-<main class="container mx-auto px-4 py-8 space-y-8">
+<main class="container mx-auto px-4 space-y-8">
   
-  <!-- Stats Section -->
-  <section class="dashboard-stats grid grid-cols-1 md:grid-cols-3 gap-4" 
-           hx-trigger="refresh-stats from:document" 
-           hx-get="{% url 'dashboard_stats' %}" 
-           hx-select=".dashboard-stats" 
-           hx-swap="outerHTML">
-    <div class="card p-4 border-l-4 border-l-accent-ice hover:bg-primary/5 transition-colors">
-      <h3 class="text-secondary text-sm font-medium mb-1">Total de Mensagens</h3>
-      <p class="text-3xl font-bold text-primary">{{ total_messages }}</p>
-    </div>
-    <div class="card p-4 border-l-4 border-l-accent-denied hover:bg-primary/5 transition-colors">
-      <h3 class="text-secondary text-sm font-medium mb-1">Não Lidas</h3>
-      <p class="text-3xl font-bold text-primary">{{ unread_messages }}</p>
-    </div>
-    <div class="card p-4 border-l-4 border-l-accent hover:bg-secondary/5 transition-colors">
-      <h3 class="text-secondary text-sm font-medium mb-1">Lidas</h3>
-      <p class="text-3xl font-bold text-primary">{{ read_messages }}</p>
-    </div>
-  </section>
-
   <!-- Messages Section -->
   <section class="space-y-4">
     <!-- Search & Filter -->
-    <div class="flex flex-col sm:flex-row gap-4 items-end sm:items-center justify-between">
+    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
       <h2 class="text-2xl font-bold flex items-center gap-2 text-primary">
         Mensagens
       </h2>
       
-      <form hx-get="{% url 'admin' %}" 
+      <form id="filter-form"
+            hx-get="{% url 'admin' %}" 
             hx-target="#messages-table-container" 
             hx-swap="innerHTML"
-            hx-trigger="submit, keyup changed delay:500ms from:input[name='search'], change"
+            hx-trigger="submit, change"
             class="flex gap-2 w-full sm:w-auto">
-        <div class="relative flex-grow sm:w-64">
+        <div class="relative flex-grow sm:w-64" x-data="{ query: '{{ search_query|default:''|escapejs }}' }">
           <input type="search" 
                  name="search" 
-                 id="search-input"
+                 id="search-input" 
                  placeholder="Buscar..." 
-                 value="{{ search_query }}" 
-                 class="input"
+                 value="{{ search_query|default:'' }}"
+                 @input="query = $el.value"
+                 class="input pr-12"
+                 style="padding-right: 3rem !important;"
                  autocomplete="off">
+          <button type="button" 
+                  x-show="query.length > 0"
+                  x-cloak
+                  x-transition:enter="transition ease-out-back duration-300"
+                  x-transition:enter-start="opacity-0 scale-50 rotate-90"
+                  x-transition:enter-end="opacity-100 scale-100 rotate-0"
+                  x-transition:leave="transition ease-in duration-200"
+                  x-transition:leave-start="opacity-100 scale-100 rotate-0"
+                  x-transition:leave-end="opacity-0 scale-50 rotate-90"
+                  @click="query = ''; document.getElementById('search-input').value = ''; $nextTick(() => { $el.closest('form').requestSubmit() })"
+                  class="absolute right-4 top-1/2 -translate-y-1/2 text-secondary hover:text-primary hover:bg-border/50 p-1 rounded-full bg-surface transform active:scale-90 transition-all duration-200"
+                  aria-label="Limpar busca">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
         </div>
         
-        <div x-data="{ 
-              open: false, 
-              selected: '{{ status_filter|default:'' }}',
-              label: '{% if status_filter == 'unread' %}Não Lidas{% elif status_filter == 'read' %}Lidas{% else %}Todos{% endif %}' 
-             }" 
-             class="relative w-40"
-             @click.away="open = false">
-             
-            <!-- Hidden Input for Form Submission -->
+        <!-- Hidden Input to Maintain Status State from Widgets -->
+        <div x-data="{ selected: '{{ status_filter|default:'' }}' }"
+             @set-status.window="selected = $event.detail.status; $nextTick(() => { $dispatch('change'); })">
             <input type="hidden" name="status" x-model="selected">
-            
-            <!-- Trigger Button -->
-            <button type="button" 
-                    @click="open = !open"
-                    class="input w-full cursor-pointer text-sm flex items-center justify-between gap-2 bg-surface"
-                    :class="{ 'border-accent ring-1 ring-accent/20': open }">
-                <span x-text="label"></span>
-                <svg class="w-4 h-4 text-secondary transition-transform duration-200" 
-                     :class="{ 'rotate-180': open }"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-            
-            <!-- Dropdown Menu -->
-            <div x-show="open" 
-                 x-cloak
-                 x-transition:enter="transition ease-out duration-100"
-                 x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
-                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-75"
-                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                 x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
-                 class="absolute right-0 mt-2 w-full bg-surface border border-border rounded-xl shadow-xl z-50 overflow-hidden">
-                 
-                <div class="p-1">
-                    <button type="button" 
-                            @click="selected = ''; label = 'Todos'; open = false; $nextTick(() => { $dispatch('change'); })"
-                            class="w-full text-left px-3 py-2 text-sm text-secondary rounded-lg hover:bg-accent-light/20 hover:text-primary transition-colors flex items-center justify-between"
-                            :class="{ 'bg-accent/20 font-medium text-primary': selected === '' }">
-                        Todos
-                        <span x-show="selected === ''" class="text-accent">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        </span>
-                    </button>
-                    <button type="button" 
-                            @click="selected = 'unread'; label = 'Não Lidas'; open = false; $nextTick(() => { $dispatch('change'); })"
-                            class="w-full text-left px-3 py-2 text-sm text-secondary rounded-lg hover:bg-accent-light/20 hover:text-primary transition-colors flex items-center justify-between"
-                            :class="{ 'bg-accent/20 font-medium text-primary': selected === 'unread' }">
-                        Não Lidas
-                        <span x-show="selected === 'unread'" class="text-accent">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        </span>
-                    </button>
-                    <button type="button" 
-                            @click="selected = 'read'; label = 'Lidas'; open = false; $nextTick(() => { $dispatch('change'); })"
-                            class="w-full text-left px-3 py-2 text-sm text-secondary rounded-lg hover:bg-accent-light/20 hover:text-primary transition-colors flex items-center justify-between"
-                            :class="{ 'bg-accent/20 font-medium text-primary': selected === 'read' }">
-                        Lidas
-                        <span x-show="selected === 'read'" class="text-accent">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        </span>
-                    </button>
-                </div>
-            </div>
         </div>
+
+        <button type="submit" 
+                class="btn btn-primary px-6">
+            Buscar
+        </button>
       </form>
     </div>
 
@@ -160,9 +162,9 @@
   </section>
 
   {% if is_dev %}
-  <hr class="border-border my-12">
+  <hr class="border-border my-20">
   
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-20">
     <!-- Users Section -->
     <section class="users-section space-y-4"
              id="users"
@@ -196,7 +198,7 @@
             </thead>
             <tbody class="divide-y divide-border">
               {% for u in active_users %}
-              <tr class="hover:bg-accent-ice/5 transition-colors">
+              <tr>
                 <td class="px-6 py-4 font-medium text-primary">{{ u.username }}</td>
                 <td class="px-6 py-4">
                   <span class="px-2 py-1 rounded-full text-xs font-semibold border {% if u.is_superuser %}bg-accent/20 text-accent-dark border-accent-dark/30{% else %}bg-accent-ice/20 text-accent-ice-dark border-accent-ice-dark/30{% endif %}">
@@ -258,7 +260,7 @@
           </thead>
           <tbody class="divide-y divide-border">
               {% for log in audit_logs %}
-              <tr class="hover:bg-accent-ice/5 transition-colors">
+              <tr>
                 <td class="px-6 py-4 text-secondary whitespace-nowrap">{{ log.formatted_date }}</td>
                 <td class="px-6 py-4 font-medium text-primary">{{ log.user.username|default:"Sistema" }}</td>
                 <td class="px-6 py-4 text-secondary">{{ log.description }}</td>

@@ -1,6 +1,7 @@
 <section class="messages-table card card-table overflow-hidden p-0 h-[600px] flex flex-col"
          hx-trigger="refresh-messages from:document"
          hx-get="{% url 'admin' %}"
+         hx-include="#filter-form"
          hx-select=".messages-table"
          hx-swap="outerHTML">
   <div class="overflow-y-auto custom-scrollbar flex-grow">
@@ -18,7 +19,7 @@
       </thead>
       <tbody class="divide-y divide-border">
         {% for msg in messages %}
-        <tr class="hover:bg-accent-ice/5 transition-colors group">
+        <tr class="group">
           <td class="px-6 py-4 text-secondary font-mono text-xs">#{{ msg.id }}</td>
           <td class="px-6 py-4 font-medium text-primary">{{ msg.name }}</td>
           <td class="px-6 py-4 text-secondary">{{ msg.email }}</td>

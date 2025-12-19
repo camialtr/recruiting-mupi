@@ -191,7 +191,7 @@ def toggle_message_read(request, pk: int):
     
     status_text = "Sim" if msg.read else "Não"
     html = f'<span id="read-text-{msg.pk}" class="{css_class}">{status_text}</span>'
-    return HttpResponse(html, headers={'HX-Trigger': 'refresh-stats, refresh-audit'})
+    return HttpResponse(html, headers={'HX-Trigger': 'refresh-stats, refresh-messages, refresh-audit'})
 
 
 @login_required
