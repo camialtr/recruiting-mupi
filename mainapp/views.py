@@ -64,7 +64,7 @@ def dashboard(request):
         'total_messages': total_messages,
         'unread_messages': unread_messages,
         'read_messages': read_messages,
-        'messages': messages_qs,
+        'message_list': messages_qs,
         'search_query': search_query,
         'status_filter': status_filter,
         'is_dev': is_dev,
@@ -103,7 +103,7 @@ def dashboard_stats(request):
         'is_dev': is_dev,
         'active_users': active_users,
         'audit_logs': audit_logs,
-        'messages': messages_qs,
+        'message_list': messages_qs,
         'search_query': '',
         'status_filter': '',
     }
