@@ -195,47 +195,49 @@
       </div>
       
       <div class="card card-table overflow-hidden p-0 h-[400px] flex flex-col">
-        <div class="overflow-y-auto custom-scrollbar flex-grow">
+        <div class="overflow-y-auto overflow-x-auto custom-scrollbar flex-grow">
           <table class="w-full text-sm text-left">
             <thead class="sticky top-0 z-10 text-xs text-secondary uppercase bg-surface border-b border-border">
               <tr>
-                <th class="px-6 py-3">Usuário</th>
-                <th class="px-6 py-3">Tipo</th>
-                <th class="px-6 py-3 text-right">Ações</th>
+                <th class="px-3 sm:px-6 py-3">Usuário</th>
+                <th class="px-3 sm:px-6 py-3">Tipo</th>
+                <th class="px-3 sm:px-6 py-3 text-right">Ações</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-border">
               {% for u in active_users %}
               <tr>
-                <td class="px-6 py-4 font-medium text-primary">{{ u.username }}</td>
-                <td class="px-6 py-4">
+                <td class="px-3 sm:px-6 py-4 font-medium text-primary break-all sm:break-normal">{{ u.username }}</td>
+                <td class="px-3 sm:px-6 py-4">
                   <span class="badge badge--compact {% if u.is_superuser %}badge--accent{% else %}badge--ice{% endif %}">
                     {{ u.is_superuser|yesno:"Dev,Viewer" }}
                   </span>
                 </td>
-                <td class="px-6 py-4 text-right space-x-2">
-                  <button type="button" 
-                          class="btn btn-secondary text-xs"
-                          hx-get="{% url 'user_change_password' u.pk %}"
-                          hx-target="#modal-content"
-                          hx-swap="innerHTML"
-                          hx-select="unset">
-                    Alterar senha
-                  </button>
-                  {% if u != request.user %}
-                  <button type="button"
-                          class="btn btn-primary text-xs"
-                          hx-get="{% url 'user_delete' u.pk %}"
-                          hx-target="#modal-content"
-                          hx-swap="innerHTML"
-                          hx-select="unset">
-                    Excluir
-                  </button>
-                  {% endif %}
+                <td class="px-3 sm:px-6 py-4 text-right">
+                  <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:justify-end sm:gap-2">
+                    <button type="button" 
+                            class="btn btn-secondary text-xs w-full sm:w-auto"
+                            hx-get="{% url 'user_change_password' u.pk %}"
+                            hx-target="#modal-content"
+                            hx-swap="innerHTML"
+                            hx-select="unset">
+                      Alterar senha
+                    </button>
+                    {% if u != request.user %}
+                    <button type="button"
+                            class="btn btn-primary text-xs w-full sm:w-auto"
+                            hx-get="{% url 'user_delete' u.pk %}"
+                            hx-target="#modal-content"
+                            hx-swap="innerHTML"
+                            hx-select="unset">
+                      Excluir
+                    </button>
+                    {% endif %}
+                  </div>
                 </td>
               </tr>
               {% empty %}
-              <tr><td colspan="3" class="px-6 py-4 text-center text-secondary">Nenhum usuário encontrado.</td></tr>
+              <tr><td colspan="3" class="px-3 sm:px-6 py-4 text-center text-secondary">Nenhum usuário encontrado.</td></tr>
               {% endfor %}
             </tbody>
           </table>
@@ -257,24 +259,24 @@
       </div>
       
       <div class="card card-table overflow-hidden p-0 h-[400px] flex flex-col">
-        <div class="overflow-y-auto custom-scrollbar flex-grow">
+        <div class="overflow-y-auto overflow-x-auto custom-scrollbar flex-grow">
           <table class="w-full text-sm text-left">
             <thead class="sticky top-0 z-10 text-xs text-secondary uppercase bg-surface border-b border-border">
             <tr>
-              <th class="px-6 py-3">Data</th>
-              <th class="px-6 py-3">Usuário</th>
-              <th class="px-6 py-3">Ação</th>
+              <th class="px-3 sm:px-6 py-3 whitespace-nowrap">Data</th>
+              <th class="hidden sm:table-cell px-3 sm:px-6 py-3">Usuário</th>
+              <th class="px-3 sm:px-6 py-3">Ação</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-border">
               {% for log in audit_logs %}
               <tr>
-                <td class="px-6 py-4 text-secondary whitespace-nowrap">{{ log.formatted_date }}</td>
-                <td class="px-6 py-4 font-medium text-primary">{{ log.user.username|default:"Sistema" }}</td>
-                <td class="px-6 py-4 text-secondary">{{ log.description }}</td>
+                <td class="px-3 sm:px-6 py-4 text-secondary whitespace-nowrap">{{ log.formatted_date }}</td>
+                <td class="hidden sm:table-cell px-3 sm:px-6 py-4 font-medium text-primary">{{ log.user.username|default:"Sistema" }}</td>
+                <td class="px-3 sm:px-6 py-4 text-secondary whitespace-normal break-words">{{ log.description }}</td>
               </tr>
               {% empty %}
-              <tr><td colspan="3" class="px-6 py-4 text-center text-secondary">Nenhum registro.</td></tr>
+              <tr><td colspan="3" class="px-3 sm:px-6 py-4 text-center text-secondary">Nenhum registro.</td></tr>
               {% endfor %}
             </tbody>
           </table>

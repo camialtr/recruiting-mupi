@@ -302,7 +302,23 @@
                 </div>
             </div>
 
-            <div x-data="{ mode: 'joycon' }" class="card !p-6 relative overflow-hidden w-full lg:max-w-xl lg:ml-auto lg:self-center reveal reveal-right" data-reveal-delay="200">
+            <div x-data="{
+                  mode: 'joycon',
+                  swapping: false,
+                  swapTimer: null,
+                  switchMode(next) {
+                    if (this.mode === next) return;
+                    this.mode = next;
+                    if (this.swapTimer) clearTimeout(this.swapTimer);
+                    this.swapping = false;
+                    this.$nextTick(() => {
+                      this.swapping = true;
+                      this.swapTimer = setTimeout(() => { this.swapping = false; }, 450);
+                    });
+                  }
+                }"
+                :style="mode === 'joycon' ? '--console-glow: rgb(var(--color-accent) / 0.28)' : '--console-glow: rgb(var(--color-accent-ice) / 0.28)'"
+                class="card !p-6 relative overflow-hidden w-full lg:max-w-xl lg:ml-auto lg:self-center reveal reveal-right" data-reveal-delay="200">
                 <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
                 <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_80%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
 
@@ -312,38 +328,135 @@
                             <h3 class="text-xl font-bold text-primary">Console de Captura</h3>
                             <p class="text-sm text-secondary">Veja os pipelines em tempo real.</p>
                         </div>
-                        <div class="flex items-center gap-2 bg-surface/50 backdrop-blur-sm p-1 rounded-full border border-border shrink-0">
-                            <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors" :class="mode === 'joycon' ? 'bg-primary text-background' : 'text-secondary hover:text-primary'" @click="mode = 'joycon'">Joy-Con</button>
-                            <button type="button" class="px-3 py-1.5 text-xs font-bold rounded-full transition-colors" :class="mode === 'mobile' ? 'bg-primary text-background' : 'text-secondary hover:text-primary'" @click="mode = 'mobile'">Mobile</button>
+                        <div class="relative grid grid-cols-2 bg-surface/50 backdrop-blur-sm p-1 rounded-full border border-border shrink-0">
+                            <div class="absolute inset-y-1 left-1 right-1 pointer-events-none">
+                                <div class="h-full w-1/2 bg-primary rounded-full transition-transform duration-300 ease-out-back motion-reduce:transition-none"
+                                     :class="mode === 'joycon' ? 'translate-x-0' : 'translate-x-full'"></div>
+                            </div>
+                            <button type="button"
+                                    class="relative z-10 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-300 motion-reduce:transition-none"
+                                    :class="mode === 'joycon' ? 'text-background' : 'text-secondary hover:text-primary'"
+                                    @click="switchMode('joycon')">Joy-Con</button>
+                            <button type="button"
+                                    class="relative z-10 px-3 py-1.5 text-xs font-bold rounded-full transition-colors duration-300 motion-reduce:transition-none"
+                                    :class="mode === 'mobile' ? 'text-background' : 'text-secondary hover:text-primary'"
+                                    @click="switchMode('mobile')">Mobile</button>
                         </div>
                     </div>
 
                     <div class="flex items-center justify-between gap-3">
                         <span class="text-xs font-semibold text-secondary uppercase tracking-wider">Input</span>
-                        <span class="text-xs font-mono text-secondary text-right shrink-0" x-text="mode === 'joycon' ? 'Bluetooth • 60Hz' : 'Wi‑Fi • 30Hz'"></span>
+                        <div class="relative h-4 text-xs font-mono text-secondary text-right shrink-0 min-w-[112px]">
+                            <span x-cloak
+                                  x-show="mode === 'joycon'"
+                                  x-transition:enter="transition ease-out duration-200 transform"
+                                  x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                  x-transition:enter-end="opacity-100 translate-y-0"
+                                  x-transition:leave="transition ease-in duration-150 transform"
+                                  x-transition:leave-start="opacity-100 translate-y-0"
+                                  x-transition:leave-end="opacity-0 translate-y-0.5"
+                                  class="absolute inset-0 flex items-center justify-end">Bluetooth • 60Hz</span>
+                            <span x-cloak
+                                  x-show="mode === 'mobile'"
+                                  x-transition:enter="transition ease-out duration-200 transform"
+                                  x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                  x-transition:enter-end="opacity-100 translate-y-0"
+                                  x-transition:leave="transition ease-in duration-150 transform"
+                                  x-transition:leave-start="opacity-100 translate-y-0"
+                                  x-transition:leave-end="opacity-0 translate-y-0.5"
+                                  class="absolute inset-0 flex items-center justify-end">Wi‑Fi • 30Hz</span>
+                        </div>
                     </div>
 
-                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div class="bg-surface-contrast border border-border rounded-2xl p-4">
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6" :class="swapping ? 'console-swap-anim' : ''">
+                        <div class="bg-surface-contrast border border-border rounded-2xl p-4" :class="swapping ? 'console-glow-anim' : ''">
                             <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Jitter</p>
                             <div class="h-2 bg-surface rounded-full overflow-hidden">
-                                <div class="h-full bg-accent rounded-full" :style="mode === 'joycon' ? 'width: 25%' : 'width: 40%'"></div>
+                                <div class="h-full bg-accent rounded-full transition-all duration-500 ease-out motion-reduce:transition-none"
+                                     :class="swapping ? 'console-bar-anim' : ''"
+                                     :style="mode === 'joycon' ? 'width: 25%' : 'width: 40%'"></div>
                             </div>
-                            <p class="mt-2 text-xs text-secondary" x-text="mode === 'joycon' ? 'Baixo' : 'Médio'"></p>
+                            <div class="relative mt-2 h-4 text-xs text-secondary">
+                                <span x-cloak
+                                      x-show="mode === 'joycon'"
+                                      x-transition:enter="transition ease-out duration-200 transform"
+                                      x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                      x-transition:enter-end="opacity-100 translate-y-0"
+                                      x-transition:leave="transition ease-in duration-150 transform"
+                                      x-transition:leave-start="opacity-100 translate-y-0"
+                                      x-transition:leave-end="opacity-0 translate-y-0.5"
+                                      class="absolute inset-0">Baixo</span>
+                                <span x-cloak
+                                      x-show="mode === 'mobile'"
+                                      x-transition:enter="transition ease-out duration-200 transform"
+                                      x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                      x-transition:enter-end="opacity-100 translate-y-0"
+                                      x-transition:leave="transition ease-in duration-150 transform"
+                                      x-transition:leave-start="opacity-100 translate-y-0"
+                                      x-transition:leave-end="opacity-0 translate-y-0.5"
+                                      class="absolute inset-0">Médio</span>
+                            </div>
                         </div>
 
-                        <div class="bg-surface-contrast border border-border rounded-2xl p-4">
+                        <div class="bg-surface-contrast border border-border rounded-2xl p-4" :class="swapping ? 'console-glow-anim' : ''">
                             <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-2">Drift</p>
                             <div class="h-2 bg-surface rounded-full overflow-hidden">
-                                <div class="h-full bg-accent-ice rounded-full" :style="mode === 'joycon' ? 'width: 18%' : 'width: 28%'"></div>
+                                <div class="h-full bg-accent-ice rounded-full transition-all duration-500 ease-out motion-reduce:transition-none"
+                                     :class="swapping ? 'console-bar-anim' : ''"
+                                     :style="mode === 'joycon' ? 'width: 18%' : 'width: 28%'"></div>
                             </div>
-                            <p class="mt-2 text-xs text-secondary" x-text="mode === 'joycon' ? 'Estável' : 'Controlado'"></p>
+                            <div class="relative mt-2 h-4 text-xs text-secondary">
+                                <span x-cloak
+                                      x-show="mode === 'joycon'"
+                                      x-transition:enter="transition ease-out duration-200 transform"
+                                      x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                      x-transition:enter-end="opacity-100 translate-y-0"
+                                      x-transition:leave="transition ease-in duration-150 transform"
+                                      x-transition:leave-start="opacity-100 translate-y-0"
+                                      x-transition:leave-end="opacity-0 translate-y-0.5"
+                                      class="absolute inset-0">Estável</span>
+                                <span x-cloak
+                                      x-show="mode === 'mobile'"
+                                      x-transition:enter="transition ease-out duration-200 transform"
+                                      x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                      x-transition:enter-end="opacity-100 translate-y-0"
+                                      x-transition:leave="transition ease-in duration-150 transform"
+                                      x-transition:leave-start="opacity-100 translate-y-0"
+                                      x-transition:leave-end="opacity-0 translate-y-0.5"
+                                      class="absolute inset-0">Controlado</span>
+                            </div>
                         </div>
 
-                        <div class="bg-surface-contrast border border-border rounded-2xl p-5 sm:col-span-2">
+                        <div class="bg-surface-contrast border border-border rounded-2xl p-5 sm:col-span-2 relative overflow-hidden transition-colors duration-300 motion-reduce:transition-none"
+                             :class="swapping ? 'console-glow-anim' : ''">
+                            <div class="absolute inset-x-6 top-0 h-px pointer-events-none">
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-accent/45 to-transparent transition-opacity duration-300 motion-reduce:transition-none"
+                                     :class="mode === 'joycon' ? 'opacity-100' : 'opacity-0'"></div>
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-accent-ice/45 to-transparent transition-opacity duration-300 motion-reduce:transition-none"
+                                     :class="mode === 'mobile' ? 'opacity-100' : 'opacity-0'"></div>
+                            </div>
                             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                                 <p class="text-sm font-bold text-primary">Pipeline</p>
-                                <span class="text-xs font-mono text-secondary text-right" x-text="mode === 'joycon' ? 'PROFILE: JC-01' : 'PROFILE: MB-02'"></span>
+                                <div class="relative h-4 text-xs font-mono text-secondary text-right min-w-[112px]">
+                                    <span x-cloak
+                                          x-show="mode === 'joycon'"
+                                          x-transition:enter="transition ease-out duration-200 transform"
+                                          x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                          x-transition:enter-end="opacity-100 translate-y-0"
+                                          x-transition:leave="transition ease-in duration-150 transform"
+                                          x-transition:leave-start="opacity-100 translate-y-0"
+                                          x-transition:leave-end="opacity-0 translate-y-0.5"
+                                          class="absolute inset-0 flex items-center justify-end">PROFILE: JC-01</span>
+                                    <span x-cloak
+                                          x-show="mode === 'mobile'"
+                                          x-transition:enter="transition ease-out duration-200 transform"
+                                          x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                          x-transition:enter-end="opacity-100 translate-y-0"
+                                          x-transition:leave="transition ease-in duration-150 transform"
+                                          x-transition:leave-start="opacity-100 translate-y-0"
+                                          x-transition:leave-end="opacity-0 translate-y-0.5"
+                                          class="absolute inset-0 flex items-center justify-end">PROFILE: MB-02</span>
+                                </div>
                             </div>
                             <div class="space-y-3 text-sm mb-6">
                                 <div class="flex items-center justify-between gap-4">
@@ -352,11 +465,30 @@
                                 </div>
                                 <div class="flex items-center justify-between gap-4">
                                     <span class="text-secondary truncate">Algoritmo</span>
-                                    <span class="text-xs font-semibold text-right shrink-0" :class="mode === 'joycon' ? 'text-accent-dark' : 'text-accent-ice-dark'">Naive Bayes</span>
+                                    <span class="text-xs font-semibold text-right shrink-0 transition-colors duration-300 motion-reduce:transition-none" :class="mode === 'joycon' ? 'text-accent-dark' : 'text-accent-ice-dark'">Naive Bayes</span>
                                 </div>
                                 <div class="flex items-center justify-between gap-4">
                                     <span class="text-secondary truncate">Quantização</span>
-                                    <span class="text-xs font-semibold text-secondary text-right shrink-0" x-text="mode === 'joycon' ? '1/60s' : '1/30s'"></span>
+                                    <div class="relative h-4 text-xs font-semibold text-secondary text-right shrink-0 min-w-[48px]">
+                                        <span x-cloak
+                                              x-show="mode === 'joycon'"
+                                              x-transition:enter="transition ease-out duration-200 transform"
+                                              x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                              x-transition:enter-end="opacity-100 translate-y-0"
+                                              x-transition:leave="transition ease-in duration-150 transform"
+                                              x-transition:leave-start="opacity-100 translate-y-0"
+                                              x-transition:leave-end="opacity-0 translate-y-0.5"
+                                              class="absolute inset-0 flex items-center justify-end">1/60s</span>
+                                        <span x-cloak
+                                              x-show="mode === 'mobile'"
+                                              x-transition:enter="transition ease-out duration-200 transform"
+                                              x-transition:enter-start="opacity-0 -translate-y-0.5"
+                                              x-transition:enter-end="opacity-100 translate-y-0"
+                                              x-transition:leave="transition ease-in duration-150 transform"
+                                              x-transition:leave-start="opacity-100 translate-y-0"
+                                              x-transition:leave-end="opacity-0 translate-y-0.5"
+                                              class="absolute inset-0 flex items-center justify-end">1/30s</span>
+                                    </div>
                                 </div>
                                 <div class="flex items-center justify-between gap-4">
                                     <span class="text-secondary truncate">Pré‑Scoring</span>
@@ -367,7 +499,8 @@
                             <div class="flex items-center justify-between gap-3">
                                 <p class="text-xs text-secondary truncate">Pronto para a captura</p>
                                 <div class="flex items-center gap-2 shrink-0">
-                                    <span class="w-2 h-2 rounded-full bg-accent"></span>
+                                    <span class="w-2 h-2 rounded-full transition-colors duration-300 motion-reduce:transition-none"
+                                          :class="mode === 'joycon' ? 'bg-accent' : 'bg-accent-ice'"></span>
                                     <span class="text-xs font-semibold text-primary">LIVE</span>
                                 </div>
                             </div>
