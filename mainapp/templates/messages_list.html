@@ -3,11 +3,19 @@
 {% block title %}Dashboard - Mupi Admin{% endblock %}
 
 {% block content %}
-<header class="relative z-30 mb-8 pt-8 pb-4">
+<div class="flex-grow relative overflow-hidden text-primary bg-background">
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_-10%,rgb(var(--color-accent-ice)_/_0.14),transparent_60%)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_10%_85%,rgb(var(--color-accent)_/_0.10),transparent_60%)]"></div>
+    <div class="absolute inset-0 opacity-[0.62] bg-[linear-gradient(to_right,rgb(var(--color-border)_/_0.55)_1px,transparent_1px),linear-gradient(to_bottom,rgb(var(--color-border)_/_0.55)_1px,transparent_1px)] bg-[size:46px_46px]"></div>
+  </div>
+
+  <div class="relative z-10">
+    <header class="relative z-30 mb-8 pt-8 pb-4">
   
-  <div class="container mx-auto px-4">
-    <!-- Top Row: Branding & Controls -->
-    <div class="flex flex-col items-center md:flex-row md:items-center justify-between gap-6 mb-8">
+    <div class="container mx-auto px-4">
+      <!-- Top Row: Branding & Controls -->
+    <div class="flex flex-col items-center md:flex-row md:items-center justify-between gap-6 mb-8 reveal reveal-up" data-reveal-delay="0">
       <!-- Brand Identity -->
       <div class="flex items-center gap-4">
         <div class="text-center md:text-left">
@@ -38,7 +46,7 @@
     </div>
 
     <!-- The "Widget" - Integrated Stats Bar -->
-    <div class="dashboard-stats"
+    <div class="dashboard-stats reveal reveal-up" data-reveal-delay="120"
          hx-trigger="refresh-stats from:document" 
          hx-get="{% url 'dashboard_stats' %}" 
          hx-select=".dashboard-stats" 
@@ -103,7 +111,7 @@
 <main class="container mx-auto px-4 space-y-8">
   
   <!-- Messages Section -->
-  <section class="space-y-4">
+  <section class="space-y-4 reveal reveal-up" data-reveal-delay="160">
     <!-- Search & Filter -->
     <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
       <h2 class="text-2xl font-bold flex items-center gap-2 text-primary">
@@ -156,7 +164,7 @@
     </div>
 
     <!-- Messages Table -->
-    <div id="messages-table-container">
+    <div id="messages-table-container" class="reveal reveal-up" data-reveal-delay="220">
       {% include 'messages_table.html' %}
     </div>
   </section>
@@ -201,7 +209,7 @@
               <tr>
                 <td class="px-6 py-4 font-medium text-primary">{{ u.username }}</td>
                 <td class="px-6 py-4">
-                  <span class="px-2 py-1 rounded-full text-xs font-semibold border {% if u.is_superuser %}bg-accent/20 text-accent-dark border-accent-dark/30{% else %}bg-accent-ice/20 text-accent-ice-dark border-accent-ice-dark/30{% endif %}">
+                  <span class="badge badge--compact {% if u.is_superuser %}badge--accent{% else %}badge--ice{% endif %}">
                     {{ u.is_superuser|yesno:"Dev,Viewer" }}
                   </span>
                 </td>
@@ -277,4 +285,6 @@
   {% endif %}
 
 </main>
+  </div>
+</div>
 {% endblock %}

@@ -194,9 +194,9 @@
       
       <!-- Hero Content -->
       <div class="lp-hero-content relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div class="lp-hero-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/60 backdrop-blur-sm border border-border/60 mb-6 md:mb-8 animate-fade-in-up cursor-default select-none" @click="badgeClicks = badgeClicks + 1; if (badgeClicks >= 3) revealLogin = true">
-              <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-              <span class="text-xs font-bold uppercase tracking-widest text-secondary">A Nova Era do Just Dance</span>
+          <div class="lp-hero-badge badge mb-6 md:mb-8 animate-fade-in-up cursor-default select-none" @click="badgeClicks = badgeClicks + 1; if (badgeClicks >= 3) revealLogin = true">
+              <span class="badge-dot badge-dot--accent animate-pulse"></span>
+              A Nova Era do Just Dance
           </div>
           
           <h1 class="lp-hero-title font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter mb-6 md:mb-8 leading-[0.9] animate-fade-in-up animation-delay-100">
@@ -231,29 +231,30 @@
         <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
         <div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_100%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
         <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_55%,rgb(var(--color-accent-ice)_/_0.14)_100%)]"></div>
+        <div class="absolute inset-0 opacity-[0.92] bg-[linear-gradient(to_right,rgb(var(--color-border)_/_0.88)_1px,transparent_1px),linear-gradient(to_bottom,rgb(var(--color-border)_/_0.88)_1px,transparent_1px)] bg-[size:46px_46px]"></div>
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div class="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-start lg:items-center">
             <div>
                 <div class="text-center lg:text-left">
-                    <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border max-w-full">
-                        <span class="w-2 h-2 rounded-full bg-accent"></span>
+                    <div class="badge mb-6 reveal" data-reveal-delay="0">
+                        <span class="badge-dot badge-dot--accent"></span>
                         Captura de Movimentos
                     </div>
 
-                    <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-primary mb-6 break-words">
+                    <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-primary mb-6 break-words reveal" data-reveal-delay="80">
                         Desenvolvimento descomplicado
                     </h2>
 
-                    <p class="text-lg text-secondary mb-8 leading-relaxed">
+                    <p class="text-lg text-secondary mb-8 leading-relaxed reveal" data-reveal-delay="160">
                         Um fluxo completo para capturar, normalizar e validar movimentos antes de inserir no jogo. Menos tentativa e erro, mais consistência.
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 sm:auto-rows-fr gap-6">
-                    <div class="card !p-6 h-full group">
-                        <div class="w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+                    <div class="card card-jump !p-6 h-full group reveal reveal-up" data-reveal-delay="0">
+                        <div class="card-icon w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="9" y="2.5" width="6" height="19" rx="2.25" />
                                 <path d="M6.25 6.5h.5A1.75 1.75 0 0 1 8.5 8.25v7.5A1.75 1.75 0 0 1 6.75 17.5h-.5A2.25 2.25 0 0 1 4 15.25v-6.5A2.25 2.25 0 0 1 6.25 6.5Z" />
@@ -267,8 +268,8 @@
                         <p class="text-sm text-secondary leading-relaxed">Joy-Con ou app mobile, com ferramentas de calibração e smoothing prontas.</p>
                     </div>
 
-                    <div class="card !p-6 h-full group">
-                        <div class="w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+                    <div class="card card-jump !p-6 h-full group reveal reveal-up" data-reveal-delay="80">
+                        <div class="card-icon w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 12c1.5-4.5 5.25-7.5 9.75-7.5s8.25 3 9.75 7.5c-1.5 4.5-5.25 7.5-9.75 7.5S3.75 16.5 2.25 12Z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15a3 3 0 100-6 3 3 0 000 6Z" />
@@ -278,8 +279,8 @@
                         <p class="text-sm text-secondary leading-relaxed">Perfile drift, timing, intensidade e obtenha feedbacks da precisão antes de exportar.</p>
                     </div>
 
-                    <div class="card !p-6 h-full group">
-                        <div class="w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+                    <div class="card card-jump !p-6 h-full group reveal reveal-up" data-reveal-delay="160">
+                        <div class="card-icon w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M3 9h2m-2 6h2m14-6h2m-2 6h2M7 7h10v10H7V7Z" />
                             </svg>
@@ -288,8 +289,8 @@
                         <p class="text-sm text-secondary leading-relaxed">O aprendizado de maquina combina multiplas gravações para aprender os movimementos dos jogadores.</p>
                     </div>
 
-                    <div class="card !p-6 h-full group">
-                        <div class="w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+                    <div class="card card-jump !p-6 h-full group reveal reveal-up" data-reveal-delay="240">
+                        <div class="card-icon w-10 h-10 rounded-full bg-surface-contrast border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 2.25 19.5 6.75v6.2c0 4.64-3.18 8.74-7.5 9.83-4.32-1.09-7.5-5.19-7.5-9.83v-6.2L12 2.25Z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75 11.25 15 15 9.75" />
@@ -301,7 +302,7 @@
                 </div>
             </div>
 
-            <div x-data="{ mode: 'joycon' }" class="card !p-6 relative overflow-hidden w-full lg:max-w-xl lg:ml-auto lg:self-center">
+            <div x-data="{ mode: 'joycon' }" class="card !p-6 relative overflow-hidden w-full lg:max-w-xl lg:ml-auto lg:self-center reveal reveal-right" data-reveal-delay="200">
                 <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgb(var(--color-accent)_/_0.10),transparent_55%)]"></div>
                 <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_80%,rgb(var(--color-accent-ice)_/_0.10),transparent_55%)]"></div>
 
@@ -385,19 +386,19 @@
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div class="text-center mb-16">
-            <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-bold uppercase tracking-wider mb-6 border border-border max-w-full">
-                <span class="w-2 h-2 rounded-full bg-accent-ice"></span>
+            <div class="badge mb-6 reveal" data-reveal-delay="0">
+                <span class="badge-dot badge-dot--ice"></span>
                 Editor Completo
             </div>
-            <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-primary mb-6 break-words">
+            <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-primary mb-6 break-words reveal" data-reveal-delay="80">
                 Timeline Unificada
             </h2>
-            <p class="text-lg text-secondary max-w-2xl mx-auto leading-relaxed">
+            <p class="text-lg text-secondary max-w-2xl mx-auto leading-relaxed reveal" data-reveal-delay="160">
                 Usar multiplos aplicativos ficou no passado. Controle letras, pictogramas, movimentos e audio em uma única interface.
             </p>
         </div>
 
-        <div class="card p-0 overflow-hidden mb-16">
+        <div class="card p-0 overflow-hidden mb-16 reveal reveal-up" data-reveal-delay="120">
             <div class="flex items-center justify-between gap-6 px-6 py-4 border-b border-border bg-surface">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center text-secondary">
@@ -483,32 +484,32 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="card p-6 group">
-                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+            <div class="card card-jump p-6 group reveal reveal-up" data-reveal-delay="0">
+                <div class="card-icon w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/></svg>
                 </div>
                 <h3 class="font-bold text-primary mb-2">Lyrics</h3>
                 <p class="text-sm text-secondary">Visualização e edição em tempo real, exportação inteligente.</p>
             </div>
 
-            <div class="card p-6 group">
-                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+            <div class="card card-jump p-6 group reveal reveal-up" data-reveal-delay="80">
+                <div class="card-icon w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 </div>
                 <h3 class="font-bold text-primary mb-2">Pictogramas</h3>
                 <p class="text-sm text-secondary">Biblioteca integrada e posicionamento direto na timeline.</p>
             </div>
 
-            <div class="card p-6 group">
-                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+            <div class="card card-jump p-6 group reveal reveal-up" data-reveal-delay="160">
+                <div class="card-icon w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>
                 </div>
                 <h3 class="font-bold text-primary mb-2">Track Placement</h3>
                 <p class="text-sm text-secondary">Controle inteligente dos objetos na timeline. Profiling com logs, e sincronização com o áudio.</p>
             </div>
 
-            <div class="card p-6 group">
-                <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+            <div class="card card-jump p-6 group reveal reveal-up" data-reveal-delay="240">
+                <div class="card-icon w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 </div>
                 <h3 class="font-bold text-primary mb-2">Timeline</h3>
@@ -519,49 +520,50 @@
   </section>
 
   <!-- Highlight Section: Export -->
-  <section class="py-24 relative overflow-hidden bg-primary border-t border-background/10">
+  <section class="py-24 relative overflow-hidden bg-primary">
     <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent-ice)_/_0.14),transparent_55%)]"></div>
-        <div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[110vmax] h-[110vmax] bg-[radial-gradient(circle_at_50%_100%,rgb(var(--color-accent-ice-light)_/_0.10),transparent_55%)]"></div>
-        <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,transparent_55%,rgb(var(--color-accent-ice)_/_0.16)_100%)]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgb(var(--color-accent-ice-light)_/_0.14),transparent_55%)]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_75%_70%,rgb(var(--color-accent-ice)_/_0.16),transparent_55%)]"></div>
+        <div class="absolute inset-0 opacity-[0.18] bg-[linear-gradient(to_right,rgb(var(--color-background)_/_0.14)_1px,transparent_1px),linear-gradient(to_bottom,rgb(var(--color-background)_/_0.14)_1px,transparent_1px)] bg-[size:46px_46px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(0_0_0_/_0.00)_0%,rgb(0_0_0_/_0.10)_55%,rgb(0_0_0_/_0.30)_100%)]"></div>
     </div>
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div class="flex flex-col lg:flex-row-reverse items-stretch lg:items-center gap-16">
             <div class="w-full lg:w-1/2">
                 <div class="text-center lg:text-left">
-                    <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-background/10 text-background text-xs font-bold uppercase tracking-wider mb-6 border border-background/15 max-w-full">
-                        <span class="w-2 h-2 rounded-full bg-accent-ice"></span>
+                    <div class="badge badge--inverse mb-6 reveal" data-reveal-delay="0">
+                        <span class="badge-dot badge-dot--ice"></span>
                         Exportação Universal
                     </div>
-                    <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-background mb-6 break-words">
+                    <h2 class="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-background mb-6 break-words reveal" data-reveal-delay="80">
                         Compatibilidade
                     </h2>
-                    <p class="text-base sm:text-lg text-background/75 mb-6 leading-relaxed">
+                    <p class="text-base sm:text-lg text-background/75 mb-6 leading-relaxed reveal" data-reveal-delay="160">
                         Deixe as tecnicalidades para trás. Nossa ferramenta é projetada para ser compativel com todas as versões do Just Dance.
                     </p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
+                    <div class="group card-jump bg-background/10 border border-background/15 p-6 rounded-2xl shadow-[0_12px_40px_-32px_rgba(0,0,0,0.70)] transition-all duration-300 hover:bg-background/12 hover:border-background/20 hover:-translate-y-0.5 hover:shadow-[0_22px_64px_-40px_rgba(0,0,0,0.80)] reveal reveal-up" data-reveal-delay="0">
                         <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors">
+                            <div class="card-icon w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.5 19.5V6.75A2.25 2.25 0 0 1 6.75 4.5h6.5l6.25 6.25V19.5A2.25 2.25 0 0 1 17.25 21H6.75A2.25 2.25 0 0 1 4.5 19.5Z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.25 4.5v5a1.25 1.25 0 0 0 1.25 1.25h5" /></svg>
                             </div>
                             <h4 class="font-bold text-background">Legado</h4>
                         </div>
                         <p class="text-sm text-background/70">Suporte nativo a arquivos UAF IPK (JD 2014+) e pacotes serializados das engine.</p>
                     </div>
-                    <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
+                    <div class="group card-jump bg-background/10 border border-background/15 p-6 rounded-2xl shadow-[0_12px_40px_-32px_rgba(0,0,0,0.70)] transition-all duration-300 hover:bg-background/12 hover:border-background/20 hover:-translate-y-0.5 hover:shadow-[0_22px_64px_-40px_rgba(0,0,0,0.80)] reveal reveal-up" data-reveal-delay="80">
                         <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors">
+                            <div class="card-icon w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 8.25h16.5M6.75 4.5h10.5M6.75 12.75h10.5M6.75 17.25h10.5M3.75 19.5h16.5" /></svg>
                             </div>
                             <h4 class="font-bold text-background">Moderno</h4>
                         </div>
                         <p class="text-sm text-background/70">Exporte diretamente para as versões mais recentes do Just Dance que utilizam Unity AssetBundles.</p>
                     </div>
-                    <div class="group bg-background/10 border border-background/15 p-6 rounded-2xl md:col-span-2 shadow-[0_18px_50px_-30px_rgba(0,0,0,0.65)] transition-all duration-300 hover:bg-background/12 hover:border-background/25 hover:shadow-[0_34px_95px_-36px_rgba(0,0,0,0.90)]">
+                    <div class="group card-jump bg-background/10 border border-background/15 p-6 rounded-2xl md:col-span-2 shadow-[0_12px_40px_-32px_rgba(0,0,0,0.70)] transition-all duration-300 hover:bg-background/12 hover:border-background/20 hover:-translate-y-0.5 hover:shadow-[0_22px_64px_-40px_rgba(0,0,0,0.80)] reveal reveal-up" data-reveal-delay="160">
                         <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-                            <div class="w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80 transition-colors">
+                            <div class="card-icon w-9 h-9 rounded-full bg-background/10 border border-background/15 flex items-center justify-center text-background/80">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21.75c-4.5-1.2-7.5-5.3-7.5-9.9V6.6L12 2.25l7.5 4.35v5.25c0 4.6-3 8.7-7.5 9.9Z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 12.75 11.25 14.25 15.75 9.75" /></svg>
                             </div>
                             <h4 class="font-bold text-background">Fangame Ready</h4>
@@ -570,8 +572,8 @@
                     </div>
                 </div>
             </div>
-            <div class="w-full lg:w-1/2 relative">
-                 <div class="aspect-video rounded-3xl bg-background/10 border border-background/15 shadow-[0_28px_90px_-45px_rgba(0,0,0,0.75)] relative overflow-hidden backdrop-blur-sm">
+            <div class="w-full lg:w-1/2 relative reveal reveal-up" data-reveal-delay="220">
+                 <div class="card-jump aspect-video rounded-3xl bg-background/10 border border-background/15 shadow-[0_18px_70px_-46px_rgba(0,0,0,0.80)] relative overflow-hidden">
                     <svg viewBox="0 0 1280 720" class="absolute inset-0 w-full h-full" role="img" aria-label="Prévia de exportação e compatibilidade">
                         <defs>
                             <radialGradient id="glow1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(400 80) rotate(90) scale(520 780)">
@@ -627,15 +629,15 @@
   <!-- Toolset Grid (Secondary) -->
   <section class="py-24 container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary mb-4 break-words">Outras Ferramentas</h2>
-        <p class="text-secondary max-w-xl mx-auto">Complementos essenciais para finalizar o desenvolvimento.</p>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary mb-4 break-words reveal" data-reveal-delay="0">Outras Ferramentas</h2>
+        <p class="text-secondary max-w-xl mx-auto reveal" data-reveal-delay="100">Complementos essenciais para finalizar o desenvolvimento.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         
         <!-- Video -->
-        <div class="card p-6 group">
-            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+        <div class="card card-jump p-6 group reveal reveal-up" data-reveal-delay="0">
+            <div class="card-icon w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
                 </svg>
@@ -645,8 +647,8 @@
         </div>
 
         <!-- Arte do Menu -->
-        <div class="card p-6 group">
-            <div class="w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
+        <div class="card card-jump p-6 group reveal reveal-up" data-reveal-delay="100">
+            <div class="card-icon w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center mb-4 text-secondary transition-colors group-hover:text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.098 19.902a3.75 3.75 0 0 0 5.304 0l6.401-6.402M6.75 21A3.75 3.75 0 0 1 3 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 0 0 3.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008Z" />
                 </svg>
@@ -662,24 +664,25 @@
     <div class="absolute inset-0 pointer-events-none">
       <div class="absolute -top-28 left-1/2 -translate-x-1/2 w-[120vmax] h-[120vmax] bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent-ice)_/_0.14),transparent_55%)]"></div>
       <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(var(--color-background))_0%,transparent_30%,rgb(var(--color-background))_100%)]"></div>
+      <div class="absolute inset-0 opacity-[0.82] bg-[linear-gradient(to_right,rgb(var(--color-border)_/_0.75)_1px,transparent_1px),linear-gradient(to_bottom,rgb(var(--color-border)_/_0.75)_1px,transparent_1px)] bg-[size:46px_46px]"></div>
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         <div class="text-center lg:text-left">
-          <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-surface/60 text-secondary text-xs font-bold uppercase tracking-wider border border-border">
-            <span class="w-2 h-2 rounded-full bg-accent-ice"></span>
+          <div class="badge mb-6 reveal" data-reveal-delay="0">
+            <span class="badge-dot badge-dot--ice"></span>
             Legacy Development Team
           </div>
 
-          <h2 class="mt-6 text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary break-words">
+          <h2 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary break-words reveal" data-reveal-delay="80">
             Desenvolvido pelo time do Legacy
           </h2>
-          <p class="mt-4 text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0">
+          <p class="mt-4 text-secondary leading-relaxed max-w-xl mx-auto lg:mx-0 reveal" data-reveal-delay="160">
             Conheça nosso primeiro projeto: um servidor customizado para reunir músicas de toda a série em uma plataforma única, com multiplayer online e eventos em tempo real.
           </p>
 
-          <div class="mt-8 flex items-center justify-center lg:justify-start gap-4">
+          <div class="mt-8 flex items-center justify-center lg:justify-start gap-4 reveal" data-reveal-delay="240">
             <a href="https://jdlo.ovosimpatico.com/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary solid gap-2">
               Visitar JDLO
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
@@ -691,7 +694,7 @@
           </div>
         </div>
 
-        <div class="card p-0 overflow-hidden relative">
+        <div class="card p-0 overflow-hidden relative reveal reveal-right" data-reveal-delay="200">
           <div class="px-6 sm:px-8 py-7 bg-surface border-b border-border relative">
             <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,rgb(var(--color-accent)_/_0.14),transparent_60%)]"></div>
             <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_80%_60%,rgb(var(--color-accent-ice)_/_0.14),transparent_60%)]"></div>
@@ -754,109 +757,101 @@
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgb(var(--color-accent-ice)_/_0.16),transparent_55%)]"></div>
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_75%,rgb(var(--color-accent)_/_0.16),transparent_55%)]"></div>
       <div class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent,rgba(0,0,0,0.02))]"></div>
+      <div class="absolute inset-0 opacity-[0.92] bg-[linear-gradient(to_right,rgb(var(--color-border)_/_0.88)_1px,transparent_1px),linear-gradient(to_bottom,rgb(var(--color-border)_/_0.88)_1px,transparent_1px)] bg-[size:46px_46px]"></div>
     </div>
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <div class="max-w-5xl mx-auto relative">
-        <div class="absolute -inset-6 rounded-[2.25rem] bg-gradient-to-r from-accent/30 via-accent-ice/20 to-accent/30 blur-2xl opacity-70"></div>
-
-        <div class="relative rounded-[2.25rem] bg-gradient-to-r from-accent/35 via-accent-ice/25 to-accent/35 p-[1px]">
-          <div class="rounded-[2.25rem] bg-background border border-border/60 overflow-hidden">
-            <div class="px-8 sm:px-10 pt-10 pb-8 border-b border-border bg-surface/40 backdrop-blur-sm relative">
+      <div class="max-w-5xl mx-auto">
+        <div class="card !p-0 overflow-hidden">
+          <div class="px-8 sm:px-10 pt-10 pb-8 border-b border-border bg-surface/40 backdrop-blur-sm relative reveal" data-reveal-delay="0">
               <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_40%,rgb(var(--color-accent)_/_0.10),transparent_60%)]"></div>
               <div class="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_80%_65%,rgb(var(--color-accent-ice)_/_0.10),transparent_60%)]"></div>
 
               <div class="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
                 <div class="min-w-0">
-                  <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-background/70 border border-border shadow-sm">
-                    <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-                    <span class="text-xs font-bold uppercase tracking-widest text-secondary">Beta • vagas limitadas</span>
+                  <div class="badge mb-6 reveal" data-reveal-delay="0">
+                    <span class="badge-dot badge-dot--accent animate-pulse"></span>
+                    Beta • vagas limitadas
                   </div>
 
-                  <h2 class="mt-6 text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary break-words">
+                  <h2 class="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-primary break-words reveal" data-reveal-delay="80">
                     Inscreva-se para o Beta
                   </h2>
-                  <p class="mt-4 text-secondary max-w-2xl leading-relaxed">
-                    O Dance Studio está em desenvolvimento inicial. Garanta sua vaga na lista de espera e conte o que você espera construir (acesso pago).
+                  <p class="mt-4 text-secondary max-w-2xl leading-relaxed reveal" data-reveal-delay="160">
+                    O Dance Studio está em desenvolvimento inicial. Garanta sua vaga na lista de espera e conte o que você espera construir.
                   </p>
                 </div>
 
-                <div class="shrink-0 flex flex-wrap items-center gap-2">
-                  <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-background text-xs text-secondary">
-                    <span class="w-1.5 h-1.5 rounded-full bg-border"></span>
+                <div class="shrink-0 flex flex-wrap items-center gap-2 reveal" data-reveal-delay="240">
+                  <span class="badge badge--muted">
+                    <span class="badge-dot badge-dot--sm badge-dot--muted"></span>
                     Resposta por e-mail
                   </span>
-                  <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-background text-xs text-secondary">
-                    <span class="w-1.5 h-1.5 rounded-full bg-border"></span>
-                    Sem spam
-                  </span>
-                  <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-background text-xs text-secondary">
-                    <span class="w-1.5 h-1.5 rounded-full bg-border"></span>
+                  <span class="badge badge--muted">
+                    <span class="badge-dot badge-dot--sm badge-dot--muted"></span>
                     Acesso pago
                   </span>
                 </div>
               </div>
             </div>
 
-            <div class="p-8 sm:p-10">
-              <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
-                <div class="lg:col-span-2">
-                  <div class="grid grid-cols-1 gap-4">
-                    <div class="bg-surface border border-border rounded-2xl p-5">
-                      <p class="text-xs font-semibold text-secondary uppercase tracking-wider">Para quem é</p>
-                      <p class="mt-2 text-sm font-bold text-primary">Criadores e equipes</p>
-                      <p class="mt-2 text-xs text-secondary leading-relaxed">Gente que quer testar fluxos reais: edição, sync e export.</p>
-                    </div>
+          <div class="p-8 sm:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
+              <div class="lg:col-span-2">
+                <div class="grid grid-cols-1 gap-4">
+                  <div class="bg-surface border border-border rounded-2xl p-5 reveal reveal-up" data-reveal-delay="0">
+                    <p class="text-xs font-semibold text-secondary uppercase tracking-wider">Para quem é</p>
+                    <p class="mt-2 text-sm font-bold text-primary">Criadores e equipes</p>
+                    <p class="mt-2 text-xs text-secondary leading-relaxed">Gente que quer testar fluxos reais: edição, sync e export.</p>
+                  </div>
 
-                    <div class="bg-surface border border-border rounded-2xl p-5">
-                      <p class="text-xs font-semibold text-secondary uppercase tracking-wider">O que avaliamos</p>
-                      <p class="mt-2 text-sm font-bold text-primary">Clareza do caso</p>
-                      <p class="mt-2 text-xs text-secondary leading-relaxed">Uma mensagem objetiva e convincente aumenta suas chances.</p>
-                    </div>
+                  <div class="bg-surface border border-border rounded-2xl p-5 reveal reveal-up" data-reveal-delay="120">
+                    <p class="text-xs font-semibold text-secondary uppercase tracking-wider">O que avaliamos</p>
+                    <p class="mt-2 text-sm font-bold text-primary">Clareza do caso</p>
+                    <p class="mt-2 text-xs text-secondary leading-relaxed">Uma mensagem objetiva e convincente aumenta suas chances.</p>
                   </div>
                 </div>
+              </div>
 
-                <div class="lg:col-span-3">
-                  <div class="rounded-3xl bg-surface border border-border p-6 sm:p-8 shadow-sm">
-                    <form method="post" class="space-y-6" data-toast-validate>
-                      {% csrf_token %}
+              <div class="lg:col-span-3">
+                <div class="rounded-3xl bg-surface border border-border p-6 sm:p-8 reveal reveal-up" data-reveal-delay="80">
+                  <form method="post" class="space-y-6" data-toast-validate>
+                    {% csrf_token %}
 
-                      {% if form.errors %}
-                        <div x-data x-init="
-                          {% for field in form %}
-                            {% for error in field.errors %}
-                              window.dispatchEvent(new CustomEvent('toast-add', { detail: { level: 'error', message: '{{ field.label|escapejs }}: {{ error|escapejs }}' } }));
-                            {% endfor %}
+                    {% if form.errors %}
+                      <div x-data x-init="
+                        {% for field in form %}
+                          {% for error in field.errors %}
+                            window.dispatchEvent(new CustomEvent('toast-add', { detail: { level: 'error', message: '{{ field.label|escapejs }}: {{ error|escapejs }}' } }));
                           {% endfor %}
-                          {% for error in form.non_field_errors %}
-                            window.dispatchEvent(new CustomEvent('toast-add', { detail: { level: 'error', message: '{{ error|escapejs }}' } }));
-                          {% endfor %}
-                        "></div>
-                      {% endif %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                          window.dispatchEvent(new CustomEvent('toast-add', { detail: { level: 'error', message: '{{ error|escapejs }}' } }));
+                        {% endfor %}
+                      "></div>
+                    {% endif %}
 
-                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                          <label for="id_name" class="block text-sm font-medium text-secondary">Nome</label>
-                          {{ form.name }}
-                        </div>
-
-                        <div class="space-y-2">
-                          <label for="id_email" class="block text-sm font-medium text-secondary">Email</label>
-                          {{ form.email }}
-                        </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <div class="space-y-2">
+                        <label for="id_name" class="block text-sm font-medium text-secondary">Nome</label>
+                        {{ form.name }}
                       </div>
 
                       <div class="space-y-2">
-                        <label for="id_message" class="block text-sm font-medium text-secondary">Mensagem</label>
-                        {{ form.message }}
+                        <label for="id_email" class="block text-sm font-medium text-secondary">Email</label>
+                        {{ form.email }}
                       </div>
+                    </div>
 
-                      <button type="submit" class="btn btn-primary accent w-full py-3 text-base">
-                        Entrar na Lista de Espera
-                      </button>
+                    <div class="space-y-2">
+                      <label for="id_message" class="block text-sm font-medium text-secondary">Mensagem</label>
+                      {{ form.message }}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-full py-3 text-base">
+                      Entrar na Lista de Espera
+                    </button>
 
-                    </form>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -874,7 +869,6 @@
 </footer>
 
 <script>
-  // Auto-apply Tailwind classes to form fields if they don't have them
   document.addEventListener('DOMContentLoaded', function() {
     const inputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea');
     inputs.forEach(input => {
@@ -884,6 +878,31 @@
       }
     });
 
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    const items = document.querySelectorAll('.reveal');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      items.forEach(el => el.classList.add('reveal-visible'));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const el = entry.target;
+        if (entry.isIntersecting) {
+          const d = el.getAttribute('data-reveal-delay');
+          if (d) el.style.transitionDelay = `${parseInt(d, 10)}ms`;
+          el.classList.add('reveal-visible');
+          const once = el.getAttribute('data-reveal-once');
+          if (once === null || once === 'true') observer.unobserve(el);
+        } else {
+          if (el.getAttribute('data-reveal-reset') === 'true') {
+            el.classList.remove('reveal-visible');
+          }
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+    items.forEach(el => observer.observe(el));
   });
 </script>
 {% endblock %}
