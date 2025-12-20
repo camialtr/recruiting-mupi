@@ -522,3 +522,72 @@ input[type="search"]::-webkit-search-results-decoration {
   }
 }
 
+/* === Landpage specific animations and responsive typography (migrated from inline) === */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+.svg-spin-slow {
+  transform-origin: 500px 500px;
+  animation: spin 50s linear infinite;
+}
+.svg-spin-reverse-slower {
+  transform-origin: 500px 500px;
+  animation: spin-reverse 70s linear infinite;
+}
+.svg-spin-slower {
+  transform-origin: 500px 500px;
+  animation: spin 90s linear infinite;
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+@media (min-width: 640px) {
+  .lp-hero-title { font-size: clamp(3.1rem, 7.1vw, 7rem); }
+  .lp-hero-desc { font-size: clamp(1rem, 1.25vw, 1.2rem); }
+}
+@media (max-width: 1700px) {
+  .lp-hero-title { font-size: clamp(2.9rem, 6.25vw, 6.25rem); }
+  .lp-hero-desc { font-size: clamp(0.98rem, 1.1vw, 1.1rem); }
+}
+@media (max-height: 900px) {
+  .lp-hero { padding-top: 5.5rem; padding-bottom: 3.5rem; }
+  .lp-hero-badge { margin-bottom: 1rem !important; }
+  .lp-hero-title { margin-bottom: 1.25rem !important; }
+  .lp-hero-title { font-size: clamp(2.75rem, 6vw, 6rem); }
+  .lp-hero-desc { font-size: clamp(0.95rem, 1.05vw, 1.05rem); }
+  .lp-hero-cta { margin-top: 1.5rem !important; }
+  .lp-hero-scroll { bottom: 1.5rem !important; }
+}
+@media (max-height: 820px) {
+  .lp-hero { padding-top: 5rem; padding-bottom: 3rem; }
+}
+
+/* Responsive adjustments for medium/large screens to avoid overlap with top nav */
+@media (min-width: 1024px) {
+  .lp-hero { padding-top: 7rem; }
+}
+@media (min-width: 1280px) and (max-width: 1800px) {
+  .lp-hero { padding-top: 7.5rem; }
+  .lp-hero-title { font-size: clamp(2.8rem, 6vw, 6.75rem); }
+}
+@media (min-width: 1801px) and (max-width: 2200px) {
+  .lp-hero { padding-top: 7rem; }
+  .lp-hero-title { font-size: clamp(3rem, 6.5vw, 7.5rem); }
+}
+
