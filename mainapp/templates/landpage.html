@@ -879,30 +879,5 @@
     });
 
   });
-  document.addEventListener('DOMContentLoaded', function() {
-    const items = document.querySelectorAll('.reveal');
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduce) {
-      items.forEach(el => el.classList.add('reveal-visible'));
-      return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const el = entry.target;
-        if (entry.isIntersecting) {
-          const d = el.getAttribute('data-reveal-delay');
-          if (d) el.style.transitionDelay = `${parseInt(d, 10)}ms`;
-          el.classList.add('reveal-visible');
-          const once = el.getAttribute('data-reveal-once');
-          if (once === null || once === 'true') observer.unobserve(el);
-        } else {
-          if (el.getAttribute('data-reveal-reset') === 'true') {
-            el.classList.remove('reveal-visible');
-          }
-        }
-      });
-    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
-    items.forEach(el => observer.observe(el));
-  });
 </script>
 {% endblock %}
