@@ -4,63 +4,6 @@
 {% block title %}Dance Studio - Crie seus mapas de Just Dance{% endblock %}
 
 {% block content %}
-<style>
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    @keyframes spin-reverse {
-        from { transform: rotate(360deg); }
-        to { transform: rotate(0deg); }
-    }
-    /* SVG Specific Animations ensuring center origin */
-    .svg-spin-slow {
-        transform-origin: 500px 500px;
-        animation: spin 50s linear infinite;
-    }
-    .svg-spin-reverse-slower {
-        transform-origin: 500px 500px;
-        animation: spin-reverse 70s linear infinite;
-    }
-    .svg-spin-slower {
-        transform-origin: 500px 500px;
-        animation: spin 90s linear infinite;
-    }
-    .animate-fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    @keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    .animation-delay-100 { animation-delay: 100ms; }
-    .animation-delay-200 { animation-delay: 200ms; }
-    .animation-delay-300 { animation-delay: 300ms; }
-    @media (min-width: 640px) {
-        .lp-hero-title { font-size: clamp(3.1rem, 7.1vw, 7rem); }
-        .lp-hero-desc { font-size: clamp(1rem, 1.25vw, 1.2rem); }
-    }
-    @media (max-width: 1700px) {
-        .lp-hero-title { font-size: clamp(2.9rem, 6.25vw, 6.25rem); }
-        .lp-hero-desc { font-size: clamp(0.98rem, 1.1vw, 1.1rem); }
-    }
-    @media (max-height: 900px) {
-        .lp-hero { padding-top: 5.5rem; padding-bottom: 3.5rem; }
-        .lp-hero-badge { margin-bottom: 1rem !important; }
-        .lp-hero-title { margin-bottom: 1.25rem !important; }
-        .lp-hero-title { font-size: clamp(2.75rem, 6vw, 6rem); }
-        .lp-hero-desc { font-size: clamp(0.95rem, 1.05vw, 1.05rem); }
-        .lp-hero-cta { margin-top: 1.5rem !important; }
-        .lp-hero-scroll { bottom: 1.5rem !important; }
-    }
-    @media (max-height: 820px) {
-        .lp-hero { padding-top: 5rem; padding-bottom: 3rem; }
-    }
-</style>
 
 <main class="flex-grow relative overflow-hidden">
   
@@ -71,8 +14,8 @@
            @scroll.window.passive="scroll = window.pageYOffset"
            @resize.window.passive="heroHeight = $el.offsetHeight">
 
-      <div class="absolute inset-0 z-40 pointer-events-none">
-        <header class="sticky top-0 left-0 w-full pointer-events-none pt-8 pb-4">
+      <div class="absolute inset-0 top-11 z-40 pointer-events-none">
+        <header class="sticky  left-0 w-full pointer-events-none">
           <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="pointer-events-auto flex items-center justify-center">
               <nav class="flex flex-wrap items-center justify-center gap-4 bg-surface/50 backdrop-blur-sm p-2 pl-4 pr-4 rounded-full border border-border shadow-sm">

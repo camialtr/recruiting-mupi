@@ -4,9 +4,10 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST, require_http_methods
 
 from .forms import MessageForm, MessageUpdateForm, CreateUserForm, ChangeUserPasswordForm
 from .models import Message, AuditLog
@@ -46,9 +47,14 @@ def dashboard(request):
     elif status_filter == 'unread':
         messages_qs = messages_qs.filter(read=False)
     
-    total_messages = Message.objects.count()
-    unread_messages = Message.objects.filter(read=False).count()
-    read_messages = Message.objects.filter(read=True).count()
+    counts = Message.objects.aggregate(
+        total=Count('id'),
+        unread=Count('id', filter=Q(read=False)),
+        read=Count('id', filter=Q(read=True)),
+    )
+    total_messages = counts['total']
+    unread_messages = counts['unread']
+    read_messages = counts['read']
     
     # Verifica se o usuário é dev (superuser)
     is_dev = request.user.is_superuser
@@ -84,9 +90,14 @@ def dashboard(request):
 
 @login_required
 def dashboard_stats(request):
-    total_messages = Message.objects.count()
-    unread_messages = Message.objects.filter(read=False).count()
-    read_messages = Message.objects.filter(read=True).count()
+    counts = Message.objects.aggregate(
+        total=Count('id'),
+        unread=Count('id', filter=Q(read=False)),
+        read=Count('id', filter=Q(read=True)),
+    )
+    total_messages = counts['total']
+    unread_messages = counts['unread']
+    read_messages = counts['read']
     
     is_dev = request.user.is_superuser
     active_users = []
@@ -141,6 +152,7 @@ def message_detail(request, pk: int):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 @dev_required
 def message_edit(request, pk: int):
     if not request.headers.get('HX-Request'):
@@ -169,6 +181,7 @@ def message_edit(request, pk: int):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 @dev_required
 def message_delete_confirm(request, pk: int):
     if not request.headers.get('HX-Request'):
@@ -194,6 +207,7 @@ def message_delete_confirm(request, pk: int):
 
 
 @login_required
+@require_POST
 def toggle_message_read(request, pk: int):
     if not request.headers.get('HX-Request'):
         return redirect('admin')
@@ -215,6 +229,7 @@ def toggle_message_read(request, pk: int):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def logout_confirm(request):
     if not request.headers.get('HX-Request'):
         return redirect('admin')
@@ -229,6 +244,7 @@ def logout_confirm(request):
 # === Views de gerenciamento de usuários (apenas devs) ===
 
 @login_required
+@require_http_methods(["GET", "POST"])
 @dev_required
 def user_create(request):
     if not request.headers.get('HX-Request'):
@@ -256,6 +272,7 @@ def user_create(request):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 @dev_required
 def user_change_password(request, pk: int):
     if not request.headers.get('HX-Request'):
@@ -285,6 +302,7 @@ def user_change_password(request, pk: int):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 @dev_required
 def user_delete(request, pk: int):
     if not request.headers.get('HX-Request'):
