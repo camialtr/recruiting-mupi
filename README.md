@@ -1,4 +1,4 @@
-# Review/Refatoração do Projeto "recruiting-mupi"
+# LP - Dance Studio - Teste Técnico
 
 ## Visão Geral
 
