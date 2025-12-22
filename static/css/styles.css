@@ -1,4 +1,4 @@
-/* Critical CSS to prevent FOUC */
+/* CSS crítico para evitar FOUC */
 @font-face {
   font-family: 'Monument Extended';
   src: url('../fonts/Monument-Extended.otf') format('opentype');
@@ -16,27 +16,27 @@
 }
 
 :root {
-  /* User Defined Palette (Light Mode - Adjusted for Contrast) */
+  /* Paleta de cores (modo claro) */
   --color-background: 255 255 255;  /* #FFFFFF */
-  --color-surface: 255 255 255;     /* #FFFFFF (Restored to original) */
-  --color-surface-contrast: 242 242 242; /* #F2F2F2 (For landing page contrast) */
-  --color-border: 229 229 229;      /* #E5E5E5 (Subtle border/outline) */
-  --color-primary: 15 15 15;        /* #0F0F0F (Primary text) */
-  --color-secondary: 82 82 82;      /* #525252 (Darkened from #BDBDBD for readability) */
+  --color-surface: 255 255 255;     /* #FFFFFF (Restaurado ao original) */
+  --color-surface-contrast: 242 242 242; /* #F2F2F2 (Contraste da landpage) */
+  --color-border: 229 229 229;      /* #E5E5E5 (Borda suave) */
+  --color-primary: 15 15 15;        /* #0F0F0F (Texto primário) */
+  --color-secondary: 82 82 82;      /* #525252 (Escurecido de #BDBDBD para legibilidade) */
   
-  /* Reduced Palette */
-  --color-accent: 155 255 61;       /* #78FF64 (Vibrant Green - Base) */
-  --color-accent-light: 205 255 158; /* Lighter variant */
-  --color-accent-dark: 65 110 25;    /* Darker variant for contrast */
+  /* Variações da paleta */
+  --color-accent: 155 255 61;       /* #78FF64 (Verde vibrante - base) */
+  --color-accent-light: 205 255 158; /* Variante mais clara */
+  --color-accent-dark: 65 110 25;    /* Variante mais escura (contraste) */
   
-  --color-accent-ice: 98 84 255;    /* #64B4FF (Vibrant Blue - Base) */
-  --color-accent-ice-light: 176 169 255; /* Lighter variant */
-  --color-accent-ice-dark: 40 30 110;   /* Darker variant */
+  --color-accent-ice: 98 84 255;    /* #64B4FF (Azul vibrante - base) */
+  --color-accent-ice-light: 176 169 255; /* Variante mais clara */
+  --color-accent-ice-dark: 40 30 110;   /* Variante mais escura */
 }
 
 body {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 400; /* Regular base */
+  font-weight: 400; /* Peso regular */
 }
 
 ::selection {
@@ -46,10 +46,10 @@ body {
 
 h1, h2, h3, h4, h5, h6, .font-display {
   font-family: 'Monument Extended', sans-serif;
-  font-weight: 400; /* Monument usually comes heavy, keep it standard to avoid faux bold distortion */
+  font-weight: 400; /* Fonte costuma ser pesada; manter peso padrão para evitar bold falso */
 }
 
-/* Contextual Font Weights */
+/* Pesos de fonte contextuais */
 p {
   font-weight: 400;
 }
@@ -62,15 +62,15 @@ small, .text-xs, .text-sm {
   font-weight: 400;
 }
 
-/* UI Elements Context */
+/* Elementos de UI */
 .btn {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600; /* SemiBold for buttons */
+  font-weight: 600; /* Semibold para botões */
 }
 
 label, .label {
   font-family: 'Space Grotesk', sans-serif;
-  font-weight: 500; /* Medium for labels */
+  font-weight: 500; /* Médio para rótulos */
 }
 
 input, textarea, select, .input {
@@ -84,7 +84,7 @@ th, .table-header {
 }
 
 
-/* Native CSS implementation of common utility classes to load immediately */
+/* Implementação nativa de utilitários comuns */
 .input, 
 body input:where(:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"])), 
 body textarea, 
@@ -92,8 +92,8 @@ body select {
   width: 100%;
   background-color: rgb(var(--color-background));
   border: 1px solid rgb(var(--color-border));
-  border-radius: 1rem; /* rounded-2xl (more curvature for inputs) */
-  padding: 0.75rem 1rem; /* px-4 py-3 (more padding) */
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
   color: rgb(var(--color-primary));
   transition-property: background-color, border-color, color, box-shadow;
   transition-duration: 300ms;
@@ -126,37 +126,34 @@ body select::placeholder {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.5rem; /* Larger padding for pill shape */
-  font-size: 0.875rem; /* text-sm */
-  font-weight: 600; /* SemiBold */
-  border-radius: 9999px; /* rounded-full (Pill shape) */
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem; /* texto pequeno */
+  font-weight: 600; /* Semibold */
+  border-radius: 9999px;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, transform, box-shadow;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 200ms;
   cursor: pointer;
-  letter-spacing: 0.025em; /* Slight tracking */
+  letter-spacing: 0.025em;
 }
 
-/* Button Variants implemented in standard CSS */
+/* Botões: estilo primário */
 .btn-primary {
-  background-color: rgb(var(--color-primary)); /* Inverted style usually works better for modern look: Black bg on white, White bg on black */
+  background-color: rgb(var(--color-primary)); /* Estilo invertido de alto contraste (fundo escuro em claro) */
   border: 1px solid transparent;
-  color: rgb(var(--color-surface)); /* Text color inverse of bg */
-  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); /* Standard smooth transition */
+  color: rgb(var(--color-surface)); /* Cor do texto inversa ao fundo */
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); /* Transição suave padrão */
   font-weight: 600;
-  /* Define initial shadow hidden behind the button to avoid color/fade-in transition.
-     It moves out in sync with transform to appear static. */
   box-shadow: 0 0 0 -1px rgb(var(--color-surface)), 0 0 0 0 rgb(var(--color-primary));
 }
 
-/* Specific override if we want the neon accent style instead of black/white */
+/* Variante neon do botão primário (em vez de preto/branco) */
 .btn-primary.accent {
     background-color: rgb(var(--color-accent));
     color: rgb(15 15 15);
 }
 
-/* Defaulting .btn-primary to be high contrast "Shotgun" style (often black button on white bg) */
-/* Adjusting based on current palette: Primary is text color (Black/White). */
+/* Estilo de alto contraste para .btn-primary */
 
 .btn-primary:hover {
   transform: scale(1.02);
@@ -171,10 +168,10 @@ body select::placeholder {
 }
 
 .btn-primary:active {
-  transform: scale(0.95); /* Deep press */
+  transform: scale(0.95);
   outline: none;
   box-shadow: 0 0 0 2px rgb(var(--color-background)), 0 0 0 4px rgb(var(--color-primary));
-  transition-duration: 100ms; /* Fast but perceptible entry */
+  transition-duration: 100ms;
 }
 
 .btn-primary.simulate-active {
@@ -204,12 +201,12 @@ body select::placeholder {
   box-shadow: 0 0 0 transparent;
 }
 
-/* Card Styles */
+/* Cartões */
 .card {
   background-color: rgb(var(--color-surface));
   border: 1px solid rgb(var(--color-border));
-  border-radius: 1.5rem; /* rounded-3xl (Larger corners for cards) */
-  padding: 2rem; /* p-8 */
+  border-radius: 1.5rem;
+  padding: 2rem;
   transition: all 300ms;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
 }
@@ -219,7 +216,7 @@ body select::placeholder {
     border-color: rgb(var(--color-primary) / 0.1);
 }
 
-/* Table Cards Hover Effect (Ice) - REMOVED as per user request
+/* Efeito de hover da tabela (Ice) — removido conforme solicitado
 .card-table:hover {
   border-color: rgb(var(--color-accent-ice) / 0.5);
   box-shadow: 0 0 0 1px rgb(var(--color-accent-ice) / 0.5);
@@ -227,7 +224,7 @@ body select::placeholder {
 */
 
 
-/* Link Styles */
+/* Links */
 .link {
   color: rgb(var(--color-secondary));
   transition: color 150ms;
@@ -242,17 +239,17 @@ body select::placeholder {
   text-wrap: balance;
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Ocultar scrollbar no Chrome, Safari e Opera */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
-/* Hide scrollbar for IE, Edge and Firefox */
+/* Ocultar scrollbar no IE, Edge e Firefox */
 .no-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
+    -ms-overflow-style: none;  /* IE e Edge */
     scrollbar-width: none;  /* Firefox */
 }
 
-/* Custom Scrollbar for tables */
+/* Scrollbar personalizada para tabelas */
 .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -271,16 +268,13 @@ body select::placeholder {
 [x-cloak] { display: none !important; }
 
 @media (max-width: 768px) {
-  /* Reset hover effects on touch devices first to ensure they are overridden if needed, 
-     but actually simply defining them here is enough. 
-     The key is that :active should come AFTER or have higher specificity. 
-     Since specificity is same, order matters. */
+/* Mobile: simplificar efeitos de hover/toque */
      
   .btn-primary:hover,
   .btn-secondary:hover {
     transform: none;
     box-shadow: none;
-    filter: none; /* Reset brightness filter from hover */
+    filter: none; /* Remover filtro de brilho do hover */
   }
 
   .btn-primary:active,
@@ -292,28 +286,34 @@ body select::placeholder {
   }
 }
 
-/* Custom Animation Bezier Curves for Modal */
+/* Curvas de animação do modal */
 .ease-out-back {
   transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 .ease-in-back {
-  /* More pronounced anticipation for snappy close */
+  /* Curva para fechamento */
   transition-timing-function: cubic-bezier(0.7, -0.4, 0.8, 0.4) !important;
 }
 
-/* Background Effects */
+/* Efeitos de fundo */
 .bg-spotlight {
   background: radial-gradient(circle at 50% -50%, rgb(var(--color-accent-ice) / 0.2) 0%, transparent 90%);
 }
 
+/* Unificar media queries móveis */
 @media (max-width: 768px) {
   .bg-spotlight {
-    /* Mobile: Move gradient center down to sit behind top widgets */
+    /* Mobile: ajustar centro do gradiente para baixo */
     background: radial-gradient(circle at 50% -25%, rgb(var(--color-accent-ice) / 0.2) 0%, transparent 90%);
   }
+  .card-jump:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .group:hover .card-icon svg { transform: none; opacity: 1; }
 }
 
-/* Jiggle/Pulse Animation for Modal Content Swap */
+/* Animação de jiggle para conteúdo do modal */
 @keyframes jiggle-subtle {
   0% { transform: scale(1); }
   25% { transform: scale(0.98); }
@@ -325,7 +325,7 @@ body select::placeholder {
   animation: jiggle-subtle 0.35s ease-out-back forwards;
 }
 
-/* Remove default search input clear button (X) */
+/* Remover botão nativo de limpar busca (X) */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
@@ -438,13 +438,7 @@ input[type="search"]::-webkit-search-results-decoration {
   transition: transform 220ms cubic-bezier(0.4, 0, 0.2, 1), opacity 220ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .group:hover .card-icon svg { opacity: 1; transform: none; filter: none; }
-@media (max-width: 768px) {
-  .card-jump:hover {
-    transform: none;
-    box-shadow: none;
-  }
-  .group:hover .card-icon svg { transform: none; opacity: 1; }
-}
+/* removido bloco duplicado de max-width: 768px */
 @media (prefers-reduced-motion: reduce) { .group:hover .card-icon svg { transform: none !important; } }
 
 .reveal {
@@ -522,7 +516,7 @@ input[type="search"]::-webkit-search-results-decoration {
   }
 }
 
-/* === Landpage specific animations and responsive typography (migrated from inline) === */
+/* Landpage: animações e tipografia responsiva */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -578,7 +572,7 @@ input[type="search"]::-webkit-search-results-decoration {
   .lp-hero { padding-top: 5rem; padding-bottom: 3rem; }
 }
 
-/* Responsive adjustments for medium/large screens to avoid overlap with top nav */
+/* Ajustes responsivos p/ telas médias/grandes */
 @media (min-width: 1024px) {
   .lp-hero { padding-top: 7rem; }
 }
@@ -589,5 +583,16 @@ input[type="search"]::-webkit-search-results-decoration {
 @media (min-width: 1801px) and (max-width: 2200px) {
   .lp-hero { padding-top: 7rem; }
   .lp-hero-title { font-size: clamp(3rem, 6.5vw, 7.5rem); }
+}
+
+/* Utilitários */
+.pt-safe-area {
+  padding-top: calc(env(safe-area-inset-top) + 1.25rem);
+}
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 

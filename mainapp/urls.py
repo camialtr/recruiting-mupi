@@ -1,6 +1,6 @@
+from . import views
 from django.urls import path
 from allauth.account.views import LoginView
-from . import views
 
 urlpatterns = [
     path('', views.landpage, name='landpage'),
@@ -8,19 +8,22 @@ urlpatterns = [
 
     path('admin/', views.dashboard, name='admin'),
     path('admin/stats/', views.dashboard_stats, name='dashboard_stats'),
-    path('messages/', views.redirect_to_admin, name='messages_redirect'),
+    path('messages/', views.dashboard, name='messages_redirect'),
     path('messages/<int:pk>/', views.message_detail, name='message_detail'),
     path('messages/<int:pk>/edit/', views.message_edit, name='message_edit'),
-    path('messages/<int:pk>/delete/', views.message_delete_confirm, name='message_delete_confirm'),
-    path('messages/<int:pk>/toggle-read/', views.toggle_message_read, name='toggle_message_read'),
-    
-    # Gerenciamento de usuários (apenas devs)
+    path('messages/<int:pk>/delete/', views.message_delete_confirm,
+         name='message_delete_confirm'),
+    path('messages/<int:pk>/toggle-read/',
+         views.toggle_message_read, name='toggle_message_read'),
+
     path('users/create/', views.user_create, name='user_create'),
-    path('users/<int:pk>/change-password/', views.user_change_password, name='user_change_password'),
+    path('users/<int:pk>/change-password/',
+         views.user_change_password, name='user_change_password'),
     path('users/<int:pk>/delete/', views.user_delete, name='user_delete'),
 
-    # Override allauth urls
-    path('accounts/login/', LoginView.as_view(template_name='login.html'), name='account_login'),
-    path('accounts/password/reset/', views.password_reset_modal, name='account_reset_password'),
+    path('accounts/login/', LoginView.as_view(template_name='login.html'),
+         name='account_login'),
+    path('accounts/password/reset/', views.password_reset_modal,
+         name='account_reset_password'),
     path('accounts/signup/', views.signup_modal, name='account_signup'),
 ]

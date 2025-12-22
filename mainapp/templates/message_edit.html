@@ -31,19 +31,3 @@
     <button type="submit" class="btn btn-primary">Salvar Alterações</button>
   </div>
 </form>
-
-<script>
-  // Apply Tailwind classes to inputs in the modal
-  (function() {
-    const modalContent = document.getElementById('modal-content');
-    if (modalContent) {
-      const inputs = modalContent.querySelectorAll('input[type="text"], input[type="email"]');
-      const textareas = modalContent.querySelectorAll('textarea');
-      
-      inputs.forEach(input => input.classList.add('input'));
-      textareas.forEach(textarea => {
-        textarea.classList.add('input', 'min-h-[120px]');
-      });
-    }
-  })();
-</script>

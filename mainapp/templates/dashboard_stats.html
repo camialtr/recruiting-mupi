@@ -1,0 +1,57 @@
+<div id="dashboard-stats" class="dashboard-stats">
+  <div class="grid grid-cols-1 md:grid-cols-3 bg-surface border border-border rounded-2xl shadow-sm divide-y md:divide-y-0 md:divide-x divide-border overflow-hidden">
+    <!-- Total -->
+    <div class="group p-6 md:hover:bg-accent-ice/5 transition-colors duration-100 cursor-pointer select-none"
+         style="-webkit-tap-highlight-color: transparent;"
+         data-status=""
+         data-label="Todos">
+        <div class="flex items-center justify-between transition-transform duration-100 group-active:scale-95">
+            <div>
+                <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-1">Total</p>
+                <p class="text-3xl font-bold text-primary">{{ total_messages }}</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-accent-ice-dark group-hover:scale-110 transition-transform duration-300">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unread -->
+    <div class="group p-6 md:hover:bg-accent-ice/5 transition-colors duration-100 cursor-pointer select-none"
+         style="-webkit-tap-highlight-color: transparent;"
+         data-status="unread"
+         data-label="Não Lidas">
+        <div class="flex items-center justify-between transition-transform duration-100 group-active:scale-95">
+            <div>
+                <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-1">Não Lidas</p>
+                <p class="text-3xl font-bold text-primary">{{ unread_messages }}</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-accent-ice-dark group-hover:scale-110 transition-transform duration-300">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Read -->
+    <div class="group p-6 md:hover:bg-accent/5 transition-colors duration-100 cursor-pointer select-none"
+         style="-webkit-tap-highlight-color: transparent;"
+         data-status="read"
+         data-label="Lidas">
+        <div class="flex items-center justify-between transition-transform duration-100 group-active:scale-95">
+            <div>
+                <p class="text-xs font-semibold text-secondary uppercase tracking-wider mb-1">Lidas</p>
+                <p class="text-3xl font-bold text-primary">{{ read_messages }}</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-surface border border-border flex items-center justify-center text-accent-dark group-hover:scale-110 transition-transform duration-300">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

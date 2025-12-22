@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Entrar - Mupi Recruiting{% endblock %}
+{% block title %}Entrar - Admin{% endblock %}
 
 {% block content %}
 <main class="flex-grow relative overflow-hidden text-primary bg-background flex flex-col min-h-[100svh]">
@@ -76,7 +76,7 @@
                 <p class="mt-2 text-sm text-secondary">Use seu usuário e senha para continuar.</p>
 
                 {% if form.errors %}
-                  <div x-data x-init="window.dispatchEvent(new CustomEvent('toast-add', { detail: { level: 'error', message: 'Usuário ou senha inválidos.' } }));"></div>
+                  <div id="login-error" data-message="Usuário ou senha inválidos." class="hidden"></div>
                 {% endif %}
 
                 <form method="post" class="mt-8 space-y-6" data-toast-validate>

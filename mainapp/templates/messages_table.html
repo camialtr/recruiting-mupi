@@ -1,5 +1,5 @@
 <section class="messages-table card card-table overflow-hidden p-0 h-[600px] flex flex-col"
-         hx-trigger="refresh-messages from:document"
+         hx-trigger="refresh-messages from:document delay:200ms"
          hx-get="{% url 'admin' %}"
          hx-include="#filter-form"
          hx-select=".messages-table"
@@ -30,7 +30,7 @@
                     hx-post="{% url 'toggle_message_read' msg.pk %}"
                     hx-target="#read-text-{{ msg.pk }}"
                     hx-swap="outerHTML"
-                    hx-select="unset">
+                    hx-select="#read-text-{{ msg.pk }}">
               <span id="read-text-{{ msg.pk }}" class="badge badge--compact {% if msg.read %}badge--accent{% else %}badge--ice{% endif %}">
                 {{ msg.read|yesno:"Sim,Não" }}
               </span>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% load static %}
 
 {% block title %}Dance Studio - Crie seus mapas de Just Dance{% endblock %}
@@ -109,7 +110,7 @@
 
               <!-- Layer 3: Mid Geometric Ring (Dashed, Rotating Reverse) -->
               <g class="svg-spin-reverse-slower" style="animation-delay: -15s;">
-                  <circle cx="500" cy="500" r="300" class="fill-none stroke-primary/10" stroke-width="1" stroke-dasharray="20 20" />
+                  <circle cx="500" cy="500" r="300" class="fill-none stroke-primary/15" stroke-width="1" stroke-dasharray="20 20" />
               </g>
 
               <!-- Layer 4: Mid Text Ring (Rotating Reverse) -->
@@ -122,7 +123,7 @@
               </g>
 
               <!-- Layer 5: Outer Geometric Ring -->
-              <circle cx="500" cy="500" r="450" class="fill-none stroke-primary/5" stroke-width="1" />
+              <circle cx="500" cy="500" r="450" class="fill-none stroke-primary/10" stroke-width="1" />
 
               <!-- Layer 6: Outer Text Ring (Rotating) -->
               <g class="svg-spin-slower" style="animation-delay: -30s;">
@@ -650,52 +651,8 @@
             </div>
             <div class="w-full lg:w-1/2 relative reveal reveal-up" data-reveal-delay="220">
                  <div class="card-jump aspect-video rounded-3xl bg-background/10 border border-background/15 shadow-[0_18px_70px_-46px_rgba(0,0,0,0.80)] relative overflow-hidden">
-                    <svg viewBox="0 0 1280 720" class="absolute inset-0 w-full h-full" role="img" aria-label="Prévia de exportação e compatibilidade">
-                        <defs>
-                            <radialGradient id="glow1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(400 80) rotate(90) scale(520 780)">
-                                <stop stop-color="#6254FF" stop-opacity="0.55"/>
-                                <stop offset="1" stop-color="#000000" stop-opacity="0"/>
-                            </radialGradient>
-                            <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(980 560) rotate(90) scale(560 820)">
-                                <stop stop-color="#B0A9FF" stop-opacity="0.40"/>
-                                <stop offset="1" stop-color="#000000" stop-opacity="0"/>
-                            </radialGradient>
-                            <linearGradient id="bar" x1="470" y1="545" x2="810" y2="545" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#B0A9FF"/>
-                                <stop offset="1" stop-color="#6254FF"/>
-                            </linearGradient>
-                        </defs>
-
-                        <rect width="1280" height="720" fill="#0B0B12"/>
-                        <rect width="1280" height="720" fill="url(#glow1)"/>
-                        <rect width="1280" height="720" fill="url(#glow2)"/>
-                        <rect width="1280" height="720" fill="#000000" opacity="0.35"/>
-
-                        <g font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace">
-                            <g opacity="0.92">
-                                <rect x="250" y="278" width="220" height="82" rx="18" fill="#FFFFFF" opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.16"/>
-                                <text x="360" y="329" fill="#FFFFFF" font-size="28" text-anchor="middle">map.ipk</text>
-
-                                <text x="520" y="330" fill="#FFFFFF" opacity="0.55" font-size="34" text-anchor="middle">→</text>
-
-                                <circle cx="640" cy="319" r="44" fill="#FFFFFF"/>
-                                <circle cx="640" cy="319" r="44" fill="none" stroke="#FFFFFF" opacity="0.35"/>
-                                <path d="M612 316.5v18.75c0 9.94 8.06 18 18 18h20c9.94 0 18-8.06 18-18V316.5M604 296.5l36-36m0 0 36 36m-36-36V312" stroke="#0B0B12" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-
-                                <text x="760" y="330" fill="#FFFFFF" opacity="0.55" font-size="34" text-anchor="middle">→</text>
-
-                                <rect x="810" y="278" width="220" height="82" rx="18" fill="#FFFFFF" opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.16"/>
-                                <text x="920" y="329" fill="#FFFFFF" font-size="28" text-anchor="middle">bundle</text>
-                            </g>
-
-                            <g opacity="0.85">
-                                <text x="470" y="505" fill="#FFFFFF" opacity="0.70" font-size="18">Converting assets</text>
-                                <text x="810" y="505" fill="#FFFFFF" opacity="0.70" font-size="18" text-anchor="end">100%</text>
-                                <rect x="470" y="528" width="340" height="18" rx="9" fill="#FFFFFF" opacity="0.10" stroke="#FFFFFF" stroke-opacity="0.16"/>
-                                <rect x="470" y="528" width="340" height="18" rx="9" fill="url(#bar)"/>
-                            </g>
-                        </g>
-                    </svg>
+                    <img src="{% static 'images/img.png' %}" alt="Prévia de exportação e compatibilidade"
+                         class="absolute inset-0 w-full h-full object-cover md:object-contain" />
                  </div>
             </div>
         </div>
@@ -944,16 +901,4 @@
   </div>
 </footer>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const inputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea');
-    inputs.forEach(input => {
-      if (!input.classList.contains('input')) {
-        input.classList.add('input');
-        input.classList.add('w-full');
-      }
-    });
-
-  });
-</script>
 {% endblock %}
