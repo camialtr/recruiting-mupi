@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: recruiting-mupi
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
+    postDeployCommand: python manage.py migrate
+    autoDeploy: true
